@@ -1,12 +1,11 @@
+import 'react-native';
 import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react-native'
+import { render, fireEvent, cleanup } from '@testing-library/react-native';
 import App from './App';
 
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 
-
-
-afterEach(cleanup);
+afterAll(cleanup);
 
 describe('<App />', () => {
   it('should match snapshot', () => {
@@ -22,10 +21,10 @@ describe('<App />', () => {
     expect(counterComponent.props.children).toContainEqual(0);
   });
 
-  it('should increase counter by 1', () => {
+  it('should increase counter by 1', async () => {
     const rendered = render(<App />);
     const counterComponent = rendered.getByTestId('counter');
-    const buttonComponent = rendered. getByTestId('button');
+    const buttonComponent = rendered.getByTestId('button');
 
     fireEvent(buttonComponent, 'press');
 

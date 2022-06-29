@@ -17,7 +17,7 @@ export default function App() {
       </Text>
       <Button
         testID={'button'}
-        onPress={() => setCounter(counter + 2)}
+        onPress={() => setCounter(counter + 1)}
         title={'Press me'}
       />
     </View>

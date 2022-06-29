@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#fff",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "marginBottom": 16,
+      }
+    }
+    testID="counter"
+  >
+    You clicked the button 
+    0
+     times.
+  </Text>
+  <View
+    accessibilityRole="button"
+    accessible={true}
+    focusable={true}
+    nativeBackgroundAndroid={
+      Object {
+        "attribute": "selectableItemBackground",
+        "rippleRadius": undefined,
+        "type": "ThemeAttrAndroid",
+      }
+    }
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#2196F3",
+          "borderRadius": 2,
+          "elevation": 4,
+        },
+      ]
+    }
+    testID="button"
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontWeight": "500",
+            "margin": 8,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      PRESS ME
+    </Text>
+  </View>
+</View>
+`;

@@ -13,19 +13,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-/*
-function writeUserData(userId, userName, email, challangesCompleted, challengesCreated) {
-    const db = getDatabase();
-    const reference = ref(db, 'users/' + userId);
+export { db };
 
-    set(reference, {
-        userName: name,
-        email: email,
-        challangesCompleted: challangesCompleted,
-        challengesCreated: challengesCreated
-    });
-}
-
-writeUserData("doge", "no@test.com", 0, 0);
-*/

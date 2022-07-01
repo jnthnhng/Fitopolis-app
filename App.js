@@ -30,7 +30,7 @@ export default function App() {
 const styles = StyleSheet.create({
   label: {
     marginBottom: 16,
-    marginTop:16,
+    marginTop: 16,
   },
   container: {
     flex: 1,
@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 10,
-    backgroundColor: '#3b3a39',
+    backgroundColor: "#3b3a39",
     borderRadius: 10,
-    width: '60%',
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: "60%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
-    fontSize: 20
-  }
+    color: "white",
+    fontSize: 20,
+  },
 });

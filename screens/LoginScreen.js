@@ -11,7 +11,10 @@ import {
 
 // Source: adapted from 'React Native with Firebase Intro'
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
+  function goToHome() {
+    navigation.navigate("Fitopolis");
+  }
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Text style={styles.logo}>Fitopolis</Text>
@@ -34,7 +37,8 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+          {/* Needs to be updated with Firebase auth! */}
+        <TouchableOpacity onPress={goToHome} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>

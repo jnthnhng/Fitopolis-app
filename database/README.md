@@ -1,4 +1,5 @@
-// database imports for each screen needing database
+## database imports for each screen needing database
+```
 import { db } from '../database/firebase.js';
 import {
     ref,
@@ -8,8 +9,11 @@ import {
     remove,
     set
 } from 'firebase/database';
+```
 
 // add function example
+
+```
 function addNewChallenge(challengeId, name, type, description) {
     const reference = ref(db, 'challenge/' + challengeId);
 
@@ -19,8 +23,9 @@ function addNewChallenge(challengeId, name, type, description) {
         description: description
     });
 }
+```
 
-// helpful articles
+## helpful articles
 
 https://blog.logrocket.com/storing-retrieving-data-react-native-apps-firebase/
 

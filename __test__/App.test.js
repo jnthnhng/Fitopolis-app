@@ -13,21 +13,4 @@ describe("<App />", () => {
 
     expect(rendered).toMatchSnapshot();
   });
-
-  // it('should set counter to 0', () => {
-  //   const rendered = render(<App />);
-  //   const counterComponent = rendered.getByTestId('counter');
-
-  //   expect(counterComponent.props.children).toContainEqual(0);
-  // });
-
-  // it('should increase counter by 1', async () => {
-  //   const rendered = render(<App />);
-  //   const counterComponent = rendered.getByTestId('counter');
-  //   const buttonComponent = rendered.getByTestId('button');
-
-  //   fireEvent(buttonComponent, 'press');
-
-  //   expect(counterComponent.props.children).toContainEqual(1);
-  // });
 });

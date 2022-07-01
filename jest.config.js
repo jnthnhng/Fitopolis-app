@@ -8,7 +8,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|react-native-base64|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-utils|@react-utils/.*|@unimodules/.*|sentry-expo|native-base)',
   ],
-  // preset: "react-native",
+  preset: "react-native",
   // setupFilesAfterEnv: ["@testing-library/jest-native/extend-expect"],
   // All imported modules in your tests should be mocked automatically
   // automock: false,

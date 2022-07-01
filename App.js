@@ -15,14 +15,14 @@ export default function App() {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-      <Text style={styles.label} testID={"counter"}>
+      {/* <Text style={styles.label} testID={"counter"}>
         You clicked the button {counter} times.
       </Text>
       <Button
         testID={"button"}
         onPress={() => setCounter(counter + 1)}
         title={"Press me"}
-      />
+      /> */}
     </View>
   );
 }

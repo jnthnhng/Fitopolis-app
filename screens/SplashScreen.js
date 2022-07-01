@@ -1,14 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const SplashScreen = () => {
+const SplashScreen = ({ navigation }) => {
+  function goToLogin() {
+    navigation.navigate("Login");
+  }
+  function goToRegister() {
+    navigation.navigate("Register");
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>Fitopolis</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={goToLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={goToRegister}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </View>

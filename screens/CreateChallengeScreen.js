@@ -18,7 +18,6 @@ const CreateChallengeScreen = () => {
     return (
         <View style={StyleSheet.container}>
             <Text style={styles.logo}>Create Challenge</Text>
-
         </View>
     );
 }

@@ -11,8 +11,7 @@ import {
 } from 'firebase/database';
 ```
 
-// add function example
-
+### add function example
 ```
 function addNewChallenge(challengeId, name, type, description) {
     const reference = ref(db, 'challenge/' + challengeId);

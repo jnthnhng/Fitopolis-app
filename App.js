@@ -1,29 +1,33 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const [counter, setCounter] = useState(0);
   return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>Fitopolis</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-      {/* <Text style={styles.label} testID={"counter"}>
-        You clicked the button {counter} times.
-      </Text>
-      <Button
-        testID={"button"}
-        onPress={() => setCounter(counter + 1)}
-        title={"Press me"}
-      /> */}
-    </View>
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <View style={styles.container}>
+          <Text style={styles.logo}>Fitopolis</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      </NavigationContainer>
+    </>
   );
 }
 

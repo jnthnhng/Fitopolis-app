@@ -95,5 +95,60 @@ exports[`<App /> should match snapshot 1`] = `
       Register
     </Text>
   </View>
+  <Text
+    style={
+      Object {
+        "marginBottom": 16,
+        "marginTop": 16,
+      }
+    }
+    testID="counter"
+  >
+    You clicked the button 
+    0
+     times.
+  </Text>
+  <View
+    accessibilityRole="button"
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+    testID="button"
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Press me
+      </Text>
+    </View>
+  </View>
 </View>
 `;

@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-
 const FitopolisHomeScreen = () => {
   return (
     <View style={styles.container}>
@@ -13,6 +12,7 @@ const FitopolisHomeScreen = () => {
       <View style={styles.numberContainer}>
         <Text style={styles.challengeNum}>20</Text>
         <Text style={styles.badgeNum}>24</Text>
+        <Image source={require("./assets/images/trophie.png")} />
       </View>
       <View style={styles.buttonContainer}>
         <Text style={styles.manageText}>Manage Challenges</Text>
@@ -38,16 +38,16 @@ const styles = StyleSheet.create({
   outputTextContainer: {
     flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: "space-evenly",
   },
   box: {
     width: 100,
     height: 100,
-    backgroundColor: 'gray',
-    textAlign: 'center',
+    backgroundColor: "gray",
+    textAlign: "center",
   },
   numberContainer: {
-      flex: 1,
+    flex: 1,
   },
   buttonContainer: {
     width: "50%",

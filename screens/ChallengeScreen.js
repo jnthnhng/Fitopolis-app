@@ -1,16 +1,17 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import { 
   StyleSheet, 
   Text, 
   View,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 
 // database imports
 import { db } from '../database/firebase.js';
 import {
+    getDatabase,
     ref,
     onValue,
     push,
@@ -19,17 +20,35 @@ import {
     get,
     set
 } from 'firebase/database';
+import { PROPERTY_TYPES } from "@babel/types";
+import { async } from "@firebase/util";
+
 
 
 
 const ChallengeScreen = () => {
 
+  const challengeId = 1;
+  var challenge = {};
+
+  async function getChallenge() {
+    const snapshot = await get(ref(db, '/challenge/1'));
+    challenge.name = (snapshot.val().challengeName);
+    challenge.description = (snapshot.val().description);
+    console.log(challenge.name);
+    return;
+  }
+
+  getChallenge();
+  console.log(challenge);
+  console.log(challenge.name);
+
   return (
     <View style={StyleSheet.container}>
     <View style={styles.inputContainer}>
-      <Text
-        style={styles.logo}
-      >Challenge Name</Text>
+      <Text 
+        style={styles.input}
+      >{challenge.name}</Text>
       <Text 
         style={styles.input}
       >Description</Text>
@@ -64,7 +83,9 @@ const ChallengeScreen = () => {
   );
 }
 
+
 export default ChallengeScreen;
+
 
 
 const styles = StyleSheet.create({

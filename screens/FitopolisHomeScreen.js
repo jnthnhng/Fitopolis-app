@@ -1,19 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  ScrollView,
+  Image,
+} from "react-native";
 
 const FitopolisHomeScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.outputTextContainer}>
-        <Text style={styles.box}>username</Text>
-        <Text style={styles.box}>Challenges Completed</Text>
-        {/* <Text style={styles.box}>Badges Earned</Text> */}
+      <View style={styles.userInfo}>
+        <Image
+          source={require("../assets/images/default-user.png")}
+          style={styles.userPhoto}
+        />
+        <Text style={styles.number}>4</Text>
+        <Image
+          source={require("../assets/images/trophie2.png")}
+          style={styles.itemPhoto}
+        />
+        {/* <Text style={styles.item}>Badge Photo</Text> */}
       </View>
-      <View style={styles.numberContainer}>
-        <Text style={styles.challengeNum}>20</Text>
-        <Text style={styles.badgeNum}>24</Text>
-        <Image source={require("./assets/images/trophie.png")} />
-      </View>
+
       <View style={styles.buttonContainer}>
         <Text style={styles.manageText}>Manage Challenges</Text>
         <TouchableOpacity style={styles.button}>
@@ -30,24 +41,57 @@ const FitopolisHomeScreen = () => {
 export default FitopolisHomeScreen;
 
 const styles = StyleSheet.create({
+  userInfo: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  userPhoto: {
+    width: 100,
+    height: 100,
+  },
+  number: {
+    width: "20%",
+    fontSize: 40,
+    textAlign: "right",
+    textAlignVertical: "center",
+    color: "#636361",
+  },
+  itemPhoto: {
+    width: 50,
+    height: 47,
+  },
+  // item: {
+  //   flex: 1,
+  //   margin: 16,
+  //   height: 150,
+  //   borderRadius: "8px",
+  //   elevation: 4,
+  //   backgroundColor: "gray",
+  //   shadowColor: "black",
+  //   shadowOpacity: 0.25,
+  //   shadowOffset: { width: 0, height: 2 },
+  // },
+  // innerContainer: {
+  //   flex: 1,
+  //   padding: 16,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // title: {
+  //   flex: 1,
+  // },
   container: {
     flex: 1,
     backgroundColor: "#e6e4df",
     alignItems: "center",
-  },
-  outputTextContainer: {
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "space-evenly",
   },
   box: {
     width: 100,
     height: 100,
     backgroundColor: "gray",
     textAlign: "center",
-  },
-  numberContainer: {
-    flex: 1,
   },
   buttonContainer: {
     width: "50%",
@@ -72,5 +116,6 @@ const styles = StyleSheet.create({
   manageText: {
     fontWeight: "600",
     fontSize: 20,
+    paddingBottom: 15,
   },
 });

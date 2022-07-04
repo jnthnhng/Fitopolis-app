@@ -35,14 +35,13 @@ const ChallengeScreen = () => {
     const snapshot = await get(ref(db, '/challenge/1'));
     challenge.name = (snapshot.val().challengeName);
     challenge.description = (snapshot.val().description);
-    console.log(challenge.name);
     return;
   }
 
-  getChallenge();
-  console.log(challenge);
-  console.log(challenge.name);
-
+  getChallenge()
+    .then((data) => { console.log(challenge)})
+    .then(() => { console.log(challenge.name)});
+    
   return (
     <View style={StyleSheet.container}>
     <View style={styles.inputContainer}>

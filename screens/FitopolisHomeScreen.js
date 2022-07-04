@@ -22,7 +22,20 @@ const FitopolisHomeScreen = () => {
           source={require("../assets/images/trophie2.png")}
           style={styles.itemPhoto}
         />
-        {/* <Text style={styles.item}>Badge Photo</Text> */}
+      </View>
+      <View style={styles.challengeInfo}>
+        <View style={styles.challengeContainer}>
+          <Text style={styles.stat}>
+            Challenges Created {"\n"}
+            {"\n"} 4
+          </Text>
+        </View>
+        <View style={styles.challengeContainer}>
+          <Text style={styles.stat}>
+            Challenges Completed {"\n"}
+            {"\n"} 6
+          </Text>
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -41,11 +54,18 @@ const FitopolisHomeScreen = () => {
 export default FitopolisHomeScreen;
 
 const styles = StyleSheet.create({
-  userInfo: {
-    flexDirection: "row",
+  container: {
     flex: 1,
+    backgroundColor: "#e6e4df",
+    alignItems: "center",
+  },
+  userInfo: {
+    flex: 1,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
   },
   userPhoto: {
     width: 100,
@@ -62,47 +82,41 @@ const styles = StyleSheet.create({
     width: 50,
     height: 47,
   },
-  // item: {
-  //   flex: 1,
-  //   margin: 16,
-  //   height: 150,
-  //   borderRadius: "8px",
-  //   elevation: 4,
-  //   backgroundColor: "gray",
-  //   shadowColor: "black",
-  //   shadowOpacity: 0.25,
-  //   shadowOffset: { width: 0, height: 2 },
-  // },
-  // innerContainer: {
-  //   flex: 1,
-  //   padding: 16,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  // },
-  // title: {
-  //   flex: 1,
-  // },
-  container: {
+  challengeInfo: {
     flex: 1,
-    backgroundColor: "#e6e4df",
+    flexDirection: "row",
+    flexShrink: 1,
+    paddingTop: 10,
     alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
   },
-  box: {
-    width: 100,
-    height: 100,
-    backgroundColor: "gray",
+  challengeContainer: {
+    padding: 5,
+    elevation: 4,
+    backgroundColor: "#c7c7c3",
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.25,
     textAlign: "center",
+    flexShrink: 1,
+  },
+  stat: {
+    flexShrink: 1,
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 20,
   },
   buttonContainer: {
-    width: "50%",
+    flex: 2,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-    flex: 3,
   },
   button: {
     backgroundColor: "#3b3a39",
-    width: "100%",
+    width: "70%",
     padding: 10,
     borderRadius: 10,
     alignItems: "center",
@@ -111,11 +125,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "600",
-    fontSize: 18,
+    fontSize: 20,
   },
   manageText: {
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 25,
     paddingBottom: 15,
   },
 });

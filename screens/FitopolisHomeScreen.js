@@ -9,7 +9,10 @@ import {
   Image,
 } from "react-native";
 
-const FitopolisHomeScreen = () => {
+const FitopolisHomeScreen = ({ navigation }) => {
+  function goToCreate() {
+    navigation.navigate("Create");
+  }
   return (
     <View style={styles.container}>
       <View style={styles.userInfo}>
@@ -40,7 +43,7 @@ const FitopolisHomeScreen = () => {
 
       <View style={styles.buttonContainer}>
         <Text style={styles.manageText}>Manage Challenges</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={goToCreate}>
           <Text style={styles.buttonText}>Create</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

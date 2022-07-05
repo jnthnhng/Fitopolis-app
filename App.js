@@ -1,31 +1,124 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
 import CreateChallengeScreen from "./screens/CreateChallengeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import BadgesScreen from "./screens/BadgesScreen";
+import StatsScreen from "./screens/StatsScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
 
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
-const Stack = createNativeStackNavigator();
+// For each screen, you must create a Stack Navigator which will point
+// to the different screens that are navigated to from that screen
+// See here for more information - https://medium.com/wesionary-team/combining-stack-navigator-with-tab-navigator-in-react-native-react-navigation-253656f45181
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Splash" component={SplashScreen} />
+      <HomeStack.Screen name="Login" component={LoginScreen} />
+      <HomeStack.Screen name="Register" component={RegisterScreen} />
+      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+    </HomeStack.Navigator>
+  );
+}
+
+const ProfileStack = createNativeStackNavigator();
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
+    </ProfileStack.Navigator>
+  );
+}
+
+const FavoritesStack = createNativeStackNavigator();
+
+function FavoritesStackScreen() {
+  return (
+    <FavoritesStack.Navigator>
+      <FavoritesStack.Screen name="My Favorites" component={FavoritesScreen} />
+    </FavoritesStack.Navigator>
+  );
+}
+
+const StatsStack = createNativeStackNavigator();
+
+function StatsStackScreen() {
+  return (
+    <StatsStack.Navigator>
+      <StatsStack.Screen name="My Stats" component={StatsScreen} />
+    </StatsStack.Navigator>
+  );
+}
+
+const BadgesStack = createNativeStackNavigator();
+
+function BadgesStackScreen() {
+  return (
+    <BadgesStack.Navigator>
+      <BadgesStack.Screen name="My Badges" component={BadgesScreen} />
+    </BadgesStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
     <>
-      <StatusBar style="dark" />
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={SplashScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <Stack.Screen name="Create" component={CreateChallengeScreen} />
-        </Stack.Navigator>
+        <Tab.Navigator
+          // screenOptions={({ route }) => ({
+          //   tabBarIcon: ({ focused, color, size }) => {
+          //     let iconName;
+          //     if (route.name === "Home") {
+          //       iconName = focused
+          //         ? "ios-information-circle"
+          //         : "ios-information-circle-outline";
+          //     } else if (route.name === "Profile") {
+          //       iconName = focused ? "ios-list-box" : "ios-list";
+          //     }
+
+          //     return <Ionicons name={iconName} size={size} color={color} />;
+          //   },
+          // })}
+          // screenOptions={{
+          //   activeTintColor: "tomato",
+          //   inactiveTintColor: "gray",
+          // }}
+          screenOptions={{ headerShown: false }}
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeStackScreen}
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon name={"Home"} color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen name="Profile" component={ProfileStackScreen} />
+          <Tab.Screen name="Favorites" component={FavoritesStackScreen} />
+          <Tab.Screen name="Stats" component={StatsStackScreen} />
+          <Tab.Screen name="Badges" component={BadgesStackScreen} />
+        </Tab.Navigator>
       </NavigationContainer>
     </>
   );

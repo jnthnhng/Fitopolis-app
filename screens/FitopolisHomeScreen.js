@@ -9,48 +9,56 @@ import {
   Image,
 } from "react-native";
 
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+import ProfileScreen from "./ProfileScreen";
+import BadgesScreen from "./BadgesScreen";
+
 const FitopolisHomeScreen = ({ navigation }) => {
   function goToCreate() {
     navigation.navigate("Create");
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.userInfo}>
-        <Image
-          source={require("../assets/images/default-user.png")}
-          style={styles.userPhoto}
-        />
-        <Text style={styles.number}>4</Text>
-        <Image
-          source={require("../assets/images/trophie2.png")}
-          style={styles.itemPhoto}
-        />
-      </View>
-      <View style={styles.challengeInfo}>
-        <View style={styles.challengeContainer}>
-          <Text style={styles.stat}>
-            Challenges Created {"\n"}
-            {"\n"} 4
-          </Text>
+    <>
+      <View style={styles.container}>
+        <View style={styles.userInfo}>
+          <Image
+            source={require("../assets/images/default-user.png")}
+            style={styles.userPhoto}
+          />
+          <Text style={styles.number}>4</Text>
+          <Image
+            source={require("../assets/images/trophie2.png")}
+            style={styles.itemPhoto}
+          />
         </View>
-        <View style={styles.challengeContainer}>
-          <Text style={styles.stat}>
-            Challenges Completed {"\n"}
-            {"\n"} 6
-          </Text>
+        <View style={styles.challengeInfo}>
+          <View style={styles.challengeContainer}>
+            <Text style={styles.stat}>
+              Challenges Created {"\n"}
+              {"\n"} 4
+            </Text>
+          </View>
+          <View style={styles.challengeContainer}>
+            <Text style={styles.stat}>
+              Challenges Completed {"\n"}
+              {"\n"} 6
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.buttonContainer}>
-        <Text style={styles.manageText}>Manage Challenges</Text>
-        <TouchableOpacity style={styles.button} onPress={goToCreate}>
-          <Text style={styles.buttonText}>Create</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Search</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.manageText}>Manage Challenges</Text>
+          <TouchableOpacity style={styles.button} onPress={goToCreate}>
+            <Text style={styles.buttonText}>Create</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Search</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

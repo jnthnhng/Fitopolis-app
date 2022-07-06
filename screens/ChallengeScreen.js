@@ -16,10 +16,6 @@ import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { db } from '../database/firebase.js';
 import {
     ref,
-    onValue,
-    push,
-    update,
-    remove,
     get,
     set
 } from 'firebase/database';
@@ -118,7 +114,6 @@ class ChallengeScreen extends Component {
 }
 
 export default ChallengeScreen;
-
 
 const styles = StyleSheet.create({
   container: {

@@ -10,11 +10,11 @@ import {
 } from "react-native";
 
 // database imports
-import firebase from 'firebase/compat/app';
+// storage imports for images
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
+// db imports
 import { db } from '../database/firebase.js';
 import {
-    getDatabase,
     ref,
     onValue,
     push,
@@ -23,9 +23,6 @@ import {
     get,
     set
 } from 'firebase/database';
-import { PROPERTY_TYPES } from "@babel/types";
-import { async } from "@firebase/util";
-import { setRenderResult } from "@testing-library/react-native/build/screen.js";
 
 class ChallengeScreen extends Component {
 
@@ -50,6 +47,8 @@ class ChallengeScreen extends Component {
   }
 
   getChallenge = async () => {
+    
+    // get challenge values from db
     const snapshot = await get(ref(db, '/challenge/1'));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
@@ -60,7 +59,7 @@ class ChallengeScreen extends Component {
     this.setState({tags : (snapshot.val().tags)});
     this.setState({badgeFK : (snapshot.val().badge)});
 
-    // get image from storage 
+    // get image from storage using image path
     var storage = getStorage();
     const reference = sRef(storage, snapshot.val().challengeImage);
     await getDownloadURL(reference).then((x) => {
@@ -72,8 +71,6 @@ class ChallengeScreen extends Component {
     this.setState({badgeName : (badgeSnapshot.val().badgeName)});
     console.log(this.badgeName);
   }
-
-
 
   challenge = () => {
     return this.state;

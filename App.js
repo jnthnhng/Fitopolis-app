@@ -29,7 +29,7 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Splash" component={ChallengeScreen} />
+      <HomeStack.Screen name="Splash" component={SplashScreen} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegisterScreen} />
       <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />

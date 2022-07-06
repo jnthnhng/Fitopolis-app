@@ -25,5 +25,5 @@ jobs:
           cache: 'npm'
       - name: npm install and test
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm test

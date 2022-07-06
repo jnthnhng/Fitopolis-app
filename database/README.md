@@ -29,6 +29,7 @@ function addNewChallenge(challengeId, name, type, description) {
 
 ### display example
 found in Screens/ChallengeScreen.js
+used a class
 
 ## helpful articles
 

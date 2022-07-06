@@ -11,9 +11,6 @@
     "test": "jest --forceExit",
     "test:update-snapshots": "jest -u --forceExit"
   },
-  "jest": {
-    "preset": "react-native"
-  },
   "dependencies": {
     "@react-native-picker/picker": "2.4.0",
     "@react-navigation/bottom-tabs": "^6.3.1",

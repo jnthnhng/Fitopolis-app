@@ -47,7 +47,6 @@ class ChallengeScreen extends Component {
 
   componentDidMount() {
     this.getChallenge();
-    //this.getBadge();
   }
 
   getChallenge = async () => {
@@ -59,23 +58,21 @@ class ChallengeScreen extends Component {
     this.setState({goal2 : (snapshot.val().goal2)});
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
-    this.setState({badge : (snapshot.val().badge)});
+    this.setState({badgeFK : (snapshot.val().badge)});
+
+    // get image from storage 
     var storage = getStorage();
     const reference = sRef(storage, snapshot.val().challengeImage);
     await getDownloadURL(reference).then((x) => {
       this.setState({image: x});
     })
-    //this.setState({image: imageUrl});
-    //snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
-    //this.setState({badgeName : (snapshot.val().badgeName)});
+
+    // get badge name using FK stored in challenge
+    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
+    this.setState({badgeName : (badgeSnapshot.val().badgeName)});
+    console.log(this.badgeName);
   }
 
-  /*
-  getBadge = async() => {
-    const snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
-    await this.setState({badgeName : (snapshot.val().badgeName)});
-  }
-  */
 
 
   challenge = () => {
@@ -105,6 +102,9 @@ class ChallengeScreen extends Component {
         <Text
           style={styles.input}
         >{this.challenge().goal3}</Text>
+        <Text
+          style={styles.input}
+        >Badge: {this.challenge().badgeName}</Text>
         <Text 
           style={styles.input}
         >{this.challenge().tags}</Text>

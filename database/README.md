@@ -1,5 +1,7 @@
 ## database imports for each screen needing database
+ref is used for both storage and database, so I am differentiating the storage one as sRef
 ```
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { db } from '../database/firebase.js';
 import {
     ref,
@@ -7,6 +9,7 @@ import {
     push,
     update,
     remove,
+    get,
     set
 } from 'firebase/database';
 ```
@@ -23,6 +26,9 @@ function addNewChallenge(challengeId, name, type, description) {
     });
 }
 ```
+
+### display example
+found in Screens/ChallengeScreen.js
 
 ## helpful articles
 

@@ -1,6 +1,6 @@
 // database/firebase.js
 import { initializeApp } from 'firebase/app'
-import * as firebase from 'firebase';
+import firebase from 'firebase/compat/app';
 import "firebase/storage";
 import { getDatabase, ref, set } from 'firebase/database';
 

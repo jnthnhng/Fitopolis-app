@@ -8,6 +8,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|react-native-base64|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-utils|@react-utils/.*|@unimodules/.*|sentry-expo|native-base)',
   ],
+  // A preset that is used as a base for Jest's configuration
   preset: "react-native",
   // setupFilesAfterEnv: ["@testing-library/jest-native/extend-expect"],
   // All imported modules in your tests should be mocked automatically
@@ -104,9 +105,6 @@ module.exports = {
 
   // An enum that specifies notification mode. Requires { notify: true }
   // notifyMode: "failure-change",
-
-  // A preset that is used as a base for Jest's configuration
-  preset: "react-native",
 
   // Run tests from one or more projects
   // projects: undefined,

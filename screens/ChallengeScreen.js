@@ -10,7 +10,9 @@ import {
 } from "react-native";
 
 // database imports
-import { db, storage } from '../database/firebase.js';
+import firebase from 'firebase/compat/app';
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
+import { db } from '../database/firebase.js';
 import {
     getDatabase,
     ref,
@@ -23,6 +25,7 @@ import {
 } from 'firebase/database';
 import { PROPERTY_TYPES } from "@babel/types";
 import { async } from "@firebase/util";
+import { setRenderResult } from "@testing-library/react-native/build/screen.js";
 
 class ChallengeScreen extends Component {
 
@@ -51,16 +54,18 @@ class ChallengeScreen extends Component {
     const snapshot = await get(ref(db, '/challenge/1'));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
-    this.setState({image : (snapshot.val().challengeImage)});
     this.setState({type : (snapshot.val().challengeType)});
     this.setState({goal1 : (snapshot.val().goal1)});
     this.setState({goal2 : (snapshot.val().goal2)});
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
     this.setState({badge : (snapshot.val().badge)});
-    var imageRef = storage.ref('running.jpg');
-    var imageUrl = await imageRef.getDownloadURL();
-    this.setState({image: imageUrl});
+    var storage = getStorage();
+    const reference = sRef(storage, snapshot.val().challengeImage);
+    await getDownloadURL(reference).then((x) => {
+      this.setState({image: x});
+    })
+    //this.setState({image: imageUrl});
     //snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
     //this.setState({badgeName : (snapshot.val().badgeName)});
   }
@@ -88,9 +93,6 @@ class ChallengeScreen extends Component {
         <Text 
           style={styles.input}
         >{this.challenge().description}</Text>
-        <Text
-          style={styles.input}
-        >{this.challenge().image}</Text>
         <Text
           style={styles.input}
         >{this.challenge().type}</Text>

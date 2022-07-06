@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import { 
   StyleSheet, 
   Text, 
+  Image,
   View,
   KeyboardAvoidingView,
   TextInput,
@@ -9,19 +10,15 @@ import {
 } from "react-native";
 
 // database imports
+// storage imports for images
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
+// db imports
 import { db } from '../database/firebase.js';
 import {
-    getDatabase,
     ref,
-    onValue,
-    push,
-    update,
-    remove,
     get,
     set
 } from 'firebase/database';
-import { PROPERTY_TYPES } from "@babel/types";
-import { async } from "@firebase/util";
 
 class ChallengeScreen extends Component {
 
@@ -43,29 +40,33 @@ class ChallengeScreen extends Component {
 
   componentDidMount() {
     this.getChallenge();
-    //this.getBadge();
   }
 
   getChallenge = async () => {
+    
+    // get challenge values from db
     const snapshot = await get(ref(db, '/challenge/1'));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
-    this.setState({image : (snapshot.val().challengeImage)});
     this.setState({type : (snapshot.val().challengeType)});
     this.setState({goal1 : (snapshot.val().goal1)});
     this.setState({goal2 : (snapshot.val().goal2)});
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
-    this.setState({badge : (snapshot.val().badge)});
-    snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
-    this.setState({badgeName : (snapshot.val().badgeName)});
-  }
+    this.setState({badgeFK : (snapshot.val().badge)});
 
-  getBadge = async() => {
-    const snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
-    await this.setState({badgeName : (snapshot.val().badgeName)});
-  }
+    // get image from storage using image path
+    var storage = getStorage();
+    const reference = sRef(storage, snapshot.val().challengeImage);
+    await getDownloadURL(reference).then((x) => {
+      this.setState({image: x});
+    })
 
+    // get badge name using FK stored in challenge
+    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
+    this.setState({badgeName : (badgeSnapshot.val().badgeName)});
+    console.log(this.badgeName);
+  }
 
   challenge = () => {
     return this.state;
@@ -78,12 +79,10 @@ class ChallengeScreen extends Component {
         <Text 
           style={styles.input}
         >{this.challenge().name}</Text>
+        <Image style={{height: 200, width: 200}} source={{uri: this.challenge().image}} />
         <Text 
           style={styles.input}
         >{this.challenge().description}</Text>
-        <Text
-          style={styles.input}
-        >{this.challenge().image}</Text>
         <Text
           style={styles.input}
         >{this.challenge().type}</Text>
@@ -96,12 +95,12 @@ class ChallengeScreen extends Component {
         <Text
           style={styles.input}
         >{this.challenge().goal3}</Text>
+        <Text
+          style={styles.input}
+        >Badge: {this.challenge().badgeName}</Text>
         <Text 
           style={styles.input}
         >{this.challenge().tags}</Text>
-        <Text 
-          style={styles.input}
-        >{this.challenge().badgeName}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => {}} style={styles.button}>
@@ -115,7 +114,6 @@ class ChallengeScreen extends Component {
 }
 
 export default ChallengeScreen;
-
 
 const styles = StyleSheet.create({
   container: {

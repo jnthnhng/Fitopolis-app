@@ -42,6 +42,7 @@ function addNewChallenge(
   });
 }
 
+
 const CreateChallengeScreen = () => {
   return (
     <View style={StyleSheet.container}>

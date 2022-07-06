@@ -23,68 +23,98 @@ import {
 import { PROPERTY_TYPES } from "@babel/types";
 import { async } from "@firebase/util";
 
+class ChallengeScreen extends Component {
 
-
-
-const ChallengeScreen = () => {
-
-  const challengeId = 1;
-  var challenge = {};
-
-  async function getChallenge() {
-    const snapshot = await get(ref(db, '/challenge/1'));
-    challenge.name = (snapshot.val().challengeName);
-    challenge.description = (snapshot.val().description);
-    return;
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      description: "",
+      image: "",
+      type: "",
+      goal1: "",
+      goal2: "",
+      goal3: "",
+      tags: "",
+      badgeFK: "",
+      badgeName: "",
+    }
   }
 
-  getChallenge()
-    .then((data) => { console.log(challenge)})
-    .then(() => { console.log(challenge.name)});
-    
-  return (
-    <View style={StyleSheet.container}>
-    <View style={styles.inputContainer}>
-      <Text 
-        style={styles.input}
-      >{challenge.name}</Text>
-      <Text 
-        style={styles.input}
-      >Description</Text>
-      <Text
-        style={styles.input}
-      >Image</Text>
-      <Text
-        style={styles.input}
-      >Type</Text>
-      <Text 
-        style={styles.input}
-      >Goal1</Text>
-      <Text
-        style={styles.input}
-      >Goal2</Text>
-      <Text
-        style={styles.input}
-      >Goal 3</Text>
-      <Text 
-        style={styles.input}
-      >Tags</Text>
-      <Text 
-        style={styles.input}
-      >Badges</Text>
-    </View>
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity onPress={() => {}} style={styles.button}>
-        <Text style={styles.buttonText}>Edit Challenge</Text>
-      </TouchableOpacity>
-    </View>
-    </View>
-  );
+  componentDidMount() {
+    this.getChallenge();
+    //this.getBadge();
+  }
+
+  getChallenge = async () => {
+    const snapshot = await get(ref(db, '/challenge/1'));
+    this.setState({name : (snapshot.val().challengeName)});
+    this.setState({description : (snapshot.val().description)});
+    this.setState({image : (snapshot.val().challengeImage)});
+    this.setState({type : (snapshot.val().challengeType)});
+    this.setState({goal1 : (snapshot.val().goal1)});
+    this.setState({goal2 : (snapshot.val().goal2)});
+    this.setState({goal3 : (snapshot.val().goal3)});
+    this.setState({tags : (snapshot.val().tags)});
+    this.setState({badge : (snapshot.val().badge)});
+    snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
+    this.setState({badgeName : (snapshot.val().badgeName)});
+  }
+
+  getBadge = async() => {
+    const snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
+    await this.setState({badgeName : (snapshot.val().badgeName)});
+  }
+
+
+  challenge = () => {
+    return this.state;
+  }
+
+  render() {
+    return (
+      <View style={StyleSheet.container}>
+      <View style={styles.inputContainer}>
+        <Text 
+          style={styles.input}
+        >{this.challenge().name}</Text>
+        <Text 
+          style={styles.input}
+        >{this.challenge().description}</Text>
+        <Text
+          style={styles.input}
+        >{this.challenge().image}</Text>
+        <Text
+          style={styles.input}
+        >{this.challenge().type}</Text>
+        <Text 
+          style={styles.input}
+        >{this.challenge().goal1}</Text>
+        <Text
+          style={styles.input}
+        >{this.challenge().goal2}</Text>
+        <Text
+          style={styles.input}
+        >{this.challenge().goal3}</Text>
+        <Text 
+          style={styles.input}
+        >{this.challenge().tags}</Text>
+        <Text 
+          style={styles.input}
+        >{this.challenge().badgeName}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <Text style={styles.buttonText}>Edit Challenge</Text>
+        </TouchableOpacity>
+      </View>
+      </View>
+    )
+  }
+
 }
 
-
 export default ChallengeScreen;
-
 
 
 const styles = StyleSheet.create({

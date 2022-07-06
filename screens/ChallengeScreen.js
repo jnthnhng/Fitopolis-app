@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import { 
   StyleSheet, 
   Text, 
+  Image,
   View,
   KeyboardAvoidingView,
   TextInput,
@@ -9,7 +10,7 @@ import {
 } from "react-native";
 
 // database imports
-import { db } from '../database/firebase.js';
+import { db, storage } from '../database/firebase.js';
 import {
     getDatabase,
     ref,
@@ -57,14 +58,19 @@ class ChallengeScreen extends Component {
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
     this.setState({badge : (snapshot.val().badge)});
-    snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
-    this.setState({badgeName : (snapshot.val().badgeName)});
+    var imageRef = storage.ref('running.jpg');
+    var imageUrl = await imageRef.getDownloadURL();
+    this.setState({image: imageUrl});
+    //snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
+    //this.setState({badgeName : (snapshot.val().badgeName)});
   }
 
+  /*
   getBadge = async() => {
     const snapshot = await get(ref(db, '/badges/' + this.state.badgeFK));
     await this.setState({badgeName : (snapshot.val().badgeName)});
   }
+  */
 
 
   challenge = () => {
@@ -78,6 +84,7 @@ class ChallengeScreen extends Component {
         <Text 
           style={styles.input}
         >{this.challenge().name}</Text>
+        <Image style={{height: 200, width: 200}} source={{uri: this.challenge().image}} />
         <Text 
           style={styles.input}
         >{this.challenge().description}</Text>
@@ -99,9 +106,6 @@ class ChallengeScreen extends Component {
         <Text 
           style={styles.input}
         >{this.challenge().tags}</Text>
-        <Text 
-          style={styles.input}
-        >{this.challenge().badgeName}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => {}} style={styles.button}>

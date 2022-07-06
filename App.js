@@ -1,12 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -86,39 +85,54 @@ export default function App() {
     <>
       <NavigationContainer>
         <Tab.Navigator
-          // screenOptions={({ route }) => ({
-          //   tabBarIcon: ({ focused, color, size }) => {
-          //     let iconName;
-          //     if (route.name === "Home") {
-          //       iconName = focused
-          //         ? "ios-information-circle"
-          //         : "ios-information-circle-outline";
-          //     } else if (route.name === "Profile") {
-          //       iconName = focused ? "ios-list-box" : "ios-list";
-          //     }
-
-          //     return <Ionicons name={iconName} size={size} color={color} />;
-          //   },
-          // })}
-          // screenOptions={{
-          //   activeTintColor: "tomato",
-          //   inactiveTintColor: "gray",
-          // }}
           screenOptions={{ headerShown: false }}
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === "Home") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Profile") {
+                iconName = focused ? "person-circle" : "person-circle-outline";
+              } else if (route.name === "Favorites") {
+                iconName = focused ? "star" : "star-outline";
+              } else if (route.name === "Stats") {
+                iconName = focused ? "stats-chart" : "stats-chart-outline";
+              } else if (route.name === "Badges") {
+                iconName = focused ? "trophy" : "trophy-outline";
+              }
+
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: "blue",
+            tabBarInactiveTintColor: "gray",
+          })}
         >
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
-            options={{
-              tabBarIcon: ({ size, color }) => (
-                <Icon name={"Home"} color={color} size={size} />
-              ),
-            }}
+            options={{ headerShown: false }}
           />
-          <Tab.Screen name="Profile" component={ProfileStackScreen} />
-          <Tab.Screen name="Favorites" component={FavoritesStackScreen} />
-          <Tab.Screen name="Stats" component={StatsStackScreen} />
-          <Tab.Screen name="Badges" component={BadgesStackScreen} />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Favorites"
+            component={FavoritesStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Stats"
+            component={StatsStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Badges"
+            component={BadgesStackScreen}
+            options={{ headerShown: false }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </>

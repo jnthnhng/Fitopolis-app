@@ -12,6 +12,7 @@ import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
+import ChallengeScreen from "./screens/ChallengeScreen";
 import CreateChallengeScreen from "./screens/CreateChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import BadgesScreen from "./screens/BadgesScreen";

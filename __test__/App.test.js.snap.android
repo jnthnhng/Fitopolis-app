@@ -376,7 +376,7 @@ exports[`<App /> should match snapshot 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "rgb(0, 122, 255)",
+                "color": "blue",
               },
               Object {
                 "fontSize": 10,
@@ -453,22 +453,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "rgb(0, 122, 255)",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
           <View
             style={
@@ -488,22 +473,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "#8E8E8F",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
         </View>
         <Text
@@ -515,7 +485,7 @@ exports[`<App /> should match snapshot 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "#8E8E8F",
+                "color": "gray",
               },
               Object {
                 "fontSize": 10,
@@ -592,22 +562,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "rgb(0, 122, 255)",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
           <View
             style={
@@ -627,22 +582,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "#8E8E8F",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
         </View>
         <Text
@@ -654,7 +594,7 @@ exports[`<App /> should match snapshot 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "#8E8E8F",
+                "color": "gray",
               },
               Object {
                 "fontSize": 10,
@@ -731,22 +671,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "rgb(0, 122, 255)",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
           <View
             style={
@@ -766,22 +691,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "#8E8E8F",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
         </View>
         <Text
@@ -793,7 +703,7 @@ exports[`<App /> should match snapshot 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "#8E8E8F",
+                "color": "gray",
               },
               Object {
                 "fontSize": 10,
@@ -870,22 +780,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "rgb(0, 122, 255)",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
           <View
             style={
@@ -905,22 +800,7 @@ exports[`<App /> should match snapshot 1`] = `
               ]
             }
           >
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "#8E8E8F",
-                    "fontSize": 25,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              ⏷
-            </Text>
+            <Text />
           </View>
         </View>
         <Text
@@ -932,7 +812,7 @@ exports[`<App /> should match snapshot 1`] = `
                 "textAlign": "center",
               },
               Object {
-                "color": "#8E8E8F",
+                "color": "gray",
               },
               Object {
                 "fontSize": 10,

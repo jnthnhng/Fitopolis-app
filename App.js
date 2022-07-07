@@ -29,6 +29,7 @@ import SearchScreen from "./screens/SearchScreen";
 
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (

@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const SplashScreen = ({ navigation }) => {
   function goToLogin() {
@@ -10,6 +11,7 @@ const SplashScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
+      <Ionicons name="barbell" size={70} />
       <Text style={styles.logo}>Fitopolis</Text>
       <TouchableOpacity style={styles.button} onPress={goToLogin}>
         <Text style={styles.buttonText}>Login</Text>

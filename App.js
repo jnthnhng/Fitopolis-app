@@ -1,22 +1,24 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import SplashScreen from "./screens/SplashScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
-import ChallengeScreen from "./screens/ChallengeScreen";
-import CreateChallengeScreen from "./screens/CreateChallengeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import BadgesScreen from "./screens/BadgesScreen";
-import StatsScreen from "./screens/StatsScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
+import SplashScreen from './screens/SplashScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import FitopolisHomeScreen from './screens/FitopolisHomeScreen';
+import ChallengeScreen from './screens/ChallengeScreen';
+import CreateChallengeScreen from './screens/CreateChallengeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import BadgesScreen from './screens/BadgesScreen';
+import StatsScreen from './screens/StatsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import SearchScreen from './screens/SearchScreen';
 
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
@@ -34,6 +36,7 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Register" component={RegisterScreen} />
       <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+      <HomeStack.Screen name="Search" component={SearchScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -111,28 +114,17 @@ export default function App() {
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
-            options={{ headerShown: false }}
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon name={'home'} color={color} size={size} />
+              ),
+            }}
           />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Favorites"
-            component={FavoritesStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Stats"
-            component={StatsStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Badges"
-            component={BadgesStackScreen}
-            options={{ headerShown: false }}
-          />
+          <Tab.Screen name="Profile" component={ProfileStackScreen} />
+          <Tab.Screen name="Favorites" component={FavoritesStackScreen} />
+          <Tab.Screen name="Stats" component={StatsStackScreen} />
+          <Tab.Screen name="Badges" component={BadgesStackScreen} />
+          <Tab.Screen name="Search" component={SearchScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     </>
@@ -146,13 +138,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#e6e4df',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    color: "black",
-    fontWeight: "bold",
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 50,
     marginBottom: 30,
   },
@@ -160,14 +152,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 10,
-    backgroundColor: "#3b3a39",
+    backgroundColor: '#3b3a39',
     borderRadius: 10,
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
 });

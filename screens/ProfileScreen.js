@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 const ProfileScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <Ionicons name="person-circle" size={60} />
       <Text style={styles.logo}>Edit Profile</Text>
       <Text style={styles.instructions}>
         Update information below to edit your profile

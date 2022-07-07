@@ -32,7 +32,6 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
         Object {
           "color": "black",
           "fontSize": 21,
-          "paddingVertical": 10,
         }
       }
     >

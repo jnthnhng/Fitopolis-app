@@ -116,7 +116,7 @@ export default function App() {
             component={HomeStackScreen}
             options={{
               tabBarIcon: ({ size, color }) => (
-                <Icon name={'Home'} color={color} size={size} />
+                <Icon name={'home'} color={color} size={size} />
               ),
             }}
           />

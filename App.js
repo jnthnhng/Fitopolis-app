@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -113,7 +114,11 @@ export default function App() {
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
-            
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon name={'Home'} color={color} size={size} />
+              ),
+            }}
           />
           <Tab.Screen name="Profile" component={ProfileStackScreen} />
           <Tab.Screen name="Favorites" component={FavoritesStackScreen} />

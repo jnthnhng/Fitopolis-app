@@ -43,7 +43,7 @@ const SearchScreen = ({ navigation }) => {
           renderSectionHeader={({ section }) => (
             <Text style={styles.sectionHeader}>{section.title}</Text>
           )}
-          keyExtractor={(item, index) => `basicListEntry-${item}`}
+          keyExtractor={(item, index) => `basicListEntry-${item.title}`}
         />
       </View>
     );

@@ -29,6 +29,7 @@ import SearchScreen from "./screens/SearchScreen";
 
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -116,17 +117,33 @@ export default function App() {
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
-            options={{
-              tabBarIcon: ({ size, color }) => (
-                <Icon name={"home"} color={color} size={size} />
-              ),
-            }}
+            options={{ headerShown: false }}
           />
-          <Tab.Screen name="Profile" component={ProfileStackScreen} />
-          <Tab.Screen name="Favorites" component={FavoritesStackScreen} />
-          <Tab.Screen name="Stats" component={StatsStackScreen} />
-          <Tab.Screen name="Badges" component={BadgesStackScreen} />
-          <Tab.Screen name="Search" component={SearchScreen} />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Favorites"
+            component={FavoritesStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Stats"
+            component={StatsStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Badges"
+            component={BadgesStackScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ headerShown: false }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </>

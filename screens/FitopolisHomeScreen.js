@@ -28,10 +28,11 @@ const FitopolisHomeScreen = ({ navigation }) => {
             style={styles.userPhoto}
           />
           <Text style={styles.number}>4</Text>
-          <Image
+          <Ionicons name="trophy-outline" size={60} />
+          {/* <Image
             source={require("../assets/images/trophie2.png")}
             style={styles.itemPhoto}
-          />
+          /> */}
         </View>
         <View style={styles.challengeInfo}>
           <View style={styles.challengeContainer}>
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: "right",
     textAlignVertical: "center",
-    color: "#636361",
+    color: "black",
   },
   itemPhoto: {
     width: 50,

@@ -1,32 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-import SplashScreen from './screens/SplashScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import FitopolisHomeScreen from './screens/FitopolisHomeScreen';
-import ChallengeScreen from './screens/ChallengeScreen';
-import CreateChallengeScreen from './screens/CreateChallengeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import BadgesScreen from './screens/BadgesScreen';
-import StatsScreen from './screens/StatsScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
-import SearchScreen from './screens/SearchScreen';
+import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
+import ChallengeScreen from "./screens/ChallengeScreen";
+import CreateChallengeScreen from "./screens/CreateChallengeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import BadgesScreen from "./screens/BadgesScreen";
+import StatsScreen from "./screens/StatsScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
+import SearchScreen from "./screens/SearchScreen";
 
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
 // For each screen, you must create a Stack Navigator which will point
-// to the different screens that are navigated to from that screen
+// to the different screens that are navigated to from that screen (in buttons etc)
 // See here for more information - https://medium.com/wesionary-team/combining-stack-navigator-with-tab-navigator-in-react-native-react-navigation-253656f45181
-const HomeStack = createNativeStackNavigator();
+
+// These stack navigators will be pointed to by the Tab navigator (below in the App function)
+// You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -116,7 +118,7 @@ export default function App() {
             component={HomeStackScreen}
             options={{
               tabBarIcon: ({ size, color }) => (
-                <Icon name={'home'} color={color} size={size} />
+                <Icon name={"home"} color={color} size={size} />
               ),
             }}
           />
@@ -138,13 +140,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#e6e4df',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#e6e4df",
+    alignItems: "center",
+    justifyContent: "center",
   },
   logo: {
-    color: 'black',
-    fontWeight: 'bold',
+    color: "black",
+    fontWeight: "bold",
     fontSize: 50,
     marginBottom: 30,
   },
@@ -152,14 +154,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 10,
-    backgroundColor: '#3b3a39',
+    backgroundColor: "#3b3a39",
     borderRadius: 10,
-    width: '60%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "60%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
   },
 });

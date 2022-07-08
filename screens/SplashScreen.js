@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { KeyboardAvoidingView } from "react-native";
 
 const SplashScreen = ({ navigation }) => {
   function goToLogin() {
@@ -10,7 +11,7 @@ const SplashScreen = ({ navigation }) => {
     navigation.navigate("Register");
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Ionicons name="barbell" size={70} />
       <Text style={styles.logo}>Fitopolis</Text>
       <TouchableOpacity style={styles.button} onPress={goToLogin}>
@@ -19,7 +20,7 @@ const SplashScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={goToRegister}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

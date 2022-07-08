@@ -1,4 +1,5 @@
-import React from "react";
+// import { getAuth } from "@firebase/auth";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,8 +8,24 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [photo, setPhoto] = useState("");
+
+  const handleSignUp = () => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Text style={styles.logo}>Fitopolis</Text>
@@ -16,35 +33,35 @@ const RegisterScreen = () => {
         Lets get fit! Enter your details to join the Fitopolis Community!
       </Text>
       <View style={styles.inputContainer}>
-        <TextInput
+        {/* <TextInput
           placeholder="Username"
-          // value={}
-          // onChangeText={text => }
+          value={username}
+          onChangeText={(text) => setUsername(text)}
           style={styles.input}
-        />
+        /> */}
         <TextInput
           placeholder="Email"
-          // value={}
-          // onChangeText={text => }
+          value={email}
+          onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
-          // value={}
-          // onChangeText={text => }
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           style={styles.input}
           secureTextEntry
         />
-        <TextInput
+        {/* <TextInput
           placeholder="Photo Upload (placeholder)"
           // value={}
           // onChangeText={text => }
           style={styles.input}
           secureTextEntry
-        />
+        /> */}
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>

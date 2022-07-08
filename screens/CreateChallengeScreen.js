@@ -12,7 +12,6 @@ import { Picker } from "@react-native-picker/picker";
 // database imports
 import { db, storage} from "../database/firebase.js";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
-import ImagePicker from 'react-native-image-picker';
 
 function addNewChallenge(
   challengeId,
@@ -72,7 +71,6 @@ class CreateChallengeScreen extends Component {
     this.setState({badges : (snapshot.val())});
   }
 
-  
   /*
   upload() {
     if(this.state.image == null)
@@ -80,7 +78,6 @@ class CreateChallengeScreen extends Component {
     storage.ref('/challengeImages/' + 'test').put(this.state.image).on("state_changed", alert("success"), alert);
   }
   */
-
 
   render() {
 

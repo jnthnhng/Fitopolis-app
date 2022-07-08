@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component, useEffect, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,12 +7,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-
 import { Picker } from "@react-native-picker/picker";
 
 // database imports
-import { db } from "../database/firebase.js";
-import { ref, onValue, push, update, remove, set } from "firebase/database";
+import { db, storage} from "../database/firebase.js";
+import { ref, onValue, push, update, remove, set, get } from "firebase/database";
 
 function addNewChallenge(
   challengeId,
@@ -42,44 +41,118 @@ function addNewChallenge(
   });
 }
 
+class CreateChallengeScreen extends Component {
 
-const CreateChallengeScreen = () => {
-  return (
-    <View style={StyleSheet.container}>
-      <Text style={styles.logo}>Create Challenge</Text>
-      <Text style={styles.instructions}>
-        Fill out the information below to create a challenge the Fitopolis
-        Community can participate in!
-      </Text>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder="Challenge Name" style={styles.input} />
-        <Picker>
-          <Picker.Item label="Weight Lifting" value="Weight Lifting" />
-          <Picker.Item label="Cycling" value="Cycling" />
-          <Picker.Item label="Aerobics" value="Aerobics" />
-          <Picker.Item label="Yoga" value="Yoga" />
-          <Picker.Item label="Cardio" value="Cardio" />
-          <Picker.Item label="Swimming" value="Swimming" />
-          <Picker.Item label="Running" value="Running" />
-        </Picker>
+  constructor(props) {
+    super(props);
+    this.state = {
+      badges: [],
+      image: "",
+      name: "",
+      type: "",
+      badge: "",
+      description: "",
+      goal1: "",
+      goal2: "",
+      goal3: "",
+      tags: "",
+
+    }
+  }
+
+  // get badge info for displaying
+  componentDidMount() {
+    this.getBadges();
+  }
+
+  getBadges = async () => {
+
+    const snapshot = await get(ref(db, '/badges'));
+    this.setState({badges : (snapshot.val())});
+  }
+
+  /*
+  upload() {
+    if(this.state.image == null)
+      return;
+    storage.ref('/challengeImages/' + 'test').put(this.state.image).on("state_changed", alert("success"), alert);
+  }
+  */
+
+  render() {
+
+    const onChangeDropDown = async (event, data) => {
+      this.setState({ type: data});
+    }
+
+    return (
+      <View style={StyleSheet.container}>
+        <Text style={styles.logo}>Create Challenge</Text>
+        <Text style={styles.instructions}>
+          Fill out the information below to create a challenge the Fitopolis
+          Community can participate in!
+        </Text>
         <View style={styles.inputContainer}>
-          <TextInput placeholder="Description" style={styles.input} />
-          <TextInput placeholder="Upload Image" style={styles.input} />
-          <TextInput placeholder="Select a Badge" style={styles.input} />
-          <TextInput placeholder="Goal 1" style={styles.input} />
-          <TextInput placeholder="Goal 2" style={styles.input} />
-          <TextInput placeholder="Goal 3" style={styles.input} />
-          <TextInput placeholder="Tags" style={styles.input} />
+          <TextInput 
+            placeholder="Challenge Name" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ name: value})}
+          />
+          <Picker onChange={onChangeDropDown}>
+            <Picker.Item label="Pick a Challenge Type" value="" />
+            <Picker.Item label="Weight Lifting" value="Weight Lifting" />
+            <Picker.Item label="Cycling" value="Cycling" />
+            <Picker.Item label="Aerobics" value="Aerobics" />
+            <Picker.Item label="Yoga" value="Yoga" />
+            <Picker.Item label="Cardio" value="Cardio" />
+            <Picker.Item label="Swimming" value="Swimming" />
+            <Picker.Item label="Running" value="Running" />
+          </Picker>
+          <Picker>
+            <Picker.Item label="Pick a Badge" value=""/>
+            {this.state.badges.map(badge =>
+              <Picker.Item label={badge.badgeName} value={badge} />  
+            )}
+          </Picker>
+          <View style={styles.inputContainer}>
+            <TextInput placeholder="Description" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ description: value})}
+            />
+            <TextInput placeholder="Goal 1" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ goal1: value})}
+             />
+            <TextInput placeholder="Goal 2" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ goal2: value})}
+            />
+            <TextInput placeholder="Goal 3" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ goal3: value})}
+            />
+            <TextInput placeholder="Tags" 
+            style={styles.input} 
+            onChangeText={value => this.setState({ tags: value})}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+              <Text style={styles.input}>Upload Challenge Image</Text>
+              <input type="file" onChange={(e)=>this.setState({image : (e.target.files[0])})}/>
+              <button onClick={console.log(this.state.type)}>Upload</button>
+          </View>     
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => {}} style={styles.button}>
+            <Text style={styles.buttonText}>Create Challenge</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
-          <Text style={styles.buttonText}>Create Challenge</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+    );
+  }
+
+}
+
 
 export default CreateChallengeScreen;
 

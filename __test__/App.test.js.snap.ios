@@ -97,6 +97,7 @@ exports[`<App /> should match snapshot 1`] = `
                     "top": 0,
                   }
                 }
+                swipeDirection="horizontal"
               >
                 <RNSScreenStackHeaderConfig
                   backButtonInCustomView={false}
@@ -126,6 +127,7 @@ exports[`<App /> should match snapshot 1`] = `
                   }
                 >
                   <View
+                    onLayout={[Function]}
                     style={
                       Object {
                         "alignItems": "center",

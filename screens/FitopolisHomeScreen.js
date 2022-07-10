@@ -19,6 +19,9 @@ const FitopolisHomeScreen = ({ navigation }) => {
   function goToCreate() {
     navigation.navigate("Create");
   }
+  function goToSearch() {
+    navigation.navigate("Search");
+  }
   return (
     <>
       <View style={styles.container}>
@@ -54,7 +57,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={goToCreate}>
             <Text style={styles.buttonText}>Create</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={goToSearch}>
             <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
         </View>

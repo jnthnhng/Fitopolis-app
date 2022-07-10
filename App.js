@@ -50,6 +50,7 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="Splash" component={SplashScreen} />
     </ProfileStack.Navigator>
   );
 }

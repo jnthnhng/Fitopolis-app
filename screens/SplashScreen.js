@@ -17,8 +17,8 @@ const SplashScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={goToLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={goToRegister}>
-        <Text style={styles.buttonText}>Register</Text>
+      <TouchableOpacity style={styles.nonButton} onPress={goToRegister}>
+        <Text style={styles.nonbuttonText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -52,6 +52,15 @@ const styles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  nonButton: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: 10,
+  },
+  nonbuttonText: {
+    color: "black",
+    fontSize: 15,
   },
   buttonText: {
     color: "white",

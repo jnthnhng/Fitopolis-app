@@ -7,10 +7,19 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+  const auth = getAuth();
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.replace("Splash");
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Ionicons name="person-circle" size={60} />
@@ -49,6 +58,11 @@ const ProfileScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => {}} style={styles.button}>
           <Text style={styles.buttonText}>Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonSOContainer}>
+        <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
+          <Text style={styles.buttonSOText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -91,6 +105,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 40,
   },
+  buttonSOContainer: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 40,
+  },
+  buttonSO: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
   button: {
     backgroundColor: "#3b3a39",
     width: "100%",
@@ -100,6 +126,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+  },
+  buttonSOText: {
+    color: "black",
     fontWeight: "600",
     fontSize: 18,
   },

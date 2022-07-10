@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   KeyboardAvoidingView,
@@ -8,13 +8,40 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 // Source: adapted from 'React Native with Firebase Intro'
 
 const LoginScreen = ({ navigation }) => {
-  function goToHome() {
-    navigation.navigate("Fitopolis");
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const auth = getAuth();
+  const currentU = auth.currentUser;
+  console.log(currentU);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigation.navigate("Fitopolis");
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  // Created test user username: Test@fitopolis.com password: Testpassword
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with:", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Text style={styles.logo}>Fitopolis</Text>
@@ -24,21 +51,21 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
-          // value={}
-          // onChangeText={text => }
+          value={email}
+          onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
-          // value={}
-          // onChangeText={text => }
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           style={styles.input}
           secureTextEntry
         />
       </View>
       <View style={styles.buttonContainer}>
-          {/* Needs to be updated with Firebase auth! */}
-        <TouchableOpacity onPress={goToHome} style={styles.button}>
+        {/* Needs to be updated with Firebase auth! */}
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>

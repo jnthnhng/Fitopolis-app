@@ -97,7 +97,6 @@ exports[`<App /> should match snapshot 1`] = `
                     "top": 0,
                   }
                 }
-                swipeDirection="horizontal"
               >
                 <RNSScreenStackHeaderConfig
                   backButtonInCustomView={false}
@@ -199,27 +198,22 @@ exports[`<App /> should match snapshot 1`] = `
                       onStartShouldSetResponder={[Function]}
                       style={
                         Object {
-                          "alignItems": "center",
-                          "backgroundColor": "#3b3a39",
-                          "borderRadius": 10,
-                          "justifyContent": "center",
                           "marginTop": 10,
                           "opacity": 1,
                           "paddingBottom": 10,
                           "paddingTop": 10,
-                          "width": "60%",
                         }
                       }
                     >
                       <Text
                         style={
                           Object {
-                            "color": "white",
-                            "fontSize": 20,
+                            "color": "black",
+                            "fontSize": 15,
                           }
                         }
                       >
-                        Register
+                        Don't have an account? Sign Up
                       </Text>
                     </View>
                   </View>

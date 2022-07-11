@@ -13,33 +13,6 @@ import { Picker } from "@react-native-picker/picker";
 import { db, storage} from "../database/firebase.js";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
 
-function addNewChallenge(
-  challengeId,
-  name,
-  type,
-  description,
-  image,
-  badge,
-  goal1,
-  goal2,
-  goal3,
-  tags
-) {
-  const reference = ref(db, "challenge/" + challengeId);
-
-  set(reference, {
-    challengeName: name,
-    challengeType: type,
-    description: description,
-    challengeImage: image,
-    challengeBadge: badge,
-    challengeCreator: "?",
-    goal1: goal1,
-    goal2: goal2,
-    goal3: goal3,
-    tags: tags,
-  });
-}
 
 class CreateChallengeScreen extends Component {
 
@@ -79,11 +52,26 @@ class CreateChallengeScreen extends Component {
   }
   */
 
+  
+
   render() {
 
-    const onChangeDropDown = async (event, data) => {
-      this.setState({ type: data});
-    }
+    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags) {
+      
+      const reference = ref(db, 'challenge/');
+  
+      push(reference, {
+          badge: badge,
+          challengeName: name,
+          challengeType: type,
+          description: description,
+          goal1: goal1,
+          goal2: goal2,
+          goal3: goal3,
+          tags: tags
+
+      });
+  }
 
     return (
       <View style={StyleSheet.container}>
@@ -98,8 +86,12 @@ class CreateChallengeScreen extends Component {
             style={styles.input} 
             onChangeText={value => this.setState({ name: value})}
           />
-          <Picker onChange={onChangeDropDown}>
-            <Picker.Item label="Pick a Challenge Type" value="" />
+          <Picker 
+            onValueChange={(value) => {
+              this.setState({ type: value});
+            }}
+          > 
+            <Picker.Item label="Pick a Challenge Type" value=""/>
             <Picker.Item label="Weight Lifting" value="Weight Lifting" />
             <Picker.Item label="Cycling" value="Cycling" />
             <Picker.Item label="Aerobics" value="Aerobics" />
@@ -108,10 +100,14 @@ class CreateChallengeScreen extends Component {
             <Picker.Item label="Swimming" value="Swimming" />
             <Picker.Item label="Running" value="Running" />
           </Picker>
-          <Picker>
+          <Picker
+            onValueChange={(value) => {
+              this.setState({ badge: "/badges/" + value});
+            }}
+          >
             <Picker.Item label="Pick a Badge" value=""/>
             {this.state.badges.map(badge =>
-              <Picker.Item label={badge.badgeName} value={badge} />  
+              <Picker.Item label={badge.badgeName} value={badge.id} />  
             )}
           </Picker>
           <View style={styles.inputContainer}>
@@ -139,11 +135,11 @@ class CreateChallengeScreen extends Component {
           <View style={styles.inputContainer}>
               <Text style={styles.input}>Upload Challenge Image</Text>
               <input type="file" onChange={(e)=>this.setState({image : (e.target.files[0])})}/>
-              <button onClick={console.log(this.state.type)}>Upload</button>
+              <button onClick={console.log(this.state.badge)}>Upload</button>
           </View>     
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <TouchableOpacity onPress={() => {addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags)}} style={styles.button}>
             <Text style={styles.buttonText}>Create Challenge</Text>
           </TouchableOpacity>
         </View>

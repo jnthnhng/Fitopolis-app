@@ -125,96 +125,288 @@ exports[`<App /> should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <View
-                    onLayout={[Function]}
-                    style={
-                      Object {
-                        "alignItems": "center",
-                        "backgroundColor": "#e6e4df",
-                        "flex": 1,
-                        "justifyContent": "center",
-                      }
-                    }
-                  >
-                    <Text />
+                  <View>
                     <Text
                       style={
                         Object {
                           "color": "black",
                           "fontSize": 50,
                           "fontWeight": "bold",
-                          "marginBottom": 30,
+                          "marginBottom": 20,
                         }
                       }
                     >
-                      Fitopolis
+                      Create Challenge
+                    </Text>
+                    <Text
+                      style={
+                        Object {
+                          "color": "black",
+                          "marginBottom": 20,
+                          "textAlign": "center",
+                        }
+                      }
+                    >
+                      Fill out the information below to create a challenge the Fitopolis Community can participate in!
                     </Text>
                     <View
-                      accessible={true}
-                      collapsable={false}
-                      focusable={true}
-                      onClick={[Function]}
-                      onResponderGrant={[Function]}
-                      onResponderMove={[Function]}
-                      onResponderRelease={[Function]}
-                      onResponderTerminate={[Function]}
-                      onResponderTerminationRequest={[Function]}
-                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "width": "80%",
+                        }
+                      }
+                    >
+                      <TextInput
+                        onChangeText={[Function]}
+                        placeholder="Challenge Name"
+                        style={
+                          Object {
+                            "backgroundColor": "white",
+                            "borderRadius": 10,
+                            "marginTop": 5,
+                            "paddingHorizontal": 15,
+                            "paddingVertical": 10,
+                          }
+                        }
+                      />
+                      <View>
+                        <RNCPicker
+                          items={
+                            Array [
+                              Object {
+                                "label": "Pick a Challenge Type",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "",
+                              },
+                              Object {
+                                "label": "Weight Lifting",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Weight Lifting",
+                              },
+                              Object {
+                                "label": "Cycling",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Cycling",
+                              },
+                              Object {
+                                "label": "Aerobics",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Aerobics",
+                              },
+                              Object {
+                                "label": "Yoga",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Yoga",
+                              },
+                              Object {
+                                "label": "Cardio",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Cardio",
+                              },
+                              Object {
+                                "label": "Swimming",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Swimming",
+                              },
+                              Object {
+                                "label": "Running",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "Running",
+                              },
+                            ]
+                          }
+                          numberOfLines={1}
+                          onChange={[Function]}
+                          selectedIndex={0}
+                          style={
+                            Array [
+                              Object {
+                                "height": 216,
+                              },
+                              undefined,
+                            ]
+                          }
+                        />
+                      </View>
+                      <View>
+                        <RNCPicker
+                          items={
+                            Array [
+                              Object {
+                                "label": "Pick a Badge",
+                                "testID": undefined,
+                                "textColor": undefined,
+                                "value": "",
+                              },
+                            ]
+                          }
+                          numberOfLines={1}
+                          onChange={[Function]}
+                          selectedIndex={0}
+                          style={
+                            Array [
+                              Object {
+                                "height": 216,
+                              },
+                              undefined,
+                            ]
+                          }
+                        />
+                      </View>
+                      <View
+                        style={
+                          Object {
+                            "width": "80%",
+                          }
+                        }
+                      >
+                        <TextInput
+                          onChangeText={[Function]}
+                          placeholder="Description"
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        />
+                        <TextInput
+                          onChangeText={[Function]}
+                          placeholder="Goal 1"
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        />
+                        <TextInput
+                          onChangeText={[Function]}
+                          placeholder="Goal 2"
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        />
+                        <TextInput
+                          onChangeText={[Function]}
+                          placeholder="Goal 3"
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        />
+                        <TextInput
+                          onChangeText={[Function]}
+                          placeholder="Tags"
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        />
+                      </View>
+                      <View
+                        style={
+                          Object {
+                            "width": "80%",
+                          }
+                        }
+                      >
+                        <Text
+                          style={
+                            Object {
+                              "backgroundColor": "white",
+                              "borderRadius": 10,
+                              "marginTop": 5,
+                              "paddingHorizontal": 15,
+                              "paddingVertical": 10,
+                            }
+                          }
+                        >
+                          Upload Challenge Image
+                        </Text>
+                        <input
+                          onChange={[Function]}
+                          type="file"
+                        />
+                        <button>
+                          Upload
+                        </button>
+                      </View>
+                    </View>
+                    <View
                       style={
                         Object {
                           "alignItems": "center",
-                          "backgroundColor": "#3b3a39",
-                          "borderRadius": 10,
                           "justifyContent": "center",
-                          "marginTop": 10,
-                          "opacity": 1,
-                          "paddingBottom": 10,
-                          "paddingTop": 10,
-                          "width": "60%",
+                          "marginTop": 40,
+                          "width": "50%",
                         }
                       }
                     >
-                      <Text
+                      <View
+                        accessible={true}
+                        collapsable={false}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
                         style={
                           Object {
-                            "color": "white",
-                            "fontSize": 20,
+                            "alignItems": "center",
+                            "backgroundColor": "#3b3a39",
+                            "borderRadius": 10,
+                            "opacity": 1,
+                            "padding": 10,
+                            "width": "100%",
                           }
                         }
                       >
-                        Login
-                      </Text>
-                    </View>
-                    <View
-                      accessible={true}
-                      collapsable={false}
-                      focusable={true}
-                      onClick={[Function]}
-                      onResponderGrant={[Function]}
-                      onResponderMove={[Function]}
-                      onResponderRelease={[Function]}
-                      onResponderTerminate={[Function]}
-                      onResponderTerminationRequest={[Function]}
-                      onStartShouldSetResponder={[Function]}
-                      style={
-                        Object {
-                          "marginTop": 10,
-                          "opacity": 1,
-                          "paddingBottom": 10,
-                          "paddingTop": 10,
-                        }
-                      }
-                    >
-                      <Text
-                        style={
-                          Object {
-                            "color": "black",
-                            "fontSize": 15,
+                        <Text
+                          style={
+                            Object {
+                              "color": "white",
+                              "fontSize": 18,
+                              "fontWeight": "600",
+                            }
                           }
-                        }
-                      >
-                        Don't have an account? Sign Up
-                      </Text>
+                        >
+                          Create Challenge
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>

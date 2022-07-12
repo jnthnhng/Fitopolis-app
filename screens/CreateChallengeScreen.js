@@ -40,8 +40,15 @@ class CreateChallengeScreen extends Component {
 
   getBadges = async () => {
 
-    const snapshot = await get(ref(db, '/badges'));
-    this.setState({badges : (snapshot.val())});
+    const snapshot = await get(ref(db, '/badges'))
+    snapshot.forEach((child) => {
+      var key = child.key;
+      var data = child.val();
+      this.setState(prevState => ({
+        badges: [...prevState.badges, {key, data} ] 
+      }));
+    })
+    
   }
 
   /*
@@ -51,8 +58,6 @@ class CreateChallengeScreen extends Component {
     storage.ref('/challengeImages/' + 'test').put(this.state.image).on("state_changed", alert("success"), alert);
   }
   */
-
-  
 
   render() {
 
@@ -102,12 +107,12 @@ class CreateChallengeScreen extends Component {
           </Picker>
           <Picker
             onValueChange={(value) => {
-              this.setState({ badge: "/badges/" + value});
+              this.setState({ badge: value});
             }}
           >
             <Picker.Item label="Pick a Badge" value=""/>
             {this.state.badges.map(badge =>
-              <Picker.Item label={badge.badgeName} value={badge.id} />  
+              <Picker.Item label={badge.data.badgeName} value={badge.key} />  
             )}
           </Picker>
           <View style={styles.inputContainer}>

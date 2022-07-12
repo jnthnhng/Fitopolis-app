@@ -14,10 +14,10 @@ const SplashScreen = ({ navigation }) => {
     <KeyboardAvoidingView style={styles.container}>
       <Ionicons name="barbell" size={70} />
       <Text style={styles.logo}>Fitopolis</Text>
-      <TouchableOpacity style={styles.button} onPress={goToLogin}>
+      <TouchableOpacity testID="LoginButton" style={styles.button} onPress={goToLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.nonButton} onPress={goToRegister}>
+      <TouchableOpacity testID="SignUpButton" style={styles.nonButton} onPress={goToRegister}>
         <Text style={styles.nonbuttonText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>

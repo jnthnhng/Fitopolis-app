@@ -6,20 +6,29 @@ import {
   TouchableOpacity,
   SectionList,
 } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useFonts } from 'expo-font';
+// import AppLoading from 'expo-app-loading';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const SearchScreen = ({ navigation }) => {
   function goToChallengeParticipationScreen() {
     navigation.navigate('Participate');
   }
 
-  //   let [loaded] = useFonts({
-  //     ProximaNova: require('../assets/fonts/Proxima_Nova.otf'),
-  //     ModernNo20: require('../assets/fonts/Modern_No_20.ttf'),
-  //   });
+  // ************* Font Loading ********************
+
+  // useFonts() returns a boolean depending on if the fonts are ready, or an error
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
+
+  // If there is an error, use the splash screen while loading
+  // if (!fontsLoaded) {
+  //   return <AppLoading />;
+  // }
 
   // **************************************
 
@@ -56,7 +65,7 @@ const SearchScreen = ({ navigation }) => {
     return (
       <Searchbar
         style={styles.searchBarContainer}
-        inputStyle={{ backgroundColor: 'yellow' }}
+        inputStyle={{ backgroundColor: 'white' }}
         placeholderTextColor={'#c8c8c8'}
         placeholder={'Text here'}
       />
@@ -65,14 +74,44 @@ const SearchScreen = ({ navigation }) => {
 
   // **************************************
 
+  const SearchChips = () => {
+    return (
+      <View style={styles.chipContainer}>
+        <View style={styles.chip}>
+          <Chip icon="bike" mode="outlined" style={{backgroundColor: '#FF968A'}}>
+            Biking
+          </Chip>
+        </View>
+        <View style={styles.chip}>
+          <Chip icon="swim" mode="outlined" style={{backgroundColor: '#97C1a9'}}>
+            Swimming
+          </Chip>
+        </View>
+        <View style={styles.chip} >
+          <Chip icon="run" mode="outlined" style={{backgroundColor: '#ffffb5'}}>
+            Running
+          </Chip>
+        </View>
+        <View style={styles.chip}>
+          <Chip icon="dumbbell" mode="outlined" style={{backgroundColor: '#ABDEE6'}}>
+            Weightlifting
+          </Chip>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
-      </View>
-      <SearchHeader />
-      <SearchBarBasic />
-      <SectionListBasics />
+      <ScrollView>
+        <View>
+          <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
+        </View>
+        <SearchHeader />
+        <SearchChips />
+        <SearchBarBasic />
+        <SectionListBasics />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -87,14 +126,14 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '10%',
-    backgroundColor: '#c8c8c8',
+    backgroundColor: '#e6e4df',
     alignItems: 'center',
     justifyContent: 'center',
   },
   searchBarContainer: {
     width: '95%',
     // height: '10%',
-    backgroundColor: 'green',
+    backgroundColor: '#e6e4df',
     padding: 10,
     margin: 10,
     flexDirection: 'row',
@@ -103,7 +142,7 @@ const styles = StyleSheet.create({
   resultsBoxContainer: {
     width: '95%',
     height: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#e6e4df',
     padding: 10,
     margin: 10,
     flexDirection: 'row',
@@ -114,6 +153,7 @@ const styles = StyleSheet.create({
     color: 'black',
     // paddingVertical: 5,
     // fontFamily: 'ProximaNova',
+    fontFamily: 'Inter_900Black',
   },
   button: {
     alignItems: 'center',
@@ -133,6 +173,16 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  chipContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  chip: {
+    // width: 120,
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
 });
 

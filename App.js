@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { getAuth } from "firebase/auth";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -29,17 +30,28 @@ import SearchScreen from "./screens/SearchScreen";
 
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
+
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
+  const auth = getAuth();
+  console.log(auth);
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Splash" component={SplashScreen} />
-      <HomeStack.Screen name="Login" component={LoginScreen} />
-      <HomeStack.Screen name="Register" component={RegisterScreen} />
-      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-      <HomeStack.Screen name="Search" component={SearchScreen} />
+      {auth.currentUser == null ? (
+        <>
+          <HomeStack.Screen name="Splash" component={SplashScreen} />
+          <HomeStack.Screen name="Login" component={LoginScreen} />
+          <HomeStack.Screen name="Register" component={RegisterScreen} />
+          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+        </>
+      ) : (
+        <>
+          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+          <HomeStack.Screen name="Search" component={SearchScreen} />
+        </>
+      )}
     </HomeStack.Navigator>
   );
 }

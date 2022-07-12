@@ -20,7 +20,7 @@ import BadgesScreen from "./screens/BadgesScreen";
 import StatsScreen from "./screens/StatsScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import SearchScreen from "./screens/SearchScreen";
-
+import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen";
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -38,20 +38,13 @@ function HomeStackScreen() {
   console.log(auth);
   return (
     <HomeStack.Navigator>
-      {auth.currentUser == null ? (
-        <>
-          <HomeStack.Screen name="Splash" component={SplashScreen} />
-          <HomeStack.Screen name="Login" component={LoginScreen} />
-          <HomeStack.Screen name="Register" component={RegisterScreen} />
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-        </>
-      ) : (
-        <>
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-          <HomeStack.Screen name="Search" component={SearchScreen} />
-        </>
-      )}
+      <HomeStack.Screen name="Splash" component={SplashScreen} />
+      <HomeStack.Screen name="Login" component={LoginScreen} />
+      <HomeStack.Screen name="Register" component={RegisterScreen} />
+      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+      <HomeStack.Screen name="Search" component={SearchScreen} />
+      <HomeStack.Screen name="Participate" component={ChallengeParticipationScreen} />
     </HomeStack.Navigator>
   );
 }
@@ -150,11 +143,6 @@ export default function App() {
           <Tab.Screen
             name="Badges"
             component={BadgesStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Search"
-            component={SearchScreen}
             options={{ headerShown: false }}
           />
         </Tab.Navigator>

@@ -12,6 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 
 const SearchScreen = ({ navigation }) => {
+  function goToChallengeParticipationScreen() {
+    navigation.navigate('Participate');
+  }
 
   //   let [loaded] = useFonts({
   //     ProximaNova: require('../assets/fonts/Proxima_Nova.otf'),
@@ -36,14 +39,14 @@ const SearchScreen = ({ navigation }) => {
             { title: 'Running', data: ['5K', '10K', '15K'] },
             {
               title: 'Swimming',
-              data: ['25m', '50m', '100m', '200m', '500m',],
+              data: ['25m', '50m', '100m', '200m', '500m'],
             },
           ]}
           renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
           renderSectionHeader={({ section }) => (
             <Text style={styles.sectionHeader}>{section.title}</Text>
           )}
-          keyExtractor={(item, index) =>  item + index}
+          keyExtractor={(item, index) => item + index}
         />
       </View>
     );
@@ -57,7 +60,6 @@ const SearchScreen = ({ navigation }) => {
         placeholderTextColor={'#c8c8c8'}
         placeholder={'Text here'}
       />
-      
     );
   };
 
@@ -65,6 +67,9 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
+      </View>
       <SearchHeader />
       <SearchBarBasic />
       <SectionListBasics />

@@ -45,7 +45,7 @@ class ChallengeScreen extends Component {
   getChallenge = async () => {
     
     // get challenge values from db
-    const snapshot = await get(ref(db, '/challenge/1'));
+    const snapshot = await get(ref(db, '/challenge/-N6ekNHXF3nQg5z5annO'));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
     this.setState({type : (snapshot.val().challengeType)});

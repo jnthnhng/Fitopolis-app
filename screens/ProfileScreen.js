@@ -16,7 +16,10 @@ const ProfileScreen = ({ navigation }) => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigation.replace("Splash");
+        navigation.reset({
+            index:0,
+            routes: [{name: 'Home'}],
+        });
       })
       .catch((error) => alert(error.message));
   };

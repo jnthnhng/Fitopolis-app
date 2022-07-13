@@ -38,7 +38,6 @@ function HomeStackScreen() {
   console.log(auth);
   return (
     <HomeStack.Navigator>
-<<<<<<< HEAD
       <HomeStack.Screen name="Splash" component={SplashScreen} />
       <HomeStack.Screen name="Login" component={LoginScreen} />
       <HomeStack.Screen name="Register" component={RegisterScreen} />
@@ -46,22 +45,6 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="Participate" component={ChallengeParticipationScreen} />
-=======
-      {auth.currentUser == null ? (
-        <>
-          <HomeStack.Screen name="Splash" component={SplashScreen} />
-          <HomeStack.Screen name="Login" component={LoginScreen} />
-          <HomeStack.Screen name="Register" component={RegisterScreen} />
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-        </>
-      ) : (
-        <>
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-          <HomeStack.Screen name="Search" component={SearchScreen} />
-        </>
-      )}
->>>>>>> 36233b5 (able to display image from challenge)
     </HomeStack.Navigator>
   );
 }

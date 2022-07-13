@@ -10,19 +10,21 @@ import {
 } from "react-native";
 
 // Database imports
-import 'firebase/compat/storage';
+import "firebase/compat/storage";
 import firebase from "firebase/compat/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { db, storage, firebaseConfig } from "../database/firebase.js";
+import { set, update, ref, getDatabase } from "firebase/database";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [photo, setPhoto] = useState("");
 
   const handleSignUp = () => {
@@ -30,10 +32,17 @@ const RegisterScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user.email);
       })
       .then(() => {
-        firebase.database().ref('users/' + auth.currentUser.uid + "/profile").set(auth.currentUser);
+        const db = getDatabase();
+        set(ref(db, "users/" + auth.currentUser.uid), {
+          email: email,
+          username: username,
+          name: name,
+        });
+      })
+      .then(() => {
+        navigation.navigate("Fitopolis");
       })
       .catch((error) => alert(error.message));
   };
@@ -45,12 +54,18 @@ const RegisterScreen = () => {
         Lets get fit! Enter your details to join the Fitopolis Community!
       </Text>
       <View style={styles.inputContainer}>
-        {/* <TextInput
+        <TextInput
+          placeholder="First and Last Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          style={styles.input}
+        />
+        <TextInput
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
           style={styles.input}
-        /> */}
+        />
         <TextInput
           placeholder="Email"
           value={email}

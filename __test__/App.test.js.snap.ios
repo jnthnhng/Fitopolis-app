@@ -125,288 +125,96 @@ exports[`<App /> should match snapshot 1`] = `
                     ]
                   }
                 >
-                  <View>
+                  <View
+                    onLayout={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "#e6e4df",
+                        "flex": 1,
+                        "justifyContent": "center",
+                      }
+                    }
+                  >
+                    <Text />
                     <Text
                       style={
                         Object {
                           "color": "black",
                           "fontSize": 50,
                           "fontWeight": "bold",
-                          "marginBottom": 20,
+                          "marginBottom": 30,
                         }
                       }
                     >
-                      Create Challenge
-                    </Text>
-                    <Text
-                      style={
-                        Object {
-                          "color": "black",
-                          "marginBottom": 20,
-                          "textAlign": "center",
-                        }
-                      }
-                    >
-                      Fill out the information below to create a challenge the Fitopolis Community can participate in!
+                      Fitopolis
                     </Text>
                     <View
-                      style={
-                        Object {
-                          "width": "80%",
-                        }
-                      }
-                    >
-                      <TextInput
-                        onChangeText={[Function]}
-                        placeholder="Challenge Name"
-                        style={
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 10,
-                            "marginTop": 5,
-                            "paddingHorizontal": 15,
-                            "paddingVertical": 10,
-                          }
-                        }
-                      />
-                      <View>
-                        <RNCPicker
-                          items={
-                            Array [
-                              Object {
-                                "label": "Pick a Challenge Type",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "",
-                              },
-                              Object {
-                                "label": "Weight Lifting",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Weight Lifting",
-                              },
-                              Object {
-                                "label": "Cycling",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Cycling",
-                              },
-                              Object {
-                                "label": "Aerobics",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Aerobics",
-                              },
-                              Object {
-                                "label": "Yoga",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Yoga",
-                              },
-                              Object {
-                                "label": "Cardio",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Cardio",
-                              },
-                              Object {
-                                "label": "Swimming",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Swimming",
-                              },
-                              Object {
-                                "label": "Running",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "Running",
-                              },
-                            ]
-                          }
-                          numberOfLines={1}
-                          onChange={[Function]}
-                          selectedIndex={0}
-                          style={
-                            Array [
-                              Object {
-                                "height": 216,
-                              },
-                              undefined,
-                            ]
-                          }
-                        />
-                      </View>
-                      <View>
-                        <RNCPicker
-                          items={
-                            Array [
-                              Object {
-                                "label": "Pick a Badge",
-                                "testID": undefined,
-                                "textColor": undefined,
-                                "value": "",
-                              },
-                            ]
-                          }
-                          numberOfLines={1}
-                          onChange={[Function]}
-                          selectedIndex={0}
-                          style={
-                            Array [
-                              Object {
-                                "height": 216,
-                              },
-                              undefined,
-                            ]
-                          }
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "width": "80%",
-                          }
-                        }
-                      >
-                        <TextInput
-                          onChangeText={[Function]}
-                          placeholder="Description"
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        />
-                        <TextInput
-                          onChangeText={[Function]}
-                          placeholder="Goal 1"
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        />
-                        <TextInput
-                          onChangeText={[Function]}
-                          placeholder="Goal 2"
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        />
-                        <TextInput
-                          onChangeText={[Function]}
-                          placeholder="Goal 3"
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        />
-                        <TextInput
-                          onChangeText={[Function]}
-                          placeholder="Tags"
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        />
-                      </View>
-                      <View
-                        style={
-                          Object {
-                            "width": "80%",
-                          }
-                        }
-                      >
-                        <Text
-                          style={
-                            Object {
-                              "backgroundColor": "white",
-                              "borderRadius": 10,
-                              "marginTop": 5,
-                              "paddingHorizontal": 15,
-                              "paddingVertical": 10,
-                            }
-                          }
-                        >
-                          Upload Challenge Image
-                        </Text>
-                        <input
-                          onChange={[Function]}
-                          type="file"
-                        />
-                        <button>
-                          Upload
-                        </button>
-                      </View>
-                    </View>
-                    <View
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
                       style={
                         Object {
                           "alignItems": "center",
+                          "backgroundColor": "#3b3a39",
+                          "borderRadius": 10,
                           "justifyContent": "center",
-                          "marginTop": 40,
-                          "width": "50%",
+                          "marginTop": 10,
+                          "opacity": 1,
+                          "paddingBottom": 10,
+                          "paddingTop": 10,
+                          "width": "60%",
                         }
                       }
                     >
-                      <View
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
+                      <Text
                         style={
                           Object {
-                            "alignItems": "center",
-                            "backgroundColor": "#3b3a39",
-                            "borderRadius": 10,
-                            "opacity": 1,
-                            "padding": 10,
-                            "width": "100%",
+                            "color": "white",
+                            "fontSize": 20,
                           }
                         }
                       >
-                        <Text
-                          style={
-                            Object {
-                              "color": "white",
-                              "fontSize": 18,
-                              "fontWeight": "600",
-                            }
+                        Login
+                      </Text>
+                    </View>
+                    <View
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "marginTop": 10,
+                          "opacity": 1,
+                          "paddingBottom": 10,
+                          "paddingTop": 10,
+                        }
+                      }
+                    >
+                      <Text
+                        style={
+                          Object {
+                            "color": "black",
+                            "fontSize": 15,
                           }
-                        >
-                          Create Challenge
-                        </Text>
-                      </View>
+                        }
+                      >
+                        Don't have an account? Sign Up
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -464,7 +272,7 @@ exports[`<App /> should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Home, tab, 1 of 6"
+        accessibilityLabel="Home, tab, 1 of 5"
         accessibilityRole="button"
         accessibilityState={
           Object {
@@ -578,7 +386,7 @@ exports[`<App /> should match snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Profile, tab, 2 of 6"
+        accessibilityLabel="Profile, tab, 2 of 5"
         accessibilityRole="button"
         accessibilityState={
           Object {
@@ -688,7 +496,7 @@ exports[`<App /> should match snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Favorites, tab, 3 of 6"
+        accessibilityLabel="Favorites, tab, 3 of 5"
         accessibilityRole="button"
         accessibilityState={
           Object {
@@ -798,7 +606,7 @@ exports[`<App /> should match snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Stats, tab, 4 of 6"
+        accessibilityLabel="Stats, tab, 4 of 5"
         accessibilityRole="button"
         accessibilityState={
           Object {
@@ -908,7 +716,7 @@ exports[`<App /> should match snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Badges, tab, 5 of 6"
+        accessibilityLabel="Badges, tab, 5 of 5"
         accessibilityRole="button"
         accessibilityState={
           Object {
@@ -1015,116 +823,6 @@ exports[`<App /> should match snapshot 1`] = `
           }
         >
           Badges
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Search, tab, 6 of 6"
-        accessibilityRole="button"
-        accessibilityState={
-          Object {
-            "selected": false,
-          }
-        }
-        accessibilityStates={Array []}
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "flex": 1,
-            },
-            Object {
-              "backgroundColor": "transparent",
-            },
-            Object {
-              "flexDirection": "column",
-              "justifyContent": "flex-end",
-            },
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "flex": 1,
-              },
-              undefined,
-            ]
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "alignItems": "center",
-                  "alignSelf": "center",
-                  "height": "100%",
-                  "justifyContent": "center",
-                  "minWidth": 25,
-                  "position": "absolute",
-                  "width": "100%",
-                },
-                Object {
-                  "opacity": 0,
-                },
-              ]
-            }
-          >
-            <Text />
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "alignItems": "center",
-                  "alignSelf": "center",
-                  "height": "100%",
-                  "justifyContent": "center",
-                  "minWidth": 25,
-                  "position": "absolute",
-                  "width": "100%",
-                },
-                Object {
-                  "opacity": 1,
-                },
-              ]
-            }
-          >
-            <Text />
-          </View>
-        </View>
-        <Text
-          numberOfLines={1}
-          style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-                "textAlign": "center",
-              },
-              Object {
-                "color": "gray",
-              },
-              Object {
-                "fontSize": 10,
-              },
-              undefined,
-            ]
-          }
-        >
-          Search
         </Text>
       </View>
     </View>

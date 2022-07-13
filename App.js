@@ -4,7 +4,10 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { getAuth } from "firebase/auth";
 
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -38,13 +41,24 @@ function HomeStackScreen() {
   console.log(auth);
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Splash" component={SplashScreen} />
-      <HomeStack.Screen name="Login" component={LoginScreen} />
-      <HomeStack.Screen name="Register" component={RegisterScreen} />
-      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-      <HomeStack.Screen name="Search" component={SearchScreen} />
-      <HomeStack.Screen name="Participate" component={ChallengeParticipationScreen} />
+      {auth.currentUser == null ? (
+        <>
+          <HomeStack.Screen name="Splash" component={SplashScreen} />
+          <HomeStack.Screen name="Login" component={LoginScreen} />
+          <HomeStack.Screen name="Register" component={RegisterScreen} />
+          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+        </>
+      ) : (
+        <>
+          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+          <HomeStack.Screen name="Search" component={SearchScreen} />
+          <HomeStack.Screen
+            name="Participate"
+            component={ChallengeParticipationScreen}
+          />
+        </>
+      )}
     </HomeStack.Navigator>
   );
 }
@@ -123,7 +137,9 @@ export default function App() {
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
-            options={{ headerShown: false }}
+            options={{
+              headerShown: false,
+            }}
           />
           <Tab.Screen
             name="Profile"

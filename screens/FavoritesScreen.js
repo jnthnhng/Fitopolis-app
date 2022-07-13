@@ -8,30 +8,56 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const FavoritesScreen = ({ navigation }) => {
+  const auth = getAuth();
   function goToCreate() {
     navigation.navigate("Create");
   }
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Ionicons name="star" size={50} color="gold" />
-          <Text style={styles.favorites}>Favorites</Text>
-        </View>
-        <View style={styles.challengeInfo}>
-          <View style={styles.challengeContainer}>
-            <Text style={styles.stat}>Challenge 1</Text>
-          </View>
-          <View style={styles.challengeContainer}>
-            <Text style={styles.stat}>Challenge 2</Text>
+      {auth.currentUser == null ? (
+        <View style={styles.container1}>
+          <Text>Please login to access data</Text>
+          <View style={styles.buttonSOContainer}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
+              <Text style={styles.buttonSOText}>Login</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
+      ) : (
+        <>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Ionicons name="star" size={50} color="gold" />
+              <Text style={styles.favorites}>Favorites</Text>
+            </View>
+            <View style={styles.challengeInfo}>
+              <View style={styles.challengeContainer}>
+                <Text style={styles.stat}>Challenge 1</Text>
+              </View>
+              <View style={styles.challengeContainer}>
+                <Text style={styles.stat}>Challenge 2</Text>
+              </View>
+            </View>
+          </View>
+        </>
+      )}
     </>
   );
 };
@@ -43,6 +69,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#e6e4df",
     alignItems: "center",
+  },
+  container1: {
+    flex: 1,
+    backgroundColor: "#e6e4df",
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     alignItems: "center",
@@ -102,5 +134,22 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 25,
     paddingBottom: 15,
+  },
+  buttonSOContainer: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 40,
+  },
+  buttonSO: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonSOText: {
+    color: "black",
+    fontWeight: "600",
+    fontSize: 18,
   },
 });

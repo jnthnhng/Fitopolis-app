@@ -17,57 +17,70 @@ const ProfileScreen = ({ navigation }) => {
     signOut(auth)
       .then(() => {
         navigation.reset({
-            index:0,
-            routes: [{name: 'Home'}],
+          index: 0,
+          routes: [{ name: "Home" }],
         });
       })
       .catch((error) => alert(error.message));
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Ionicons name="person-circle" size={60} />
-      <Text style={styles.logo}>Edit Profile</Text>
-      <Text style={styles.instructions}>
-        Update information below to edit your profile
-      </Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Username"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Email"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-          secureTextEntry
-        />
-        <TextInput
-          placeholder="Photo Upload (placeholder)"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
-          <Text style={styles.buttonText}>Edit Profile</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonSOContainer}>
-        <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
-          <Text style={styles.buttonSOText}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
+      {auth.currentUser == null ? (
+        <>
+          <Text>Please login to access data</Text>
+          <View style={styles.buttonSOContainer}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
+              <Text style={styles.buttonSOText}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <>
+          <Ionicons name="person-circle" size={60} />
+          <Text style={styles.logo}>Edit Profile</Text>
+          <Text style={styles.instructions}>
+            Update information below to edit your profile
+          </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Username"
+              // value={}
+              // onChangeText={text => }
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Email"
+              // value={}
+              // onChangeText={text => }
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Password"
+              // value={}
+              // onChangeText={text => }
+              style={styles.input}
+              secureTextEntry
+            />
+            <TextInput
+              placeholder="Photo Upload (placeholder)"
+              // value={}
+              // onChangeText={text => }
+              style={styles.input}
+              secureTextEntry
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => {}} style={styles.button}>
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonSOContainer}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
+              <Text style={styles.buttonSOText}>Sign Out</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </KeyboardAvoidingView>
   );
 };

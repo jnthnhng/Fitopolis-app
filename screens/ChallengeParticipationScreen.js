@@ -16,9 +16,12 @@ import {
   SectionList,
   FlatList,
   Dimensions,
+  Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import * as ImagePicker from 'expo-image-picker';
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = 1;
@@ -32,7 +35,29 @@ const ChallengeParticipationScreen = ({ navigation }) => {
       </View>
     );
   };
+  //*************** ImagePicker */
 
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+
+
+  //*************************/
   const LeftContent = (props) => (
     <Avatar.Icon {...props} icon="weight-lifter" />
   );
@@ -57,6 +82,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
         <Card.Actions style={styles.cardActionText}>
           <Button>Participate</Button>
           <Button>Complete</Button>
+          <Button onPress={pickImage}>Post </Button>
         </Card.Actions>
       </Card>
     );
@@ -108,7 +134,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
     );
   };
 
-  const challengeArry = new Array(11).fill(<ChallengeCard />);
+  const challengeArry = new Array(5).fill(<ChallengeCard />);
   const [challenges, setChallenges] = useState(challengeArry);
 
   function renderChallenges({ challenge }) {
@@ -126,6 +152,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
           key={1}
         />
       </View>
+      
     </SafeAreaView>
 
     // <ScrollView>
@@ -144,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    flexDirection: "row",
+    flexDirection: 'row',
     alignItems: 'center',
   },
   header: {
@@ -159,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 50,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   inputContainer: {
     width: screenWidth,
@@ -172,6 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6486B6',
     borderWidth: 3,
     padding: 5,
+    borderRadius: 10,
     marginBottom: 15,
     height: tileSize,
     width: tileSize,

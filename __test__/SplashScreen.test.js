@@ -64,23 +64,4 @@ describe('Login Screen Navigation', () => {
 
   });
 
-  test('clicking on Login takes you to the Login screen', async () => {
-
-    // Mocking the onPress button, and jest.fn() will allow us to run
-    // assertions against this 
-    const onPress = jest.fn();
-
-    render(<SplashScreen />);
-    const toClick = await screen.findByText('Login');
-
-    fireEvent(toClick, 'press');
-    // const LoginPrompt = await screen.findByText('Please enter your email and password to login');
-    // const emailTextPlaceholder = await screen.findByPlaceholderText('Email');
-    // const passwordTextPlaceholder = await screen.findByPlaceholderText('Password');
-
-    expect(onPress).toBeCalled(1);
-    // expect(LoginPrompt).toBeTruthy();
-    // expect(emailTextPlaceholder).toBeTruthy();
-    // expect(passwordTextPlaceholder).toBeTruthy();
-  });
 });

@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     flexDirection: 'row',
+    borderRadius: 10,
     // flexWrap: 'wrap',
   },
   text: {

@@ -13,7 +13,9 @@ import {
 // storage imports for images
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 // db imports
-import { db } from '../database/firebase.js';
+import 'firebase/compat/storage';
+import firebase from "firebase/compat/app";
+import { db, firebaseConfig } from '../database/firebase.js';
 import {
     ref,
     get,
@@ -24,6 +26,9 @@ class ChallengeScreen extends Component {
 
   constructor(props) {
     super(props);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     this.state = {
       name: "",
       description: "",
@@ -45,7 +50,7 @@ class ChallengeScreen extends Component {
   getChallenge = async () => {
     
     // get challenge values from db
-    const snapshot = await get(ref(db, '/challenge/1'));
+    const snapshot = await get(ref(db, '/challenge/-N6pPhgtHBlTO1Wj-3ga'));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
     this.setState({type : (snapshot.val().challengeType)});
@@ -57,10 +62,11 @@ class ChallengeScreen extends Component {
 
     // get image from storage using image path
     var storage = getStorage();
-    const reference = sRef(storage, snapshot.val().challengeImage);
+    const reference = sRef(storage, snapshot.val().image);
     await getDownloadURL(reference).then((x) => {
       this.setState({image: x});
-    })
+      console.log(reference);
+    });
 
     // get badge name using FK stored in challenge
     const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));

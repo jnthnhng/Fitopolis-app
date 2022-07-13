@@ -3,21 +3,33 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
+  Image,
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from 'expo-image-picker';
 
 // database imports
-import { db, storage} from "../database/firebase.js";
+import 'firebase/compat/storage';
+import firebase from "firebase/compat/app";
+import { db, storage, firebaseConfig} from "../database/firebase.js";
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
+import { ActivityIndicator } from "react-native-paper";
 
 
 class CreateChallengeScreen extends Component {
 
+  
+
   constructor(props) {
     super(props);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     this.state = {
       badges: [],
       image: "",
@@ -29,6 +41,8 @@ class CreateChallengeScreen extends Component {
       goal2: "",
       goal3: "",
       tags: "",
+      uploading: null,
+      imageFileName: "",
 
     }
   }
@@ -51,20 +65,63 @@ class CreateChallengeScreen extends Component {
     
   }
 
-  /*
-  upload() {
-    if(this.state.image == null)
-      return;
-    storage.ref('/challengeImages/' + 'test').put(this.state.image).on("state_changed", alert("success"), alert);
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4,3],
+        quality: 1,
+    });
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri});
+    }
+  };
+
+  uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function() {
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', this.state.image, true);
+      xhr.send(null);
+    });
+
+    this.setState({imageFileName: new Date().toISOString()})
+    const ref = firebase.storage().ref().child("/challengeImages/" + this.state.imageFileName);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, ()=>{
+      this.setState({ uploading: true});
+    }, 
+    (error) => {
+      this.setState({ uploading: false})
+      console.log(error);
+      return
+    },
+    () => {
+      snapshot.snapshot.ref.getDownloadURL().then((url) => {
+        this.setState({ uploading: false});
+        console.log("download url: ", url);
+        return url;
+      })
+    });
+
   }
-  */
+  
 
   render() {
 
-    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags) {
+    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
       const reference = ref(db, 'challenge/');
-  
+      
+    
       push(reference, {
           badge: badge,
           challengeName: name,
@@ -73,7 +130,8 @@ class CreateChallengeScreen extends Component {
           goal1: goal1,
           goal2: goal2,
           goal3: goal3,
-          tags: tags
+          tags: tags,
+          image: ("/challengeImages/" + imageFileName),
 
       });
   }
@@ -139,12 +197,13 @@ class CreateChallengeScreen extends Component {
           </View>
           <View style={styles.inputContainer}>
               <Text style={styles.input}>Upload Challenge Image</Text>
-              <input type="file" onChange={(e)=>this.setState({image : (e.target.files[0])})}/>
-              <button onClick={console.log(this.state.badge)}>Upload</button>
+              <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+              {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 100, height: 100 }} />}
+              {!this.state.uploading?<Button title="upload" onPress={this.uploadImage} />:<ActivityIndicator size="small" color="#000"/>}
           </View>     
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags)}} style={styles.button}>
+          <TouchableOpacity onPress={() => {addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button}>
             <Text style={styles.buttonText}>Create Challenge</Text>
           </TouchableOpacity>
         </View>

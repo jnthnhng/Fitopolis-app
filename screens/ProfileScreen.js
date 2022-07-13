@@ -13,12 +13,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 const ProfileScreen = ({ navigation }) => {
   const auth = getAuth();
+  console.log("Profile ", auth.currentUser);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: "Home" }],
+          routes: [{ name: "Splash" }],
         });
       })
       .catch((error) => alert(error.message));

@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
@@ -36,29 +37,16 @@ import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen
 
 const HomeStack = createNativeStackNavigator();
 
-function HomeStackScreen() {
-  const auth = getAuth();
-  console.log(auth);
+function HomeStackScreen({ navigation, route }) {
   return (
     <HomeStack.Navigator>
-      {auth.currentUser == null ? (
-        <>
-          <HomeStack.Screen name="Splash" component={SplashScreen} />
-          <HomeStack.Screen name="Login" component={LoginScreen} />
-          <HomeStack.Screen name="Register" component={RegisterScreen} />
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-        </>
-      ) : (
-        <>
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-          <HomeStack.Screen name="Search" component={SearchScreen} />
-          <HomeStack.Screen
-            name="Participate"
-            component={ChallengeParticipationScreen}
-          />
-        </>
-      )}
+      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+      <HomeStack.Screen name="Search" component={SearchScreen} />
+      <HomeStack.Screen
+        name="Participate"
+        component={ChallengeParticipationScreen}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -69,7 +57,6 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="Splash" component={SplashScreen} />
     </ProfileStack.Navigator>
   );
 }
@@ -106,64 +93,98 @@ function BadgesStackScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+function HomeTabs() {
   return (
-    <>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{ headerShown: false }}
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person-circle" : "person-circle-outline";
-              } else if (route.name === "Favorites") {
-                iconName = focused ? "star" : "star-outline";
-              } else if (route.name === "Stats") {
-                iconName = focused ? "stats-chart" : "stats-chart-outline";
-              } else if (route.name === "Badges") {
-                iconName = focused ? "trophy" : "trophy-outline";
-              }
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "person-circle" : "person-circle-outline";
+          } else if (route.name === "Favorites") {
+            iconName = focused ? "star" : "star-outline";
+          } else if (route.name === "Stats") {
+            iconName = focused ? "stats-chart" : "stats-chart-outline";
+          } else if (route.name === "Badges") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          }
 
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: "blue",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeStackScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Favorites"
-            component={FavoritesStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Stats"
-            component={StatsStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Badges"
-            component={BadgesStackScreen}
-            options={{ headerShown: false }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </>
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "blue",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeStackScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={StatsStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Badges"
+        component={BadgesStackScreen}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
+  );
+}
+const Stack = createNativeStackNavigator();
+export default function App() {
+  const auth = getAuth();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {auth.currentUser == null ? (
+          <>
+            <Stack.Group initialRouteName={"Splash"}>
+              <Stack.Screen
+                name="Splash"
+                component={SplashScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen
+                name="Fitopolis"
+                component={HomeTabs}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
+          </>
+        ) : (
+          <>
+            <Stack.Group>
+              <Stack.Screen
+                name="Fitopolis"
+                component={HomeTabs}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

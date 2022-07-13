@@ -1,4 +1,4 @@
-// import { getAuth } from "@firebase/auth";
+// React Imports
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -8,22 +8,62 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import * as ImagePicker from "expo-image-picker";
 
-const RegisterScreen = () => {
+// Database imports
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import { set, update, ref, getDatabase } from "firebase/database";
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
 
+  // Handle Sign Up and Write User to DB
   const handleSignUp = () => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user.email);
+      })
+      .then(() => {
+        const db = getDatabase();
+        set(ref(db, "users/" + auth.currentUser.uid), {
+          email: email,
+          username: username,
+          name: name,
+        });
+      })
+      .then(() => {
+        navigation.navigate("Fitopolis");
       })
       .catch((error) => alert(error.message));
+  };
+
+  // Handle Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   return (
@@ -33,12 +73,18 @@ const RegisterScreen = () => {
         Lets get fit! Enter your details to join the Fitopolis Community!
       </Text>
       <View style={styles.inputContainer}>
-        {/* <TextInput
+        <TextInput
+          placeholder="First and Last Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          style={styles.input}
+        />
+        <TextInput
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
           style={styles.input}
-        /> */}
+        />
         <TextInput
           placeholder="Email"
           value={email}
@@ -52,13 +98,9 @@ const RegisterScreen = () => {
           style={styles.input}
           secureTextEntry
         />
-        {/* <TextInput
-          placeholder="Photo Upload (placeholder)"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-          secureTextEntry
-        /> */}
+        <TouchableOpacity onPress={pickImage} style={styles.imageButton}>
+          <Text style={styles.imageButtonText}>Upload Photo</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
@@ -111,6 +153,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     alignItems: "center",
+  },
+  imageButton: {
+    backgroundColor: "#b3b2b1",
+    width: "100%",
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    alignItems: "left",
+  },
+  imageButtonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
   },
   buttonText: {
     color: "white",

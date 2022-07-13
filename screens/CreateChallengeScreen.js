@@ -19,12 +19,12 @@ import { db, storage, firebaseConfig} from "../database/firebase.js";
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
 import { ActivityIndicator } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 class CreateChallengeScreen extends Component {
 
   
-
   constructor(props) {
     super(props);
     if (!firebase.apps.length) {
@@ -111,7 +111,6 @@ class CreateChallengeScreen extends Component {
         return url;
       })
     });
-
   }
   
 
@@ -120,7 +119,6 @@ class CreateChallengeScreen extends Component {
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
       const reference = ref(db, 'challenge/');
-      
     
       push(reference, {
           badge: badge,
@@ -137,8 +135,11 @@ class CreateChallengeScreen extends Component {
   }
 
     return (
-      <View style={StyleSheet.container}>
+      <KeyboardAvoidingView>
+      <ScrollView>
+      <View style={styles.container}>
         <Text style={styles.logo}>Create Challenge</Text>
+        <View style={styles.inputContainer}>
         <Text style={styles.instructions}>
           Fill out the information below to create a challenge the Fitopolis
           Community can participate in!
@@ -149,7 +150,7 @@ class CreateChallengeScreen extends Component {
             style={styles.input} 
             onChangeText={value => this.setState({ name: value})}
           />
-          <Picker 
+          <Picker
             onValueChange={(value) => {
               this.setState({ type: value});
             }}
@@ -163,7 +164,7 @@ class CreateChallengeScreen extends Component {
             <Picker.Item label="Swimming" value="Swimming" />
             <Picker.Item label="Running" value="Running" />
           </Picker>
-          <Picker
+          <Picker 
             onValueChange={(value) => {
               this.setState({ badge: value});
             }}
@@ -173,7 +174,7 @@ class CreateChallengeScreen extends Component {
               <Picker.Item label={badge.data.badgeName} value={badge.key} />  
             )}
           </Picker>
-          <View style={styles.inputContainer}>
+          
             <TextInput placeholder="Description" 
             style={styles.input} 
             onChangeText={value => this.setState({ description: value})}
@@ -208,6 +209,8 @@ class CreateChallengeScreen extends Component {
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 

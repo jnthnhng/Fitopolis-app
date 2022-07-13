@@ -21,6 +21,7 @@ import {
     get,
     set
 } from 'firebase/database';
+import { ScrollView } from "react-native-gesture-handler";
 
 class ChallengeScreen extends Component {
 
@@ -80,40 +81,65 @@ class ChallengeScreen extends Component {
 
   render() {
     return (
-      <View style={StyleSheet.container}>
-      <View style={styles.inputContainer}>
-        <Text 
-          style={styles.input}
-        >{this.challenge().name}</Text>
-        <Image style={{height: 200, width: 200}} source={{uri: this.challenge().image}} />
-        <Text 
-          style={styles.input}
-        >{this.challenge().description}</Text>
-        <Text
-          style={styles.input}
-        >{this.challenge().type}</Text>
-        <Text 
-          style={styles.input}
-        >{this.challenge().goal1}</Text>
-        <Text
-          style={styles.input}
-        >{this.challenge().goal2}</Text>
-        <Text
-          style={styles.input}
-        >{this.challenge().goal3}</Text>
-        <Text
-          style={styles.input}
-        >Badge: {this.challenge().badgeName}</Text>
-        <Text 
-          style={styles.input}
-        >{this.challenge().tags}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
-          <Text style={styles.buttonText}>Edit Challenge</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <ScrollView>
+        <View style={styles.container}>
+          <Text 
+            style={styles.logo}
+            >{this.challenge().name}
+          </Text>
+          <View style={styles.container}>
+            <Image style={styles.image} source={{uri: this.challenge().image}} />
+          </View>
+          <View style={styles.displayContainer}>
+            <Text 
+              style={styles.text}
+              >{this.challenge().description}
+              </Text>
+          </View>
+          <View style={styles.displayContainer}>
+            <Text
+              style={styles.text}
+              >{this.challenge().type}
+            </Text>
+          </View>
+          <View style={styles.displayContainer}>
+            <Text style={styles.text}>
+              Goals:
+            </Text>
+            <Text 
+              style={styles.text}
+              >{this.challenge().goal1}
+            </Text>
+            <Text
+              style={styles.text}
+              >{this.challenge().goal2}
+              </Text>
+            <Text
+              style={styles.text}
+              >{this.challenge().goal3}
+              </Text>
+          </View>
+          <View style={styles.displayContainer}>
+            <Text
+              style={styles.text}
+              >Badge: {this.challenge().badgeName}
+              </Text>
+          </View>
+          <View style={styles.displayContainer}>
+            <Text 
+              style={styles.text}
+              >{this.challenge().tags}
+              </Text>
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => {}} style={styles.button}>
+            <Text style={styles.buttonText}>Edit Challenge</Text>
+          </TouchableOpacity>
+        </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     )
   }
 
@@ -128,6 +154,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  image: {
+    width: 300,
+    height: undefined,
+    aspectRatio: 1.5,
+    justifyContent: "center",
+  },
+  title: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 25,
+    justifyContent: "center",
+    marginTop: 10,
+    paddingBottom: 10,
+  },
   logo: {
     color: "black",
     fontWeight: "bold",
@@ -139,21 +179,35 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
-  inputContainer: {
+  displayContainer: {
     width: "80%",
-  },
-  input: {
     backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    justifyContent: "center",
+  },
+  text: {
+    textAlign: "center",
   },
   buttonContainer: {
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+  },
+  buttonSOContainer: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 40,
+  },
+  buttonSO: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#3b3a39",
@@ -164,6 +218,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontWeight: "600",
+    fontSize: 18,
+  },
+  buttonSOText: {
+    color: "black",
     fontWeight: "600",
     fontSize: 18,
   },

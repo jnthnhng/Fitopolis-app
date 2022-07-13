@@ -33,12 +33,27 @@ import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen
 
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
+const tabHiddenRoutes = ["Splash", "Login", "Register"];
 
 const HomeStack = createNativeStackNavigator();
 
-function HomeStackScreen() {
+function HomeStackScreen({ navigation, route }) {
   const auth = getAuth();
   console.log(auth);
+  const routeName = getFocusedRouteNameFromRoute(route);
+  if (!route.params) {
+    const signedOutRoute = route.params;
+    console.log(signedOutRoute);
+  }
+
+  console.log("routeName: " + routeName);
+  console.log(route.params);
+  console.log(route);
+  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+    navigation.setOptions({ tabBarStyle: { display: "none" } });
+  } else {
+    navigation.setOptions({ tabBarStyle: { display: "flex" } });
+  }
   return (
     <HomeStack.Navigator>
       {auth.currentUser == null ? (
@@ -69,7 +84,6 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="Splash" component={SplashScreen} />
     </ProfileStack.Navigator>
   );
 }

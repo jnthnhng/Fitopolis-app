@@ -8,7 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+
+// Database imports
+import 'firebase/compat/storage';
+import firebase from "firebase/compat/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +31,9 @@ const RegisterScreen = () => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log(user.email);
+      })
+      .then(() => {
+        firebase.database().ref('users/' + auth.currentUser.uid + "/profile").set(auth.currentUser);
       })
       .catch((error) => alert(error.message));
   };

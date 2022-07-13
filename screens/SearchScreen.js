@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // import AppLoading from 'expo-app-loading';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
+import SearchChips from '../components/FitnessChips'
 
 const SearchScreen = ({ navigation }) => {
   function goToChallengeParticipationScreen() {
@@ -24,11 +25,6 @@ const SearchScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
   });
-
-  // If there is an error, use the splash screen while loading
-  // if (!fontsLoaded) {
-  //   return <AppLoading />;
-  // }
 
   // **************************************
 
@@ -72,35 +68,6 @@ const SearchScreen = ({ navigation }) => {
     );
   };
 
-  // **************************************
-
-  const SearchChips = () => {
-    return (
-      <View style={styles.chipContainer}>
-        <View style={styles.chip}>
-          <Chip icon="bike" mode="outlined" style={{backgroundColor: '#FF968A'}}>
-            Biking
-          </Chip>
-        </View>
-        <View style={styles.chip}>
-          <Chip icon="swim" mode="outlined" style={{backgroundColor: '#97C1a9'}}>
-            Swimming
-          </Chip>
-        </View>
-        <View style={styles.chip} >
-          <Chip icon="run" mode="outlined" style={{backgroundColor: '#ffffb5'}}>
-            Running
-          </Chip>
-        </View>
-        <View style={styles.chip}>
-          <Chip icon="dumbbell" mode="outlined" style={{backgroundColor: '#ABDEE6'}}>
-            Weightlifting
-          </Chip>
-        </View>
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -108,8 +75,8 @@ const SearchScreen = ({ navigation }) => {
           <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
         </View>
         <SearchHeader />
-        <SearchChips />
         <SearchBarBasic />
+        <SearchChips/>
         <SectionListBasics />
       </ScrollView>
     </SafeAreaView>
@@ -174,16 +141,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-  },
-  chipContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-  chip: {
-    // width: 120,
-    marginLeft: 20,
-    marginTop: 20,
-    marginBottom: 10,
   },
 });
 

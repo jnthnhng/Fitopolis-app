@@ -93,23 +93,21 @@ class CreateChallengeScreen extends Component {
     });
 
     this.setState({imageFileName: new Date().toISOString()})
-    const ref = firebase.storage().ref().child("/challengeImages/" + this.state.imageFileName)
-    const snapshot = ref.put(blob)
+    const ref = firebase.storage().ref().child("/challengeImages/" + this.state.imageFileName);
+    const snapshot = ref.put(blob);
 
     snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, ()=>{
-      this.setState({ uploading: true})
+      this.setState({ uploading: true});
     }, 
     (error) => {
       this.setState({ uploading: false})
-      console.log(error)
-      blob.close()
+      console.log(error);
       return
     },
     () => {
       snapshot.snapshot.ref.getDownloadURL().then((url) => {
-        this.setState({ uploading: false})
-        console.log("download url: ", url)
-        blob.close()
+        this.setState({ uploading: false});
+        console.log("download url: ", url);
         return url;
       })
     });

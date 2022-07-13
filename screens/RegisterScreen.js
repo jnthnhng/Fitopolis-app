@@ -1,4 +1,4 @@
-// import { getAuth } from "@firebase/auth";
+// React Imports
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 // Database imports
 import "firebase/compat/storage";
@@ -25,8 +26,9 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [image, setImage] = useState("");
 
+  // Handle Sign Up and Write User to DB
   const handleSignUp = () => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
@@ -45,6 +47,23 @@ const RegisterScreen = ({ navigation }) => {
         navigation.navigate("Fitopolis");
       })
       .catch((error) => alert(error.message));
+  };
+
+  // Handle Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   return (
@@ -79,13 +98,9 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           secureTextEntry
         />
-        {/* <TextInput
-          placeholder="Photo Upload (placeholder)"
-          // value={}
-          // onChangeText={text => }
-          style={styles.input}
-          secureTextEntry
-        /> */}
+        <TouchableOpacity onPress={pickImage} style={styles.imageButton}>
+          <Text style={styles.imageButtonText}>Upload Photo</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
@@ -138,6 +153,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     alignItems: "center",
+  },
+  imageButton: {
+    backgroundColor: "#b3b2b1",
+    width: "100%",
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    alignItems: "left",
+  },
+  imageButtonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
   },
   buttonText: {
     color: "white",

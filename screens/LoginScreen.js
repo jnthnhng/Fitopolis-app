@@ -14,6 +14,11 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+} from '@react-navigation/native';
+
 // Source: adapted from 'React Native with Firebase Intro'
 
 const LoginScreen = ({ navigation }) => {
@@ -32,6 +37,8 @@ const LoginScreen = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
+  
+
   // Created test user username: Test@fitopolis.com password: Testpassword
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -43,6 +50,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Text style={styles.logo}>Fitopolis</Text>
       <Text style={styles.instructions}>

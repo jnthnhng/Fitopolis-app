@@ -1,29 +1,29 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { getAuth } from "firebase/auth";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { getAuth } from 'firebase/auth';
 
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import SplashScreen from "./screens/SplashScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
-import ChallengeScreen from "./screens/ChallengeScreen";
-import CreateChallengeScreen from "./screens/CreateChallengeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import BadgesScreen from "./screens/BadgesScreen";
-import StatsScreen from "./screens/StatsScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen";
+import SplashScreen from './screens/SplashScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import FitopolisHomeScreen from './screens/FitopolisHomeScreen';
+import ChallengeScreen from './screens/ChallengeScreen';
+import CreateChallengeScreen from './screens/CreateChallengeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import BadgesScreen from './screens/BadgesScreen';
+import StatsScreen from './screens/StatsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import SearchScreen from './screens/SearchScreen';
+import ChallengeParticipationScreen from './screens/ChallengeParticipationScreen';
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -34,34 +34,59 @@ import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
 
+const tabHiddenRoutes = ['Splash', 'Login', 'Register'];
+
 const HomeStack = createNativeStackNavigator();
 
-function HomeStackScreen() {
+const HomeStackScreen = ({ navigation, route }) => {
   const auth = getAuth();
   console.log(auth);
+
+  const routeName = getFocusedRouteNameFromRoute(route);
+  if (!route.params) {
+    const signedOutRoute = route.params;
+    console.log(signedOutRoute);
+  }
+
+  console.log('routeName: ' + routeName);
+  console.log(route.params);
+  console.log(route);
+  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+    navigation.setOptions({ tabBarStyle: { display: 'none' } });
+  } else {
+    navigation.setOptions({ tabBarStyle: { display: 'flex' } });
+  }
+
   return (
     <HomeStack.Navigator>
-      {auth.currentUser == null ? (
-        <>
-          <HomeStack.Screen name="Splash" component={SplashScreen} />
-          <HomeStack.Screen name="Login" component={LoginScreen} />
-          <HomeStack.Screen name="Register" component={RegisterScreen} />
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-        </>
-      ) : (
-        <>
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-          <HomeStack.Screen name="Search" component={SearchScreen} />
-          <HomeStack.Screen
-            name="Participate"
-            component={ChallengeParticipationScreen}
-          />
-        </>
-      )}
+      <>
+        <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+        <HomeStack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+        <HomeStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <HomeStack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <HomeStack.Screen name="Profile" component={ProfileScreen} />
+        <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+        <HomeStack.Screen name="Search" component={SearchScreen} />
+        <HomeStack.Screen
+          name="Participate"
+          component={ChallengeParticipationScreen}
+        />
+      </>
     </HomeStack.Navigator>
   );
-}
+};
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -69,7 +94,7 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="Splash" component={SplashScreen} />
+      {/* <ProfileStack.Screen name="Splash" component={SplashScreen} /> */}
     </ProfileStack.Navigator>
   );
 }
@@ -115,23 +140,23 @@ export default function App() {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
-              if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person-circle" : "person-circle-outline";
-              } else if (route.name === "Favorites") {
-                iconName = focused ? "star" : "star-outline";
-              } else if (route.name === "Stats") {
-                iconName = focused ? "stats-chart" : "stats-chart-outline";
-              } else if (route.name === "Badges") {
-                iconName = focused ? "trophy" : "trophy-outline";
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'Profile') {
+                iconName = focused ? 'person-circle' : 'person-circle-outline';
+              } else if (route.name === 'Favorites') {
+                iconName = focused ? 'star' : 'star-outline';
+              } else if (route.name === 'Stats') {
+                iconName = focused ? 'stats-chart' : 'stats-chart-outline';
+              } else if (route.name === 'Badges') {
+                iconName = focused ? 'trophy' : 'trophy-outline';
               }
 
               // You can return any component that you like here!
               return <Ionicons name={iconName} size={size} color={color} />;
             },
-            tabBarActiveTintColor: "blue",
-            tabBarInactiveTintColor: "gray",
+            tabBarActiveTintColor: 'blue',
+            tabBarInactiveTintColor: 'gray',
           })}
         >
           <Tab.Screen
@@ -139,6 +164,8 @@ export default function App() {
             component={HomeStackScreen}
             options={{
               headerShown: false,
+              headerLeft: null,
+              gestureEnabled: false,
             }}
           />
           <Tab.Screen
@@ -174,13 +201,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#e6e4df',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    color: "black",
-    fontWeight: "bold",
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 50,
     marginBottom: 30,
   },
@@ -188,14 +215,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 10,
-    backgroundColor: "#3b3a39",
+    backgroundColor: '#3b3a39',
     borderRadius: 10,
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
 });

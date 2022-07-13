@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
@@ -33,47 +34,19 @@ import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen
 
 // These stack navigators will be pointed to by the Tab navigator (below in the App function)
 // You must include each screen that the current screen will navigate to in the stack navigatorsconst HomeStack = createNativeStackNavigator();
-const tabHiddenRoutes = ["Splash", "Login", "Register"];
 
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen({ navigation, route }) {
-  const auth = getAuth();
-  console.log(auth);
-  const routeName = getFocusedRouteNameFromRoute(route);
-  if (!route.params) {
-    const signedOutRoute = route.params;
-    console.log(signedOutRoute);
-  }
-
-  console.log("routeName: " + routeName);
-  console.log(route.params);
-  console.log(route);
-  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
-    navigation.setOptions({ tabBarStyle: { display: "none" } });
-  } else {
-    navigation.setOptions({ tabBarStyle: { display: "flex" } });
-  }
   return (
     <HomeStack.Navigator>
-      {auth.currentUser == null ? (
-        <>
-          <HomeStack.Screen name="Splash" component={SplashScreen} />
-          <HomeStack.Screen name="Login" component={LoginScreen} />
-          <HomeStack.Screen name="Register" component={RegisterScreen} />
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-        </>
-      ) : (
-        <>
-          <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
-          <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
-          <HomeStack.Screen name="Search" component={SearchScreen} />
-          <HomeStack.Screen
-            name="Participate"
-            component={ChallengeParticipationScreen}
-          />
-        </>
-      )}
+      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+      <HomeStack.Screen name="Search" component={SearchScreen} />
+      <HomeStack.Screen
+        name="Participate"
+        component={ChallengeParticipationScreen}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -120,66 +93,253 @@ function BadgesStackScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+function HomeTabs() {
   return (
-    <>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{ headerShown: false }}
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person-circle" : "person-circle-outline";
-              } else if (route.name === "Favorites") {
-                iconName = focused ? "star" : "star-outline";
-              } else if (route.name === "Stats") {
-                iconName = focused ? "stats-chart" : "stats-chart-outline";
-              } else if (route.name === "Badges") {
-                iconName = focused ? "trophy" : "trophy-outline";
-              }
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "person-circle" : "person-circle-outline";
+          } else if (route.name === "Favorites") {
+            iconName = focused ? "star" : "star-outline";
+          } else if (route.name === "Stats") {
+            iconName = focused ? "stats-chart" : "stats-chart-outline";
+          } else if (route.name === "Badges") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          }
 
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: "blue",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeStackScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Favorites"
-            component={FavoritesStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Stats"
-            component={StatsStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Badges"
-            component={BadgesStackScreen}
-            options={{ headerShown: false }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </>
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "blue",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeStackScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={StatsStackScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Badges"
+        component={BadgesStackScreen}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
   );
 }
+const Stack = createNativeStackNavigator();
+export default function App() {
+  const auth = getAuth();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {auth.currentUser == null ? (
+          <>
+            <Stack.Group initialRouteName={"Splash"}>
+              <Stack.Screen name="Splash" component={SplashScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen
+                name="Fitopolis"
+                component={HomeTabs}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
+          </>
+        ) : (
+          <>
+            <Stack.Group>
+              <Stack.Screen
+                name="Fitopolis"
+                component={HomeTabs}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+// const tabHiddenRoutes = ["Splash", "Login", "Register"];
+
+// const HomeStack = createNativeStackNavigator();
+
+// function HomeStackScreen({ navigation, route }) {
+//   const auth = getAuth();
+//   console.log(auth);
+//   const routeName = getFocusedRouteNameFromRoute(route);
+//   // if (!route.params) {
+//   //   const signedOutRoute = route.params;
+//   //   console.log("Signed out " + signedOutRoute);
+//   // }
+
+//   console.log("routeName: " + routeName);
+//   console.log("routeParams:" + route.params);
+//   console.log("Route", route);
+//   if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+//     navigation.setOptions({ tabBarStyle: { display: "none" } });
+//   } else {
+//     navigation.setOptions({ tabBarStyle: { display: "flex" } });
+//   }
+//   return (
+//     <HomeStack.Navigator>
+//       {auth.currentUser == null ? (
+//         <>
+//           <HomeStack.Group initialRouteName={"Splash"}>
+//             <HomeStack.Screen name="Splash" component={SplashScreen} />
+//             <HomeStack.Screen name="Login" component={LoginScreen} />
+//             <HomeStack.Screen name="Register" component={RegisterScreen} />
+//             <HomeStack.Screen
+//               name="Fitopolis"
+//               component={FitopolisHomeScreen}
+//             />
+//           </HomeStack.Group>
+//         </>
+//       ) : (
+//         <>
+//           <HomeStack.Group>
+//             <HomeStack.Screen
+//               name="Fitopolis"
+//               component={FitopolisHomeScreen}
+//             />
+//           </HomeStack.Group>
+//         </>
+//       )}
+//       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+//       <HomeStack.Screen name="Search" component={SearchScreen} />
+//       <HomeStack.Screen
+//         name="Participate"
+//         component={ChallengeParticipationScreen}
+//       />
+//     </HomeStack.Navigator>
+//   );
+// }
+
+// const ProfileStack = createNativeStackNavigator();
+
+// function ProfileStackScreen() {
+//   return (
+//     <ProfileStack.Navigator>
+//       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
+//     </ProfileStack.Navigator>
+//   );
+// }
+
+// const FavoritesStack = createNativeStackNavigator();
+
+// function FavoritesStackScreen() {
+//   return (
+//     <FavoritesStack.Navigator>
+//       <FavoritesStack.Screen name="My Favorites" component={FavoritesScreen} />
+//     </FavoritesStack.Navigator>
+//   );
+// }
+
+// const StatsStack = createNativeStackNavigator();
+
+// function StatsStackScreen() {
+//   return (
+//     <StatsStack.Navigator>
+//       <StatsStack.Screen name="My Stats" component={StatsScreen} />
+//     </StatsStack.Navigator>
+//   );
+// }
+
+// const BadgesStack = createNativeStackNavigator();
+
+// function BadgesStackScreen() {
+//   return (
+//     <BadgesStack.Navigator>
+//       <BadgesStack.Screen name="My Badges" component={BadgesScreen} />
+//     </BadgesStack.Navigator>
+//   );
+// }
+
+// const Tab = createBottomTabNavigator();
+
+// export default function App() {
+//   return (
+//     <>
+//       <NavigationContainer>
+//         <Tab.Navigator
+//           screenOptions={{ headerShown: false }}
+//           screenOptions={({ route }) => ({
+//             tabBarIcon: ({ focused, color, size }) => {
+//               let iconName;
+//               if (route.name === "Home") {
+//                 iconName = focused ? "home" : "home-outline";
+//               } else if (route.name === "Profile") {
+//                 iconName = focused ? "person-circle" : "person-circle-outline";
+//               } else if (route.name === "Favorites") {
+//                 iconName = focused ? "star" : "star-outline";
+//               } else if (route.name === "Stats") {
+//                 iconName = focused ? "stats-chart" : "stats-chart-outline";
+//               } else if (route.name === "Badges") {
+//                 iconName = focused ? "trophy" : "trophy-outline";
+//               }
+
+//               // You can return any component that you like here!
+//               return <Ionicons name={iconName} size={size} color={color} />;
+//             },
+//             tabBarActiveTintColor: "blue",
+//             tabBarInactiveTintColor: "gray",
+//           })}
+//         >
+//           <Tab.Screen
+//             name="Home"
+//             component={HomeStackScreen}
+//             options={{
+//               headerShown: false,
+//             }}
+//           />
+//           <Tab.Screen
+//             name="Profile"
+//             component={ProfileStackScreen}
+//             options={{ headerShown: false }}
+//           />
+//           <Tab.Screen
+//             name="Favorites"
+//             component={FavoritesStackScreen}
+//             options={{ headerShown: false }}
+//           />
+//           <Tab.Screen
+//             name="Stats"
+//             component={StatsStackScreen}
+//             options={{ headerShown: false }}
+//           />
+//           <Tab.Screen
+//             name="Badges"
+//             component={BadgesStackScreen}
+//             options={{ headerShown: false }}
+//           />
+//         </Tab.Navigator>
+//       </NavigationContainer>
+//     </>
+//   );
+// }
 
 const styles = StyleSheet.create({
   label: {

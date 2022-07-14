@@ -122,8 +122,8 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
     // Check for photo upload
-    else if (!image.trim()) {
-      alert("Please enter a photo");
+    else if (image == null) {
+      alert("Please add a photo");
       return;
     } else {
       // Create user

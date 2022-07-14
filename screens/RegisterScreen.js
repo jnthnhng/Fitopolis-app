@@ -69,11 +69,13 @@ const RegisterScreen = ({ navigation }) => {
       xhr.send(null);
     });
 
-    setImageFileName(new Date().toISOString());
+    const imageFile = image.substring(image.lastIndexOf("/") + 1);
+    console.log("Image File Name: ", imageFile);
+    setImageFileName(imageFile);
     const ref = firebase
       .storage()
       .ref()
-      .child("/userImages/" + imageFileName);
+      .child("/userImages/" + imageFile);
     const snapshot = ref.put(blob);
 
     snapshot.on(
@@ -185,16 +187,16 @@ const RegisterScreen = ({ navigation }) => {
             title="Choose an image from camera roll"
             onPress={pickImage}
           />
-          {(image != null && transferred == null) && (
+          {image != null && transferred == null && (
             <View>
-            <Image
-              source={{ uri: image }}
-              style={{ width: 100, height: 100 }}
-            />
-            <Button title="upload" onPress={uploadImage} />
+              <Image
+                source={{ uri: image }}
+                style={{ width: 100, height: 100 }}
+              />
+              <Button title="upload" onPress={uploadImage} />
             </View>
           )}
-          {transferred != null && (<Text>Uploaded!</Text>)}
+          {transferred != null && <Text>Uploaded!</Text>}
         </View>
       </View>
       <View style={styles.buttonContainer}>

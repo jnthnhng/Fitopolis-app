@@ -32,17 +32,17 @@ class CreateChallengeScreen extends Component {
     }
     this.state = {
       badges: [],
-      image: "",
-      name: "",
-      type: "",
-      badge: "",
-      description: "",
-      goal1: "",
-      goal2: "",
-      goal3: "",
-      tags: "",
+      image: null,
+      name: null,
+      type: null,
+      badge: null,
+      description: null,
+      goal1: null,
+      goal2: null,
+      goal3: null,
+      tags: null,
       uploading: null,
-      imageFileName: "",
+      imageFileName: null,
 
     }
   }
@@ -171,7 +171,7 @@ class CreateChallengeScreen extends Component {
               >
                 <Picker.Item label="Pick a Badge" value="" />
                 {this.state.badges.map(badge =>
-                  <Picker.Item label={badge.data.badgeName} value={badge.key} />  
+                  <Picker.Item key={badge.key} label={badge.data.badgeName} value={badge.key} />  
                 )}
               </Picker>
                 <TextInput placeholder="Description" 

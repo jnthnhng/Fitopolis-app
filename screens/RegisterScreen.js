@@ -28,25 +28,60 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
 
+  // Check text is not empty
+  const checkValue = () => {
+    if (name.length == 0) {
+      alert("Please insert this field");
+    }
+  };
+
   // Handle Sign Up and Write User to DB
   const handleSignUp = () => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-      })
-      .then(() => {
-        const db = getDatabase();
-        set(ref(db, "users/" + auth.currentUser.uid), {
-          email: email,
-          username: username,
-          name: name,
-        });
-      })
-      .then(() => {
-        navigation.navigate("Fitopolis");
-      })
-      .catch((error) => alert(error.message));
+    // Check for name text
+    if (!name.trim()) {
+      alert("Please enter your name");
+      return;
+    }
+    // Check for username text
+    else if (!username.trim()) {
+      alert("Please enter a username");
+      return;
+    }
+    // Check for email text
+    else if (!email.trim()) {
+      alert("Please enter an email");
+      return;
+    }
+    // Check for password text - To Do
+    // else if (!password.trim()) {
+    //   alert("Please enter a password");
+    //   return;
+    // }
+    // Check for photo upload
+    else if (!image.trim()) {
+      alert("Please enter a username");
+      return;
+    }
+    else {
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+          const user = userCredentials.user;
+        })
+        .then(() => {
+          const db = getDatabase();
+          set(ref(db, "users/" + auth.currentUser.uid), {
+            email: email,
+            username: username,
+            name: name,
+          });
+        })
+        .then(() => {
+          navigation.navigate("Fitopolis");
+        })
+        .catch((error) => alert(error.message));
+    }
+
   };
 
   // Handle Image Picker

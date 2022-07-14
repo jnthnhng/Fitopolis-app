@@ -7,8 +7,12 @@ import {
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
+  Image,
+  Button,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as Progress from "react-native-progress";
 
 // Database imports
 import "firebase/compat/storage";
@@ -16,6 +20,7 @@ import firebase from "firebase/compat/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { db, storage, firebaseConfig } from "../database/firebase.js";
 import { set, update, ref, getDatabase } from "firebase/database";
+import { SafeAreaView } from "react-native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -27,12 +32,69 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [imageFileName, setImageFileName] = useState("");
+  const [uploading, setUploading] = useState(null);
+  const [transferred, setTransferred] = useState(0);
 
-  // Check text is not empty
-  const checkValue = () => {
-    if (name.length == 0) {
-      alert("Please insert this field");
+  // Handle Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT: ", result.uri);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
     }
+  };
+
+  // Upload image
+  // Adpated from instamobile - https://instamobile.io/mobile-development/react-native-firebase-storage/
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
+
+    setImageFileName(new Date().toISOString());
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("/userImages/" + imageFileName);
+    const snapshot = ref.put(blob);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      (error) => {
+        setUploading(true);
+        console.log(error);
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then((url) => {
+          setUploading(true);
+          setTransferred(true);
+          console.log("download url: ", url);
+          return url;
+        });
+      }
+    );
   };
 
   // Handle Sign Up and Write User to DB
@@ -53,56 +115,41 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
     // Check for password text - To Do
-    // else if (!password.trim()) {
-    //   alert("Please enter a password");
-    //   return;
-    // }
-    // Check for photo upload
-    else if (!image.trim()) {
-      alert("Please enter a username");
+    else if (!password.trim()) {
+      alert("Please enter a password");
       return;
     }
-    else {
+    // Check for photo upload
+    else if (!image.trim()) {
+      alert("Please enter a photo");
+      return;
+    } else {
+      // Create user
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
           const user = userCredentials.user;
         })
+        // Upload user information to realtime database
         .then(() => {
           const db = getDatabase();
           set(ref(db, "users/" + auth.currentUser.uid), {
             email: email,
             username: username,
             name: name,
+            profilePhoto: ("/userImages/" + imageFileName),
           });
         })
+        // Navigate to home page
         .then(() => {
           navigation.navigate("Fitopolis");
         })
         .catch((error) => alert(error.message));
     }
-
-  };
-
-  // Handle Image Picker
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <SafeAreaView style={styles.container} behavior="padding">
       <Text style={styles.logo}>Fitopolis</Text>
       <Text style={styles.instructions}>
         Lets get fit! Enter your details to join the Fitopolis Community!
@@ -133,16 +180,27 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           secureTextEntry
         />
-        <TouchableOpacity onPress={pickImage} style={styles.imageButton}>
-          <Text style={styles.imageButtonText}>Upload Photo</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <Button title="Choose an image from camera roll" onPress={pickImage} />
+          {image != null && (
+            <Image
+              source={{ uri: image }}
+              style={{ width: 100, height: 100 }}
+            />
+          )}
+          {(uploading == null && image != null) ? (
+            <Button title="upload" onPress={uploadImage} />
+          ) : (
+            <ActivityIndicator size="small" color="#000" />
+          )}
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleSignUp} style={styles.button}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

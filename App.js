@@ -40,7 +40,7 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen({ navigation, route }) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Fitopolis" component={SplashScreen} />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen

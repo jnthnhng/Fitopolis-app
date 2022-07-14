@@ -31,10 +31,10 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [imageFileName, setImageFileName] = useState("");
   const [uploading, setUploading] = useState(null);
-  const [transferred, setTransferred] = useState(0);
+  const [transferred, setTransferred] = useState(null);
 
   // Handle Image Picker
   const pickImage = async () => {
@@ -88,7 +88,7 @@ const RegisterScreen = ({ navigation }) => {
       },
       () => {
         snapshot.snapshot.ref.getDownloadURL().then((url) => {
-          setUploading(true);
+          // setUploading(true);
           setTransferred(true);
           console.log("download url: ", url);
           return url;
@@ -137,7 +137,7 @@ const RegisterScreen = ({ navigation }) => {
             email: email,
             username: username,
             name: name,
-            profilePhoto: ("/userImages/" + imageFileName),
+            profilePhoto: "/userImages/" + imageFileName,
           });
         })
         // Navigate to home page
@@ -181,18 +181,20 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry
         />
         <View style={styles.inputContainer}>
-          <Button title="Choose an image from camera roll" onPress={pickImage} />
-          {image != null && (
+          <Button
+            title="Choose an image from camera roll"
+            onPress={pickImage}
+          />
+          {(image != null && transferred == null) && (
+            <View>
             <Image
               source={{ uri: image }}
               style={{ width: 100, height: 100 }}
             />
-          )}
-          {(uploading == null && image != null) ? (
             <Button title="upload" onPress={uploadImage} />
-          ) : (
-            <ActivityIndicator size="small" color="#000" />
+            </View>
           )}
+          {transferred != null && (<Text>Uploaded!</Text>)}
         </View>
       </View>
       <View style={styles.buttonContainer}>

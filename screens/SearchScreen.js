@@ -13,6 +13,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips'
+import GetChallenges from '../components/searchFunctions';
+
 
 const SearchScreen = ({ navigation }) => {
   function goToChallengeParticipationScreen() {
@@ -77,7 +79,8 @@ const SearchScreen = ({ navigation }) => {
         <SearchHeader />
         <SearchBarBasic />
         <SearchChips/>
-        <SectionListBasics />
+        <GetChallenges />
+        {/* <SectionListBasics /> */}
       </ScrollView>
     </SafeAreaView>
   );

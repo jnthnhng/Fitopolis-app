@@ -50,6 +50,8 @@ const RegisterScreen = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      const imageFile = result.uri;
+      setImageFileName(imageFile.substring(imageFile.lastIndexOf("/") + 1));
     }
   };
 
@@ -122,8 +124,8 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
     // Check for photo upload
-    else if (!image.trim()) {
-      alert("Please enter a photo");
+    else if (image == null) {
+      alert("Please add a photo");
       return;
     } else {
       // Create user
@@ -141,6 +143,9 @@ const RegisterScreen = ({ navigation }) => {
             name: name,
             profilePhoto: "/userImages/" + imageFileName,
           });
+        })
+        .then(() => {
+          uploadImage();
         })
         // Navigate to home page
         .then(() => {
@@ -193,10 +198,10 @@ const RegisterScreen = ({ navigation }) => {
                 source={{ uri: image }}
                 style={{ width: 100, height: 100 }}
               />
-              <Button title="upload" onPress={uploadImage} />
+              {/* <Button title="upload" onPress={uploadImage} /> */}
             </View>
           )}
-          {transferred != null && <Text>Uploaded!</Text>}
+          {/* {transferred != null && <Text>Uploaded!</Text>} */}
         </View>
       </View>
       <View style={styles.buttonContainer}>

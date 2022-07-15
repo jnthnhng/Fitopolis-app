@@ -50,6 +50,8 @@ const RegisterScreen = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      const imageFile = result.uri;
+      setImageFileName(imageFile.substring(imageFile.lastIndexOf("/") + 1));
     }
   };
 
@@ -142,6 +144,9 @@ const RegisterScreen = ({ navigation }) => {
             profilePhoto: "/userImages/" + imageFileName,
           });
         })
+        .then(() => {
+          uploadImage();
+        })
         // Navigate to home page
         .then(() => {
           navigation.navigate("Fitopolis");
@@ -193,10 +198,10 @@ const RegisterScreen = ({ navigation }) => {
                 source={{ uri: image }}
                 style={{ width: 100, height: 100 }}
               />
-              <Button title="upload" onPress={uploadImage} />
+              {/* <Button title="upload" onPress={uploadImage} /> */}
             </View>
           )}
-          {transferred != null && <Text>Uploaded!</Text>}
+          {/* {transferred != null && <Text>Uploaded!</Text>} */}
         </View>
       </View>
       <View style={styles.buttonContainer}>

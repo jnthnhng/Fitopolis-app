@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,34 +8,106 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import { Avatar } from "react-native-paper";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+// Database imports
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import {
+  set,
+  update,
+  ref,
+  getDatabase,
+  onValue,
+  get,
+  child,
+} from "firebase/database";
+// storage imports for images
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
+
+// Screen Imports
 import ProfileScreen from "./ProfileScreen";
 import BadgesScreen from "./BadgesScreen";
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 const FitopolisHomeScreen = ({ navigation }) => {
+  const [imageName, setImageName] = useState(null);
+  const [url, setUrl] = useState(null);
+
+  // Get image from firebase storage
+  // Get user ID and file name from realtime database
+
+  const auth = getAuth();
+  const userID = auth.currentUser.uid;
+
+  const db = getDatabase();
+  // const imageSnapshot =  get(ref(db, "users/" + userID));
+  // console.log("image snap: ", imageSnapshot);
+  const getData = () => {
+    get(ref(db, "users/" + userID))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setImageName(snapshot.val().profilePhoto);
+          getImage(snapshot.val().profilePhoto);
+          console.log("user image: ", snapshot.val().profilePhoto);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // Get Image from storage
+  const getImage = async (profilePhoto) => {
+    console.log("image name: ", profilePhoto);
+    const storage = getStorage();
+    const reference = sRef(storage, profilePhoto);
+    await getDownloadURL(reference).then((x) => {
+      setUrl(x);
+      console.log("download url: ", x);
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // useEffect(() => {
+  //   getImage();
+  // }, []);
+
+  // Navigate to Create screen
   function goToCreate() {
     navigation.navigate("Create");
   }
+
+  // Navigate to Search screen
   function goToSearch() {
     navigation.navigate("Search");
   }
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.userInfo}>
-          <Image
-            source={require("../assets/images/default-user.png")}
-            style={styles.userPhoto}
-          />
+          {/* {url == null ? (
+            <Ionicons name="person-circle" size={110} />
+          ) : (
+            <Avatar.Image source={{ uri: url }} size={110} />
+          )} */}
+          <Avatar.Image source={{ uri: url }} size={110} />
           <Text style={styles.number}>4</Text>
           <Ionicons name="trophy-outline" size={60} />
-          {/* <Image
-            source={require("../assets/images/trophie2.png")}
-            style={styles.itemPhoto}
-          /> */}
         </View>
         <View style={styles.challengeInfo}>
           <View style={styles.challengeContainer}>

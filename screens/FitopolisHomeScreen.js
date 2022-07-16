@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, ActivityIndicator } from "react-native-paper";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -100,12 +100,12 @@ const FitopolisHomeScreen = ({ navigation }) => {
     <>
       <View style={styles.container}>
         <View style={styles.userInfo}>
-          {/* {url == null ? (
-            <Ionicons name="person-circle" size={110} />
+          {url == null ? (
+            <ActivityIndicator size="small" color="#000" />
           ) : (
             <Avatar.Image source={{ uri: url }} size={110} />
-          )} */}
-          <Avatar.Image source={{ uri: url }} size={110} />
+          )}
+          {/* <Avatar.Image source={{ uri: url }} size={110} /> */}
           <Text style={styles.number}>4</Text>
           <Ionicons name="trophy-outline" size={60} />
         </View>

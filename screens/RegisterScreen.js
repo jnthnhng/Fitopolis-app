@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Progress from "react-native-progress";
+import { Avatar } from "react-native-paper";
 
 // Database imports
 import "firebase/compat/storage";
@@ -182,16 +183,16 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           secureTextEntry
         />
-        <View style={styles.inputContainer}>
+        <View style={styles.inputImage}>
           <Button
             title="Choose an image from camera roll"
             onPress={pickImage}
           />
           {image != null && transferred == null && (
-            <View>
-              <Image
+            <View style={styles.inputImage}>
+              <Avatar.Image
                 source={{ uri: image }}
-                style={{ width: 100, height: 100 }}
+                size={110}
               />
               <Button title="upload" onPress={uploadImage} />
             </View>
@@ -230,6 +231,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+  },
+  inputImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     backgroundColor: "white",

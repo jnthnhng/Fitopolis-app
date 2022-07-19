@@ -118,34 +118,34 @@ function HomeTabs() {
         tabBarActiveTintColor: "blue",
         tabBarInactiveTintColor: "gray",
       })}
-      
     >
       <Tab.Screen
         name="Home"
         component={HomeStackScreen}
         options={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileStackScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Favorites"
         component={FavoritesStackScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Stats"
         component={StatsStackScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Badges"
         component={BadgesStackScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, unmountOnBlur: true }}
       />
     </Tab.Navigator>
   );

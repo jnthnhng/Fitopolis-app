@@ -282,6 +282,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "70%",
   },
+  inputImage: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   update: {
     fontSize: 15,
     paddingLeft: 5,

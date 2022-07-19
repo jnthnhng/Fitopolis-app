@@ -118,11 +118,7 @@ class CreateChallengeScreen extends Component {
 
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
-<<<<<<< HEAD
-      const reference = ref(db, 'challenge/' + type);
-=======
       const reference = ref(db, 'challenge/' + type + "/");
->>>>>>> 32756df (validation)
     
       push(reference, {
           badge: badge,

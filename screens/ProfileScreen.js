@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,61 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { getAuth, signOut } from "firebase/auth";
+
+// Database imports
+import { getAuth, signOut, updateEmail, updatePassword } from "firebase/auth";
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import {
+  set,
+  update,
+  ref,
+  getDatabase,
+  onValue,
+  get,
+  child,
+} from "firebase/database";
+// storage imports for images
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const ProfileScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [fnName, setFName] = useState("");
+  const [password, setPassword] = useState("");
+  const [nameUploaded, setNameUploaded] = useState(false);
+  const [usernameUploaded, setUserNameUploaded] = useState(false);
+
+  // Get Current User Data
   const auth = getAuth();
-  console.log("Profile ", auth.currentUser);
+  const userID = auth.currentUser.uid;
+  console.log("current user", auth.currentUser.uid);
+  const db = getDatabase();
+
+  // Handle name update
+  const handleNameUpdate = () => {
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      name: fnName,
+    }).then(() => {
+      console.log("name updated");
+      setNameUploaded(true);
+    });
+  };
+
+  // Handle name update
+  const handleUserNameUpdate = () => {
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      username: username,
+    }).then(() => {
+      console.log("name updated");
+      setUserNameUploaded(true);
+    });
+  };
+
+  // Handle Sign Out
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -24,6 +72,7 @@ const ProfileScreen = ({ navigation }) => {
       })
       .catch((error) => alert(error.message));
   };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       {auth.currentUser == null ? (
@@ -39,35 +88,69 @@ const ProfileScreen = ({ navigation }) => {
         <>
           <Ionicons name="person-circle" size={60} />
           <Text style={styles.logo}>Edit Profile</Text>
-          <Text style={styles.instructions}>
-            Update information below to edit your profile
-          </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="First & Last Name"
+              value={fnName}
+              onChangeText={(text) => setFName(text)}
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={handleNameUpdate}>
+              <Text style={styles.update}>Update</Text>
+            </TouchableOpacity>
+            {nameUploaded && <Ionicons name="checkbox" size={20} />}
+          </View>
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Username"
-              // value={}
-              // onChangeText={text => }
+              value={username}
+              onChangeText={(text) => setUsername(text)}
               style={styles.input}
             />
+            <TouchableOpacity onPress={handleUserNameUpdate}>
+              <Text style={styles.update}>Update</Text>
+            </TouchableOpacity>
+            {usernameUploaded && <Ionicons name="checkbox" size={20} />}
+          </View>
+          {/* <Text style={styles.logo}>Edit Profile</Text>
+          <Text style={styles.instructions}>Update Email & Password</Text>
+          <View style={styles.inputContainer}>
+            <Text>Email</Text>
             <TextInput
-              placeholder="Email"
-              // value={}
-              // onChangeText={text => }
+              placeholder={email}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
               style={styles.input}
             />
+            <Text>Password</Text>
             <TextInput
               placeholder="Password"
-              // value={}
-              // onChangeText={text => }
+              value={password}
+              onChangeText={(text) => setPassword(text)}
               style={styles.input}
               secureTextEntry
             />
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleUnPWChange} style={styles.button}>
+              <Text style={styles.buttonText}>Update Email & Password</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.instructions}>Update account information</Text>
+          <View style={styles.inputContainer}>
+            <Text>First & Last Name</Text>
             <TextInput
-              placeholder="Photo Upload (placeholder)"
+              placeholder={name}
               // value={}
               // onChangeText={text => }
               style={styles.input}
-              secureTextEntry
+            />
+            <Text>Username</Text>
+            <TextInput
+              placeholder={username}
+              // value={}
+              // onChangeText={text => }
+              style={styles.input}
             />
           </View>
           <View style={styles.buttonContainer}>
@@ -75,6 +158,7 @@ const ProfileScreen = ({ navigation }) => {
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
+          */}
           <View style={styles.buttonSOContainer}>
             <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
               <Text style={styles.buttonSOText}>Sign Out</Text>
@@ -107,7 +191,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputContainer: {
+    flexDirection: "row",
     width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     backgroundColor: "white",
@@ -115,6 +202,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    width: "70%",
+  },
+  update: {
+    fontSize: 15,
+    paddingLeft: 5,
   },
   buttonContainer: {
     width: "50%",

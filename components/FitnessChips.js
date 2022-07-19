@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   chip: {
     // width: 120,
     marginLeft: 20,
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 10,
   },
 });

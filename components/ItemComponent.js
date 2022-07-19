@@ -8,7 +8,7 @@ export default function ItemComponent ({items}) {
         {items.map((item, index) => {
           return (
             <View key={index}>
-              <Text style={styles.itemtext}>{item.name}</Text>
+              <Text style={styles.itemtext}>{item.challengeName}</Text>
             </View>
           );
         })}

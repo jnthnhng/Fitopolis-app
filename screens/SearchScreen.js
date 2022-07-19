@@ -14,6 +14,8 @@ import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips'
 import GetChallenges from '../components/searchFunctions';
+import SectionListResults from '../components/SectionListComponent';
+import MyComponent from '../components/ListItemComponent';
 
 
 const SearchScreen = ({ navigation }) => {
@@ -38,26 +40,26 @@ const SearchScreen = ({ navigation }) => {
     );
   };
 
-  const SectionListBasics = () => {
-    return (
-      <View style={styles.resultsBoxContainer}>
-        <SectionList
-          sections={[
-            { title: 'Running', data: ['5K', '10K', '15K'] },
-            {
-              title: 'Swimming',
-              data: ['25m', '50m', '100m', '200m', '500m'],
-            },
-          ]}
-          renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
-          renderSectionHeader={({ section }) => (
-            <Text style={styles.sectionHeader}>{section.title}</Text>
-          )}
-          keyExtractor={(item, index) => item + index}
-        />
-      </View>
-    );
-  };
+  // const SectionListBasics = () => {
+  //   return (
+  //     <View style={styles.resultsBoxContainer}>
+  //       <SectionList
+  //         sections={[
+  //           { title: 'Running', data: ['5K', '10K', '15K'] },
+  //           {
+  //             title: 'Swimming',
+  //             data: ['25m', '50m', '100m', '200m', '500m'],
+  //           },
+  //         ]}
+  //         renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
+  //         renderSectionHeader={({ section }) => (
+  //           <Text style={styles.sectionHeader}>{section.title}</Text>
+  //         )}
+  //         keyExtractor={(item, index) => item + index}
+  //       />
+  //     </View>
+  //   );
+  // };
 
   const SearchBarBasic = () => {
     return (
@@ -79,8 +81,9 @@ const SearchScreen = ({ navigation }) => {
         <SearchHeader />
         <SearchBarBasic />
         <SearchChips/>
-        <GetChallenges />
+        {/* <GetChallenges searchType = "Running" /> */}
         {/* <SectionListBasics /> */}
+        <MyComponent />
       </ScrollView>
     </SafeAreaView>
   );

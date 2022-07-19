@@ -18,51 +18,63 @@ import {
 import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ItemComponent from './ItemComponent.js';
+import SectionListResults from './SectionListComponent.js';
 
-const GetChallenges = () => {
+const GetChallenges = (props) => {
   const [challenges, setChallenges] = useState([]);
   const challengesRef = ref(db, 'challenge/');
   const dbRef = ref(db);
 
-  // //   console.log(challengesRef);
-  // //   console.log(dbRef);
-  //   const aChallenge = '-N6ekNHXF3nQg5z5annO';
+  // get(child(dbRef, `challenge/` + props.searchType))
+  //   .then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       let res = snapshot.val();
+  //       const challenges = Object.values(res);
 
-  // let res_values;
-  // let display;
+  //       useEffect(() => {
+  //         setChallenges(challenges);
+  //       }, []);
+  //     } else {
+  //       console.log('No data available');
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+  // useEffect(() => {
+  //   challengesRef.on('value', (snapshot) => {
+  //     let data = snapshot.val();
+  //     const challenges = Object.values(data);
+  //     setChallenges(challenges);
+  //   });
+  // }, []);
 
-  get(child(dbRef, `challenge/`))
+  useEffect(() => {
+    get(child(dbRef, "challenge/" + props.searchType))
     .then((snapshot) => {
-      if (snapshot.exists()) {
-        let res = snapshot.val();
-        const challenges = Object.values(res);
-        setChallenges(challenges);
-        //   res_values = Object.values(res)
-        //   display = res_values[2].challengeType;
-        //   console.log(Object.keys(res_values[0]));
-        // console.log(res_values)
-        // console.log(display);
-      } else {
-        console.log('No data available');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+      let data = [];
+      snapshot.forEach((child) => {
+        data.push(child.val());
+      });
+      setChallenges(data);
+      // console.log(data);
     });
-  //   useEffect(() => {
-  //     challengesRef.on('value', (snapshot) => {
-  //       let data = snapshot.val();
-  //       const challenges = Object.values(data);
-  //       setChallenges(challenges);
-  //     });
-  //   }, []);
+  }, []);
+  // console.log(challenges);
 
   return (
+    // <View>
+    //   {challenges.length > 0 ? (
+    //     <ItemComponent items={challenges} />
+    //   ) : (
+    //     <Text>No items</Text>
+    //   )}
+    // </View>
     <View>
       {challenges.length > 0 ? (
-        <ItemComponent items={challenges} />
+        <SectionListResults results={challenges} />
       ) : (
-        <Text>No items</Text>
+        <Text>No Results</Text>
       )}
     </View>
   );

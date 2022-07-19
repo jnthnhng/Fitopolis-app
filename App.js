@@ -118,6 +118,7 @@ function HomeTabs() {
         tabBarActiveTintColor: "blue",
         tabBarInactiveTintColor: "gray",
       })}
+      
     >
       <Tab.Screen
         name="Home"

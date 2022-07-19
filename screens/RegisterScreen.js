@@ -54,8 +54,8 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // Upload image
-  // Adpated from instamobile - https://instamobile.io/mobile-development/react-native-firebase-storage/
+  // Upload image to storage
+  // Adapted from Cat Wallin on her CreateChallengeScreen
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -76,7 +76,7 @@ const RegisterScreen = ({ navigation }) => {
     const ref = firebase
       .storage()
       .ref()
-      .child("/userImages/" + imageFile);
+      .child("userImages/" + imageFile);
     const snapshot = ref.put(blob);
 
     snapshot.on(
@@ -140,7 +140,7 @@ const RegisterScreen = ({ navigation }) => {
             email: email,
             username: username,
             name: name,
-            profilePhoto: "/userImages/" + imageFileName,
+            profilePhoto: "userImages/" + imageFileName,
           });
         })
         // Navigate to home page
@@ -190,10 +190,7 @@ const RegisterScreen = ({ navigation }) => {
           />
           {image != null && transferred == null && (
             <View style={styles.inputImage}>
-              <Avatar.Image
-                source={{ uri: image }}
-                size={110}
-              />
+              <Avatar.Image source={{ uri: image }} size={110} />
               <Button title="upload" onPress={uploadImage} />
             </View>
           )}
@@ -233,8 +230,8 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   inputImage: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     backgroundColor: "white",

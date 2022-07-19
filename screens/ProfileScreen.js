@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
 
 // Database imports
@@ -26,6 +27,8 @@ import {
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import * as ImagePicker from "expo-image-picker";
+import { Avatar } from "react-native-paper";
 
 const ProfileScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -34,12 +37,47 @@ const ProfileScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [nameUploaded, setNameUploaded] = useState(false);
   const [usernameUploaded, setUserNameUploaded] = useState(false);
+  const [image, setImage] = useState("");
+  const [imageName, setImageName] = useState("");
+  const [uploading, setUploading] = useState(null);
+  const [transferred, setTransferred] = useState(null);
+  const [url, setUrl] = useState("");
+  const [imageFileName, setImageFileName] = useState(null);
+  const [newImage, setNewImage] = useState(null);
 
-  // Get Current User Data
+  // Initialize auth and database
   const auth = getAuth();
   const userID = auth.currentUser.uid;
   console.log("current user", auth.currentUser.uid);
   const db = getDatabase();
+
+  // const getData = () => {
+  //   get(ref(db, "users/" + userID))
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         setImageName(snapshot.val().profilePhoto);
+  //         getImage(snapshot.val().profilePhoto);
+  //       } else {
+  //         console.log("No data available");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // // Get Image from storage
+  // const getImage = async (profilePhoto) => {
+  //   const storage = getStorage();
+  //   const reference = sRef(storage, profilePhoto);
+  //   await getDownloadURL(reference).then((x) => {
+  //     setUrl(x);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   // Handle name update
   const handleNameUpdate = () => {
@@ -61,6 +99,16 @@ const ProfileScreen = ({ navigation }) => {
     });
   };
 
+  // Handle profile photo update
+  const handleProfileUpdate = (imageFile) => {
+    console.log("Image File Name: ", imageFile);
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      profilePhoto: "userImages/" + imageFile,
+    }).then(() => {
+      console.log("profile updated");
+    });
+  };
+
   // Handle Sign Out
   const handleSignOut = () => {
     signOut(auth)
@@ -71,6 +119,70 @@ const ProfileScreen = ({ navigation }) => {
         });
       })
       .catch((error) => alert(error.message));
+  };
+
+  // Handle Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT: ", result.uri);
+
+    if (!result.cancelled) {
+      setNewImage(result.uri);
+    }
+  };
+
+  // Upload image to storage
+  // Adapted from Cat Wallin on her CreateChallengeScreen
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", newImage, true);
+      xhr.send(null);
+    });
+
+    const imageFile = newImage.substring(newImage.lastIndexOf("/") + 1);
+    console.log("Full Image Name: ", newImage);
+    console.log("Image File Name: ", imageFile);
+    setImageFileName(imageFile);
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("userImages/" + imageFile);
+    const snapshot = ref.put(blob);
+    handleProfileUpdate(imageFile);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      (error) => {
+        setUploading(true);
+        console.log(error);
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then((url) => {
+          setTransferred(true);
+          console.log("download url: ", url);
+          return url;
+        });
+      }
+    );
   };
 
   return (
@@ -86,7 +198,7 @@ const ProfileScreen = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Ionicons name="person-circle" size={60} />
+          <Ionicons name="person-circle" size={80} />
           <Text style={styles.logo}>Edit Profile</Text>
           <View style={styles.inputContainer}>
             <TextInput
@@ -112,53 +224,19 @@ const ProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
             {usernameUploaded && <Ionicons name="checkbox" size={20} />}
           </View>
-          {/* <Text style={styles.logo}>Edit Profile</Text>
-          <Text style={styles.instructions}>Update Email & Password</Text>
-          <View style={styles.inputContainer}>
-            <Text>Email</Text>
-            <TextInput
-              placeholder={email}
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              style={styles.input}
+          <View style={styles.inputImage}>
+            <Button
+              title="Choose an image from camera roll"
+              onPress={pickImage}
             />
-            <Text>Password</Text>
-            <TextInput
-              placeholder="Password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              style={styles.input}
-              secureTextEntry
-            />
+            {newImage != null && transferred == null && (
+              <View style={styles.inputImage}>
+                <Avatar.Image source={{ uri: newImage }} size={110} />
+                <Button title="upload" onPress={uploadImage} />
+              </View>
+            )}
+            {transferred != null && <Text>Uploaded!</Text>}
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={handleUnPWChange} style={styles.button}>
-              <Text style={styles.buttonText}>Update Email & Password</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.instructions}>Update account information</Text>
-          <View style={styles.inputContainer}>
-            <Text>First & Last Name</Text>
-            <TextInput
-              placeholder={name}
-              // value={}
-              // onChangeText={text => }
-              style={styles.input}
-            />
-            <Text>Username</Text>
-            <TextInput
-              placeholder={username}
-              // value={}
-              // onChangeText={text => }
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => {}} style={styles.button}>
-              <Text style={styles.buttonText}>Edit Profile</Text>
-            </TouchableOpacity>
-          </View>
-          */}
           <View style={styles.buttonSOContainer}>
             <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
               <Text style={styles.buttonSOText}>Sign Out</Text>

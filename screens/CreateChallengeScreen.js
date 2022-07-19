@@ -113,14 +113,16 @@ class CreateChallengeScreen extends Component {
     });
   }
 
-  
-  
 
   render() {
 
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
+<<<<<<< HEAD
       const reference = ref(db, 'challenge/' + type);
+=======
+      const reference = ref(db, 'challenge/' + type + "/");
+>>>>>>> 32756df (validation)
     
       push(reference, {
           badge: badge,
@@ -134,8 +136,13 @@ class CreateChallengeScreen extends Component {
           image: ("/challengeImages/" + imageFileName),
           creator: firebase.auth().currentUser.uid,
       });
+
+      alert("successfully added challenge! will navigate to view the challenge");
+
     };
 
+
+    // function for input validation 
     function handleCreateChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
   
       if (!badge) {

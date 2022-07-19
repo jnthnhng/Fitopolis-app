@@ -43,7 +43,7 @@ class CreateChallengeScreen extends Component {
       tags: null,
       uploading: null,
       imageFileName: null,
-
+      creator: null,
     }
   }
 
@@ -112,6 +112,8 @@ class CreateChallengeScreen extends Component {
       })
     });
   }
+
+  
   
 
   render() {
@@ -130,9 +132,53 @@ class CreateChallengeScreen extends Component {
           goal3: goal3,
           tags: tags,
           image: ("/challengeImages/" + imageFileName),
-
+          creator: firebase.auth().currentUser.uid,
       });
     };
+
+    function handleCreateChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+  
+      if (!badge) {
+        alert("Please select a badge");
+        return;
+      }
+      else if (!name) {
+        alert("Please enter a challenge name");
+        return;
+      }
+      else if (!type) {
+        alert("Please select a challenge type");
+        return;
+      }
+      else if (!description) {
+        alert("Please enter a challenge description");
+        return;
+      }
+      else if (!goal1) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!goal2) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!goal3) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!tags) {
+        alert("Please enter tags");
+        return;
+      }
+      else if (!imageFileName) {
+        alert("Please add a photo");
+        return;
+      }
+      else {
+        addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)
+      }
+    
+    }
 
     return (
       <KeyboardAvoidingView>
@@ -171,7 +217,7 @@ class CreateChallengeScreen extends Component {
               >
                 <Picker.Item label="Pick a Badge" value="" />
                 {this.state.badges.map(badge =>
-                  <Picker.Item key={badge.key} label={badge.data.badgeName} value={badge.key} />  
+                  <Picker.Item key={badge.key} label={badge.data.name} value={badge.key} />  
                 )}
               </Picker>
                 <TextInput placeholder="Description" 
@@ -208,7 +254,7 @@ class CreateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <TouchableOpacity onPress={() => {handleCreateChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                 <Text style={styles.buttonText}>Create Challenge</Text>
               </TouchableOpacity>
             </View>

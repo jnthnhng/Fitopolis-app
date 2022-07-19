@@ -12,9 +12,14 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
 
+import {
+  getAuth,
+} from "firebase/auth";
+
 // database imports
 import 'firebase/compat/storage';
 import firebase from "firebase/compat/app";
+
 import { db, storage, firebaseConfig} from "../database/firebase.js";
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
@@ -119,6 +124,8 @@ class CreateChallengeScreen extends Component {
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
       const reference = ref(db, 'challenge/' + type + "/");
+      const auth = getAuth();
+      const currentU = auth.currentUser;
     
       push(reference, {
           badge: badge,
@@ -130,7 +137,7 @@ class CreateChallengeScreen extends Component {
           goal3: goal3,
           tags: tags,
           image: ("/challengeImages/" + imageFileName),
-          creator: firebase.auth().currentUser.uid,
+          creator: currentU.uid,
       });
 
       alert("successfully added challenge! will navigate to view the challenge");
@@ -178,7 +185,7 @@ class CreateChallengeScreen extends Component {
         return;
       }
       else {
-        addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)
+        addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
       }
     
     }

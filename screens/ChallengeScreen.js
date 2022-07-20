@@ -27,22 +27,21 @@ class ChallengeScreen extends Component {
 
   constructor(props) {
     super(props);
-    alert(this.props.type);
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
     this.state = {
-      id: this.props.challengeID,
-      name: "",
-      description: "",
-      image: "",
-      type: this.props.type,
-      goal1: "",
-      goal2: "",
-      goal3: "",
-      tags: "",
-      badgeFK: "",
-      badgeName: "",
+      id: props.route.params.challengeID,
+      name: null,
+      description: null,
+      image: null,
+      type: props.route.params.type,
+      goal1: null,
+      goal2: null,
+      goal3: null,
+      tags: null,
+      badgeFK: null,
+      badgeName: null,
     }
   }
 
@@ -53,8 +52,7 @@ class ChallengeScreen extends Component {
   getChallenge = async () => {
     
     // get challenge values from db
-    const snapshot = await get(ref(db, + "/" + this.state.type + "/" + this.state.id));
-    alert("/" + this.state.type + "/" + this.state.id);
+    const snapshot = await get(ref(db, '/challenge/' + this.state.type + '/' + this.state.id));
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
     this.setState({type : (snapshot.val().challengeType)});

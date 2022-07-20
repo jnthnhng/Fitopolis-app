@@ -127,7 +127,7 @@ class CreateChallengeScreen extends Component {
       const auth = getAuth();
       const currentU = auth.currentUser;
     
-      push(reference, {
+      const key = push(reference, {
           badge: badge,
           challengeName: name,
           challengeType: type,
@@ -138,16 +138,16 @@ class CreateChallengeScreen extends Component {
           tags: tags,
           image: ("/challengeImages/" + imageFileName),
           creator: currentU.uid,
-      });
+      }).key;
       
       alert("successfully added challenge! will navigate to view the challenge");
-      goToChallenge();
+      goToChallenge(type, key);
     };
 
-    function goToChallenge() {
+    function goToChallenge(type, key) {
       navigation.navigate("Challenge", {
-        type: 'Weight Lifting',
-        challengeID: '-N7NZQmRB-7oD1wPYt3s',
+        type: type,
+        challengeID: key,
       });
     }
 

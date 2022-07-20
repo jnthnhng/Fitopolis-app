@@ -139,7 +139,7 @@ class CreateChallengeScreen extends Component {
           image: ("/challengeImages/" + imageFileName),
           creator: currentU.uid,
       });
-
+      
       alert("successfully added challenge! will navigate to view the challenge");
 
     };

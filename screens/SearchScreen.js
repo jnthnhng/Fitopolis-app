@@ -13,11 +13,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
-import GetChallenges from '../components/searchFunctions';
+import GetChallenges from '../components/SearchFunction';
 import SectionListResults from '../components/SectionListComponent';
 import MyComponent from '../components/ListItemComponent';
+import { query } from 'firebase/database';
 
 const SearchScreen = ({ navigation }) => {
+  const [queryKey, setQueryKey] = useState('');
   function goToChallengeParticipationScreen() {
     navigation.navigate('Participate');
   }
@@ -70,24 +72,26 @@ const SearchScreen = ({ navigation }) => {
   //     />
   //   );
   // };
-
+  
   const SearchBar = () => {
     const [searchQuery, setSearchQuery] = React.useState('');
-
     const onChangeSearch = (query) => setSearchQuery(query);
 
     return (
       <Searchbar
         style={styles.searchBarContainer}
         inputStyle={{ backgroundColor: 'white' }}
-        icon='search-web'
-        clearIcon='delete'
+        icon="search-web"
+        clearIcon="delete"
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
+        onIconPress={()=>setQueryKey(searchQuery)}
       />
     );
   };
+
+  console.log(queryKey)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,7 +102,7 @@ const SearchScreen = ({ navigation }) => {
         <SearchHeader />
         <SearchBar />
         <SearchChips />
-        {/* <GetChallenges searchType = '' /> */}
+        <GetChallenges searchType={queryKey} />
       </ScrollView>
     </SafeAreaView>
   );

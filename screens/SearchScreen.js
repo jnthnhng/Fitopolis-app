@@ -12,11 +12,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // import AppLoading from 'expo-app-loading';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
-import SearchChips from '../components/FitnessChips'
+import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/searchFunctions';
 import SectionListResults from '../components/SectionListComponent';
 import MyComponent from '../components/ListItemComponent';
-
 
 const SearchScreen = ({ navigation }) => {
   function goToChallengeParticipationScreen() {
@@ -61,13 +60,31 @@ const SearchScreen = ({ navigation }) => {
   //   );
   // };
 
-  const SearchBarBasic = () => {
+  // const SearchBar = () => {
+  //   return (
+  //     <Searchbar
+  //       style={styles.searchBarContainer}
+  //       inputStyle={{ backgroundColor: 'white' }}
+  //       placeholderTextColor={'#c8c8c8'}
+  //       placeholder={'Text here'}
+  //     />
+  //   );
+  // };
+
+  const SearchBar = () => {
+    const [searchQuery, setSearchQuery] = React.useState('');
+
+    const onChangeSearch = (query) => setSearchQuery(query);
+
     return (
       <Searchbar
         style={styles.searchBarContainer}
         inputStyle={{ backgroundColor: 'white' }}
-        placeholderTextColor={'#c8c8c8'}
-        placeholder={'Text here'}
+        icon='search-web'
+        clearIcon='delete'
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
       />
     );
   };
@@ -79,11 +96,9 @@ const SearchScreen = ({ navigation }) => {
           <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
         </View>
         <SearchHeader />
-        <SearchBarBasic />
-        <SearchChips/>
-        <GetChallenges searchType = "Running" />
-        {/* <SectionListBasics /> */}
-        {/* <MyComponent /> */}
+        <SearchBar />
+        <SearchChips />
+        {/* <GetChallenges searchType = '' /> */}
       </ScrollView>
     </SafeAreaView>
   );

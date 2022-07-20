@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { db } from '../database/firebase.js';
-import {
-  ref,
-  onValue,
-  push,
-  update,
-  remove,
-  get,
-  set,
-  child,
-  getDocs,
-  once,
-  on,
-} from 'firebase/database';
+import { ref, get, child } from 'firebase/database';
 
 import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -51,31 +39,21 @@ const GetChallenges = (props) => {
   // }, []);
 
   useEffect(() => {
-    get(child(dbRef, "challenge/" + props.searchType))
-    .then((snapshot) => {
+    get(child(dbRef, 'challenge/' + props.searchType)).then((snapshot) => {
       let data = [];
       snapshot.forEach((child) => {
         data.push(child.val());
       });
       setChallenges(data);
-      // console.log(data);
     });
   }, []);
-  // console.log(challenges);
 
   return (
-    // <View>
-    //   {challenges.length > 0 ? (
-    //     <ItemComponent items={challenges} />
-    //   ) : (
-    //     <Text>No items</Text>
-    //   )}
-    // </View>
     <View>
       {challenges.length > 0 ? (
         <ListResults results={challenges} />
       ) : (
-        <Text>No Results</Text>
+        <Text style={styles.text}>No Results</Text>
       )}
     </View>
   );
@@ -90,3 +68,10 @@ const GetChallenges = (props) => {
 };
 
 export default GetChallenges;
+
+const styles = StyleSheet.create({
+  text: {
+    margin: 20,
+    padding: 20
+  }
+})

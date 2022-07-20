@@ -54,7 +54,7 @@ class CreateChallengeScreen extends Component {
 
   getBadges = async () => {
 
-    const snapshot = await get(ref(db, '/badges'))
+    const snapshot = await get(ref(db, 'badgeImages/'))
     snapshot.forEach((child) => {
       var key = child.key;
       var data = child.val();

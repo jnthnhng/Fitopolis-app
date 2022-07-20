@@ -81,9 +81,9 @@ const SearchScreen = ({ navigation }) => {
         <SearchHeader />
         <SearchBarBasic />
         <SearchChips/>
-        {/* <GetChallenges searchType = "Running" /> */}
+        <GetChallenges searchType = "Running" />
         {/* <SectionListBasics /> */}
-        <MyComponent />
+        {/* <MyComponent /> */}
       </ScrollView>
     </SafeAreaView>
   );

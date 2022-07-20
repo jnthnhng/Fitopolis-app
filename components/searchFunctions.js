@@ -19,6 +19,7 @@ import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ItemComponent from './ItemComponent.js';
 import SectionListResults from './SectionListComponent.js';
+import ListResults from './ListItemComponent.js';
 
 const GetChallenges = (props) => {
   const [challenges, setChallenges] = useState([]);
@@ -72,7 +73,7 @@ const GetChallenges = (props) => {
     // </View>
     <View>
       {challenges.length > 0 ? (
-        <SectionListResults results={challenges} />
+        <ListResults results={challenges} />
       ) : (
         <Text>No Results</Text>
       )}

@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Progress from "react-native-progress";
+import { Avatar } from "react-native-paper";
 
 // Database imports
 import "firebase/compat/storage";
@@ -50,13 +51,11 @@ const RegisterScreen = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
-      const imageFile = result.uri;
-      setImageFileName(imageFile.substring(imageFile.lastIndexOf("/") + 1));
     }
   };
 
-  // Upload image
-  // Adpated from instamobile - https://instamobile.io/mobile-development/react-native-firebase-storage/
+  // Upload image to storage
+  // Adapted from Cat Wallin on her CreateChallengeScreen
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -77,7 +76,7 @@ const RegisterScreen = ({ navigation }) => {
     const ref = firebase
       .storage()
       .ref()
-      .child("/userImages/" + imageFile);
+      .child("userImages/" + imageFile);
     const snapshot = ref.put(blob);
 
     snapshot.on(
@@ -141,11 +140,8 @@ const RegisterScreen = ({ navigation }) => {
             email: email,
             username: username,
             name: name,
-            profilePhoto: "/userImages/" + imageFileName,
+            profilePhoto: "userImages/" + imageFileName,
           });
-        })
-        .then(() => {
-          uploadImage();
         })
         // Navigate to home page
         .then(() => {
@@ -187,21 +183,18 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           secureTextEntry
         />
-        <View style={styles.inputContainer}>
+        <View style={styles.inputImage}>
           <Button
             title="Choose an image from camera roll"
             onPress={pickImage}
           />
           {image != null && transferred == null && (
-            <View>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 100, height: 100 }}
-              />
-              {/* <Button title="upload" onPress={uploadImage} /> */}
+            <View style={styles.inputImage}>
+              <Avatar.Image source={{ uri: image }} size={110} />
+              <Button title="upload" onPress={uploadImage} />
             </View>
           )}
-          {/* {transferred != null && <Text>Uploaded!</Text>} */}
+          {transferred != null && <Text>Uploaded!</Text>}
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -235,6 +228,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+  },
+  inputImage: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     backgroundColor: "white",

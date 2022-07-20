@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,14 +6,110 @@ import {
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
-import { getAuth, signOut } from "firebase/auth";
+
+// Database imports
+import { getAuth, signOut, updateEmail, updatePassword } from "firebase/auth";
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import {
+  set,
+  update,
+  ref,
+  getDatabase,
+  onValue,
+  get,
+  child,
+} from "firebase/database";
+// storage imports for images
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import * as ImagePicker from "expo-image-picker";
+import { Avatar } from "react-native-paper";
 
 const ProfileScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [fnName, setFName] = useState("");
+  const [password, setPassword] = useState("");
+  const [nameUploaded, setNameUploaded] = useState(false);
+  const [usernameUploaded, setUserNameUploaded] = useState(false);
+  const [image, setImage] = useState("");
+  const [imageName, setImageName] = useState("");
+  const [uploading, setUploading] = useState(null);
+  const [transferred, setTransferred] = useState(null);
+  const [url, setUrl] = useState("");
+  const [imageFileName, setImageFileName] = useState(null);
+  const [newImage, setNewImage] = useState(null);
+
+  // Initialize auth and database
   const auth = getAuth();
-  console.log("Profile ", auth.currentUser);
+  const userID = auth.currentUser.uid;
+  console.log("current user", auth.currentUser.uid);
+  const db = getDatabase();
+
+  // const getData = () => {
+  //   get(ref(db, "users/" + userID))
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         setImageName(snapshot.val().profilePhoto);
+  //         getImage(snapshot.val().profilePhoto);
+  //       } else {
+  //         console.log("No data available");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // // Get Image from storage
+  // const getImage = async (profilePhoto) => {
+  //   const storage = getStorage();
+  //   const reference = sRef(storage, profilePhoto);
+  //   await getDownloadURL(reference).then((x) => {
+  //     setUrl(x);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+
+  // Handle name update
+  const handleNameUpdate = () => {
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      name: fnName,
+    }).then(() => {
+      console.log("name updated");
+      setNameUploaded(true);
+    });
+  };
+
+  // Handle name update
+  const handleUserNameUpdate = () => {
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      username: username,
+    }).then(() => {
+      console.log("name updated");
+      setUserNameUploaded(true);
+    });
+  };
+
+  // Handle profile photo update
+  const handleProfileUpdate = (imageFile) => {
+    console.log("Image File Name: ", imageFile);
+    update(ref(db, "users/" + auth.currentUser.uid), {
+      profilePhoto: "userImages/" + imageFile,
+    }).then(() => {
+      console.log("profile updated");
+    });
+  };
+
+  // Handle Sign Out
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -24,6 +120,71 @@ const ProfileScreen = ({ navigation }) => {
       })
       .catch((error) => alert(error.message));
   };
+
+  // Handle Image Picker
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT: ", result.uri);
+
+    if (!result.cancelled) {
+      setNewImage(result.uri);
+    }
+  };
+
+  // Upload image to storage
+  // Adapted from Cat Wallin on her CreateChallengeScreen
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", newImage, true);
+      xhr.send(null);
+    });
+
+    const imageFile = newImage.substring(newImage.lastIndexOf("/") + 1);
+    console.log("Full Image Name: ", newImage);
+    console.log("Image File Name: ", imageFile);
+    setImageFileName(imageFile);
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("userImages/" + imageFile);
+    const snapshot = ref.put(blob);
+    handleProfileUpdate(imageFile);
+
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        setUploading(true);
+      },
+      (error) => {
+        setUploading(true);
+        console.log(error);
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then((url) => {
+          setTransferred(true);
+          console.log("download url: ", url);
+          return url;
+        });
+      }
+    );
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       {auth.currentUser == null ? (
@@ -37,43 +198,44 @@ const ProfileScreen = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Ionicons name="person-circle" size={60} />
+          <Ionicons name="person-circle" size={80} />
           <Text style={styles.logo}>Edit Profile</Text>
-          <Text style={styles.instructions}>
-            Update information below to edit your profile
-          </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="First & Last Name"
+              value={fnName}
+              onChangeText={(text) => setFName(text)}
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={handleNameUpdate}>
+              <Text style={styles.update}>Update</Text>
+            </TouchableOpacity>
+            {nameUploaded && <Ionicons name="checkbox" size={20} />}
+          </View>
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Username"
-              // value={}
-              // onChangeText={text => }
+              value={username}
+              onChangeText={(text) => setUsername(text)}
               style={styles.input}
             />
-            <TextInput
-              placeholder="Email"
-              // value={}
-              // onChangeText={text => }
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Password"
-              // value={}
-              // onChangeText={text => }
-              style={styles.input}
-              secureTextEntry
-            />
-            <TextInput
-              placeholder="Photo Upload (placeholder)"
-              // value={}
-              // onChangeText={text => }
-              style={styles.input}
-              secureTextEntry
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => {}} style={styles.button}>
-              <Text style={styles.buttonText}>Edit Profile</Text>
+            <TouchableOpacity onPress={handleUserNameUpdate}>
+              <Text style={styles.update}>Update</Text>
             </TouchableOpacity>
+            {usernameUploaded && <Ionicons name="checkbox" size={20} />}
+          </View>
+          <View style={styles.inputImage}>
+            <Button
+              title="Choose an image from camera roll"
+              onPress={pickImage}
+            />
+            {newImage != null && transferred == null && (
+              <View style={styles.inputImage}>
+                <Avatar.Image source={{ uri: newImage }} size={110} />
+                <Button title="upload" onPress={uploadImage} />
+              </View>
+            )}
+            {transferred != null && <Text>Uploaded!</Text>}
           </View>
           <View style={styles.buttonSOContainer}>
             <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
@@ -107,7 +269,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputContainer: {
+    flexDirection: "row",
     width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     backgroundColor: "white",
@@ -115,6 +280,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    width: "70%",
+  },
+  inputImage: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  update: {
+    fontSize: 15,
+    paddingLeft: 5,
   },
   buttonContainer: {
     width: "50%",

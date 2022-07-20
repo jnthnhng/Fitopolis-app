@@ -42,6 +42,7 @@ class ChallengeScreen extends Component {
       tags: null,
       badgeFK: null,
       badgeName: null,
+      creator: null,
     }
   }
 
@@ -74,6 +75,11 @@ class ChallengeScreen extends Component {
     const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
     this.setState({badgeName : (badgeSnapshot.val().name)});
     console.log(this.name);
+
+    // get creator username using FK stored in challenge
+    const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
+    this.setState({creator : (userSnapshot.val().username)});
+
   }
 
   challenge = () => {
@@ -98,6 +104,12 @@ class ChallengeScreen extends Component {
             <Text 
               style={styles.text}
               >{this.challenge().description}
+              </Text>
+          </View>
+          <View style={styles.displayContainer}>
+            <Text 
+              style={styles.text}
+              >Created by: {this.challenge().creator}
               </Text>
           </View>
           <View style={styles.displayContainer}>

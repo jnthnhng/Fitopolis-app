@@ -12,8 +12,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // import AppLoading from 'expo-app-loading';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
+import SearchChips from '../components/FitnessChips';
+import GetChallenges from '../components/SearchFunction';
+import ListItemComponent from '../components/ListItemComponent';
+import { query } from 'firebase/database';
 
 const SearchScreen = ({ navigation }) => {
+  const [queryKey, setQueryKey] = useState('');
   function goToChallengeParticipationScreen() {
     navigation.navigate('Participate');
   }
@@ -25,11 +30,6 @@ const SearchScreen = ({ navigation }) => {
     Inter_900Black,
   });
 
-  // If there is an error, use the splash screen while loading
-  // if (!fontsLoaded) {
-  //   return <AppLoading />;
-  // }
-
   // **************************************
 
   const SearchHeader = () => {
@@ -40,66 +40,57 @@ const SearchScreen = ({ navigation }) => {
     );
   };
 
-  const SectionListBasics = () => {
-    return (
-      <View style={styles.resultsBoxContainer}>
-        <SectionList
-          sections={[
-            { title: 'Running', data: ['5K', '10K', '15K'] },
-            {
-              title: 'Swimming',
-              data: ['25m', '50m', '100m', '200m', '500m'],
-            },
-          ]}
-          renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
-          renderSectionHeader={({ section }) => (
-            <Text style={styles.sectionHeader}>{section.title}</Text>
-          )}
-          keyExtractor={(item, index) => item + index}
-        />
-      </View>
-    );
-  };
+  // const SectionListBasics = () => {
+  //   return (
+  //     <View style={styles.resultsBoxContainer}>
+  //       <SectionList
+  //         sections={[
+  //           { title: 'Running', data: ['5K', '10K', '15K'] },
+  //           {
+  //             title: 'Swimming',
+  //             data: ['25m', '50m', '100m', '200m', '500m'],
+  //           },
+  //         ]}
+  //         renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
+  //         renderSectionHeader={({ section }) => (
+  //           <Text style={styles.sectionHeader}>{section.title}</Text>
+  //         )}
+  //         keyExtractor={(item, index) => item + index}
+  //       />
+  //     </View>
+  //   );
+  // };
 
-  const SearchBarBasic = () => {
+  // const SearchBar = () => {
+  //   return (
+  //     <Searchbar
+  //       style={styles.searchBarContainer}
+  //       inputStyle={{ backgroundColor: 'white' }}
+  //       placeholderTextColor={'#c8c8c8'}
+  //       placeholder={'Text here'}
+  //     />
+  //   );
+  // };
+  
+  const SearchBar = () => {
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const onChangeSearch = (query) => setSearchQuery(query);
+
     return (
       <Searchbar
         style={styles.searchBarContainer}
         inputStyle={{ backgroundColor: 'white' }}
-        placeholderTextColor={'#c8c8c8'}
-        placeholder={'Text here'}
+        icon="search-web"
+        clearIcon="delete"
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        onIconPress={()=>setQueryKey(searchQuery)}
       />
     );
   };
 
-  // **************************************
-
-  const SearchChips = () => {
-    return (
-      <View style={styles.chipContainer}>
-        <View style={styles.chip}>
-          <Chip icon="bike" mode="outlined" style={{backgroundColor: '#FF968A'}}>
-            Biking
-          </Chip>
-        </View>
-        <View style={styles.chip}>
-          <Chip icon="swim" mode="outlined" style={{backgroundColor: '#97C1a9'}}>
-            Swimming
-          </Chip>
-        </View>
-        <View style={styles.chip} >
-          <Chip icon="run" mode="outlined" style={{backgroundColor: '#ffffb5'}}>
-            Running
-          </Chip>
-        </View>
-        <View style={styles.chip}>
-          <Chip icon="dumbbell" mode="outlined" style={{backgroundColor: '#ABDEE6'}}>
-            Weightlifting
-          </Chip>
-        </View>
-      </View>
-    );
-  };
+  console.log(queryKey)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -108,9 +99,9 @@ const SearchScreen = ({ navigation }) => {
           <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
         </View>
         <SearchHeader />
+        <SearchBar />
         <SearchChips />
-        <SearchBarBasic />
-        <SectionListBasics />
+        <GetChallenges searchType={queryKey} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -174,16 +165,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-  },
-  chipContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-  chip: {
-    // width: 120,
-    marginLeft: 20,
-    marginTop: 20,
-    marginBottom: 10,
   },
 });
 

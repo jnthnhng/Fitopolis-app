@@ -83,6 +83,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
           <Button>Participate</Button>
           <Button>Complete</Button>
           <Button onPress={pickImage}>Post </Button>
+          <Button onPress={pickImage}>Share </Button>
         </Card.Actions>
       </Card>
     );

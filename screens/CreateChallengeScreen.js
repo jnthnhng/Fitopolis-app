@@ -32,7 +32,7 @@ class CreateChallengeScreen extends Component {
     }
     this.state = {
       badges: [],
-      image: "",
+      image: null,
       name: "",
       type: "",
       badge: "",
@@ -54,7 +54,7 @@ class CreateChallengeScreen extends Component {
 
   getBadges = async () => {
 
-    const snapshot = await get(ref(db, '/badges'))
+    const snapshot = await get(ref(db, 'badgeImages/'))
     snapshot.forEach((child) => {
       var key = child.key;
       var data = child.val();
@@ -118,7 +118,7 @@ class CreateChallengeScreen extends Component {
 
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
-      const reference = ref(db, 'challenge/');
+      const reference = ref(db, 'challenge/' + type);
     
       push(reference, {
           badge: badge,
@@ -199,7 +199,7 @@ class CreateChallengeScreen extends Component {
           <View style={styles.inputContainer}>
               <Text style={styles.input}>Upload Challenge Image</Text>
               <Button title="Pick an image from camera roll" onPress={this.pickImage} />
-              {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 100, height: 100 }} />}
+              {this.state.image != null && <Image source={{ uri: this.state.image }} style={{ width: 100, height: 100 }} />}
               {!this.state.uploading?<Button title="upload" onPress={this.uploadImage} />:<ActivityIndicator size="small" color="#000"/>}
           </View>     
         </View>

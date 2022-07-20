@@ -14,8 +14,7 @@ import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/SearchFunction';
-import SectionListResults from '../components/SectionListComponent';
-import MyComponent from '../components/ListItemComponent';
+import ListItemComponent from '../components/ListItemComponent';
 import { query } from 'firebase/database';
 
 const SearchScreen = ({ navigation }) => {

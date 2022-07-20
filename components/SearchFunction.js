@@ -5,8 +5,6 @@ import { ref, get, child } from 'firebase/database';
 
 import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import ItemComponent from './ItemComponent.js';
-import SectionListResults from './SectionListComponent.js';
 import ListResults from './ListItemComponent.js';
 
 const GetChallenges = (props) => {

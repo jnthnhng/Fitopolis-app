@@ -43,6 +43,7 @@ function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
+      <HomeStack.Screen name="Challenge" component={ChallengeScreen} />
       <HomeStack.Screen
         name="Participate"
         component={ChallengeParticipationScreen}
@@ -161,7 +162,7 @@ export default function App() {
             <Stack.Group initialRouteName={"Splash"}>
               <Stack.Screen
                 name="Splash"
-                component={ChallengeScreen}
+                component={SplashScreen}
                 options={{ headerShown: false }}
               />
               <Stack.Screen name="Login" component={LoginScreen} />

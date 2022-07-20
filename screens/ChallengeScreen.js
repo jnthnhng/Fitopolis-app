@@ -27,14 +27,16 @@ class ChallengeScreen extends Component {
 
   constructor(props) {
     super(props);
+    alert(this.props.type);
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
     this.state = {
+      id: this.props.challengeID,
       name: "",
       description: "",
       image: "",
-      type: "",
+      type: this.props.type,
       goal1: "",
       goal2: "",
       goal3: "",
@@ -51,7 +53,8 @@ class ChallengeScreen extends Component {
   getChallenge = async () => {
     
     // get challenge values from db
-    const snapshot = await get(ref(db, '/challenge/-N7NZQmRB-7oD1wPYt3s'));
+    const snapshot = await get(ref(db, + "/" + this.state.type + "/" + this.state.id));
+    alert("/" + this.state.type + "/" + this.state.id);
     this.setState({name : (snapshot.val().challengeName)});
     this.setState({description : (snapshot.val().description)});
     this.setState({type : (snapshot.val().challengeType)});
@@ -71,8 +74,8 @@ class ChallengeScreen extends Component {
 
     // get badge name using FK stored in challenge
     const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
-    this.setState({badgeName : (badgeSnapshot.val().badgeName)});
-    console.log(this.badgeName);
+    this.setState({badgeName : (badgeSnapshot.val().name)});
+    console.log(this.name);
   }
 
   challenge = () => {
@@ -80,6 +83,8 @@ class ChallengeScreen extends Component {
   }
 
   render() {
+
+
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <ScrollView>

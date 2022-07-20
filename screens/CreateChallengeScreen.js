@@ -29,12 +29,12 @@ import { ScrollView } from "react-native-gesture-handler";
 
 class CreateChallengeScreen extends Component {
 
-  
   constructor(props) {
     super(props);
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+    navigation = this.props.navigation;
     this.state = {
       badges: [],
       image: null,
@@ -141,8 +141,15 @@ class CreateChallengeScreen extends Component {
       });
       
       alert("successfully added challenge! will navigate to view the challenge");
-
+      goToChallenge();
     };
+
+    function goToChallenge() {
+      navigation.navigate("Challenge", {
+        type: 'Weight Lifting',
+        challengeID: '-N7NZQmRB-7oD1wPYt3s',
+      });
+    }
 
 
     // function for input validation 
@@ -266,6 +273,11 @@ class CreateChallengeScreen extends Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => {handleCreateChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                 <Text style={styles.buttonText}>Create Challenge</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={() => {goToChallenge()}} style={styles.button} >
+                <Text style={styles.buttonText}>View A Challenge</Text>
               </TouchableOpacity>
             </View>
           </View>

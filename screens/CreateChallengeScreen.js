@@ -12,6 +12,10 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
 
+import {
+  getAuth,
+} from "firebase/auth";
+
 // database imports
 import 'firebase/compat/storage';
 import firebase from "firebase/compat/app";
@@ -29,8 +33,14 @@ class CreateChallengeScreen extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+    var update = false;
+    if (props.route.params.id != false) {
+      update = true;
+    }
     navigation = this.props.navigation;
     this.state = {
+      id: props.route.params.id,
+      update: update,
       badges: [],
       image: null,
       name: null,
@@ -54,7 +64,7 @@ class CreateChallengeScreen extends Component {
 
   getBadges = async () => {
 
-    const snapshot = await get(ref(db, 'badgeImages/'))
+    const snapshot = await get(ref(db, '/badges'))
     snapshot.forEach((child) => {
       var key = child.key;
       var data = child.val();
@@ -107,7 +117,6 @@ class CreateChallengeScreen extends Component {
     () => {
       snapshot.snapshot.ref.getDownloadURL().then((url) => {
         this.setState({ uploading: false});
-        console.log("download url: ", url);
         return url;
       })
     });
@@ -116,9 +125,23 @@ class CreateChallengeScreen extends Component {
 
   render() {
 
-    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+    let button;
+    if (this.state.update == true) {
+      button = <TouchableOpacity onPress={() => {handleInput(this.state.update, this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <Text style={styles.buttonText}>Update Challenge</Text>
+              </TouchableOpacity>;
+    } else {
+      button = <TouchableOpacity onPress={() => {handleInput(this.state.update, this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <Text style={styles.buttonText}>Create Challenge</Text>
+              </TouchableOpacity>
+    }
+
+
+    function addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
       const reference = ref(db, 'challenge/' + type + "/");
+      const auth = getAuth();
+      const currentU = auth.currentUser;
     
       const key = push(reference, {
           badge: badge,
@@ -133,7 +156,30 @@ class CreateChallengeScreen extends Component {
           creator: currentU.uid,
       }).key;
       
-      alert("successfully added challenge! will navigate to view the challenge");
+      alert("successfully added challenge!");
+      goToChallenge(type, key);
+    };
+
+    function updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+      
+      const reference = ref(db, 'challenge/' + type + "/" + id);
+      const auth = getAuth();
+      const currentU = auth.currentUser;
+    
+      const key = update(reference, {
+          badge: badge,
+          challengeName: name,
+          challengeType: type,
+          description: description,
+          goal1: goal1,
+          goal2: goal2,
+          goal3: goal3,
+          tags: tags,
+          image: ("/challengeImages/" + imageFileName),
+          creator: currentU.uid,
+      }).key;
+      
+      alert("successfully updated challenge!");
       goToChallenge(type, key);
     };
 
@@ -146,7 +192,7 @@ class CreateChallengeScreen extends Component {
 
 
     // function for input validation 
-    function handleCreateChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+    function handleInput(update, id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
   
       if (!badge) {
         alert("Please select a badge");
@@ -184,8 +230,11 @@ class CreateChallengeScreen extends Component {
         alert("Please add a photo");
         return;
       }
+      else if (update == false){
+        addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
+      }
       else {
-        addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)
+        updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
       }
     
     }
@@ -212,6 +261,7 @@ class CreateChallengeScreen extends Component {
                 }}
               > 
                 <Picker.Item label="Pick a Challenge Type" value="" />
+                <Picker.Item label="TEST" value="test" />
                 <Picker.Item label="Weight Lifting" value="Weight Lifting" />
                 <Picker.Item label="Cycling" value="Cycling" />
                 <Picker.Item label="Aerobics" value="Aerobics" />
@@ -264,14 +314,7 @@ class CreateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {handleCreateChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
-                <Text style={styles.buttonText}>Create Challenge</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {goToChallenge()}} style={styles.button} >
-                <Text style={styles.buttonText}>View A Challenge</Text>
-              </TouchableOpacity>
+              {button}
             </View>
           </View>
         </ScrollView>
@@ -280,6 +323,7 @@ class CreateChallengeScreen extends Component {
   }
 
 }
+
 
 
 export default CreateChallengeScreen;

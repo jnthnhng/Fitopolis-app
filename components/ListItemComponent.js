@@ -26,21 +26,22 @@ const ListResults = ({ results }) => {
       try {
         const badgeLocation = await getDownloadURL(sRef(storage, badgePath));
         console.log(badgeLocation);
-        return badgeLocation
+        return badgeLocation;
       } catch (error) {
         console.log('No Photo Found');
       }
     }
     results.map((item) => {
       getBadge(item.badge).then((badgeUri) =>
-        setBadgeView(badgeView => [badgeView,
+        setBadgeView((badgeView) => [
+          badgeView,
           <List.Item
             title={item.challengeName}
             description={item.description}
             left={(props) => <List.Icon {...props} icon="run" />}
             right={(props) => <List.Icon icon={{ uri: badgeUri }} />}
-          />]
-        )
+          />,
+        ])
       );
     });
   }, []);
@@ -49,7 +50,7 @@ const ListResults = ({ results }) => {
   //   const display = (data) => {
   //     return;
   //   };
-//   console.log('uris' + Uris);
+  //   console.log('uris' + Uris);
   //   console.log(badgeView)
   return badgeView;
 };

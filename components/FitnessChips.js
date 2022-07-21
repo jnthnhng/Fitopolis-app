@@ -11,8 +11,9 @@ import GetChallenges from './SearchFunction';
 
 const SearchChips = () => {
   const [query, setQuery] = useState('');
-  // console.log(query);
+  console.log(query);
   // console.log(typeof query)
+  console.log(query == '');
 
   return (
     <>
@@ -32,7 +33,7 @@ const SearchChips = () => {
             icon="swim"
             mode="outlined"
             style={{ backgroundColor: '#97C1a9' }}
-            // onPress={<GetChallenges searchType="Swimming" />}
+            onPress={() => setQuery('Swimming')}
           >
             Swimming
           </Chip>
@@ -53,7 +54,7 @@ const SearchChips = () => {
             icon="dumbbell"
             mode="outlined"
             style={{ backgroundColor: '#ABDEE6' }}
-            // onPress={<GetChallenges searchType="Weightlifting" />}
+            onPress={() => setQuery('Weightlifting')}
           >
             Weightlifting
           </Chip>
@@ -63,7 +64,7 @@ const SearchChips = () => {
             icon="yoga"
             mode="outlined"
             style={{ backgroundColor: '#AAC5E2' }}
-            // onPress={<GetChallenges searchType="Yoga" />}
+            onPress={() => setQuery('Yoga')}
           >
             Yoga
           </Chip>
@@ -73,7 +74,7 @@ const SearchChips = () => {
             icon="walk"
             mode="outlined"
             style={{ backgroundColor: '#C2778B' }}
-            // onPress={<GetChallenges searchType="Aerobics" />}
+            onPress={() => setQuery('Aerobics')}
           >
             Aerobics
           </Chip>
@@ -83,14 +84,14 @@ const SearchChips = () => {
             icon="run-fast"
             mode="outlined"
             style={{ backgroundColor: '#6891C3' }}
-            // onPress={<GetChallenges searchType="Cardio" />}
+            onPress={() => setQuery('Cardio')}
           >
             Cardio
           </Chip>
         </View>
       </View>
       <View style={styles.results}>
-        <GetChallenges searchType={query} />
+        {query == '' ? null : <GetChallenges searchType={query} />}
       </View>
     </>
   );

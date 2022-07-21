@@ -87,8 +87,9 @@ const FitopolisHomeScreen = ({ navigation }) => {
   // }, []);
 
   // Navigate to Create screen
+
   function goToCreate() {
-    navigation.navigate("Create");
+    navigation.navigate("Create", {id: false});
   }
 
   // Navigate to Search screen

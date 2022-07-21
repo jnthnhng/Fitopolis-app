@@ -43,6 +43,7 @@ function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
+      <HomeStack.Screen name="Challenge" component={ChallengeScreen} />
       <HomeStack.Screen
         name="Participate"
         component={ChallengeParticipationScreen}

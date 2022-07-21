@@ -12,6 +12,10 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
 
+import {
+  getAuth,
+} from "firebase/auth";
+
 // database imports
 import 'firebase/compat/storage';
 import firebase from "firebase/compat/app";
@@ -24,26 +28,32 @@ import { ScrollView } from "react-native-gesture-handler";
 
 class CreateChallengeScreen extends Component {
 
-  
   constructor(props) {
     super(props);
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+    var update = false;
+    if (props.route.params.id != false) {
+      update = true;
+    }
+    navigation = this.props.navigation;
     this.state = {
+      id: props.route.params.id,
+      update: update,
       badges: [],
       image: null,
-      name: "",
-      type: "",
-      badge: "",
-      description: "",
-      goal1: "",
-      goal2: "",
-      goal3: "",
-      tags: "",
+      name: null,
+      type: null,
+      badge: null,
+      description: null,
+      goal1: null,
+      goal2: null,
+      goal3: null,
+      tags: null,
       uploading: null,
-      imageFileName: "",
-
+      imageFileName: null,
+      creator: null,
     }
   }
 
@@ -54,7 +64,7 @@ class CreateChallengeScreen extends Component {
 
   getBadges = async () => {
 
-    const snapshot = await get(ref(db, 'badgeImages/'))
+    const snapshot = await get(ref(db, '/badges'))
     snapshot.forEach((child) => {
       var key = child.key;
       var data = child.val();
@@ -107,20 +117,33 @@ class CreateChallengeScreen extends Component {
     () => {
       snapshot.snapshot.ref.getDownloadURL().then((url) => {
         this.setState({ uploading: false});
-        console.log("download url: ", url);
         return url;
       })
     });
   }
-  
+
 
   render() {
 
-    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+    let button;
+    if (this.state.update == true) {
+      button = <TouchableOpacity onPress={() => {handleInput(this.state.update, this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <Text style={styles.buttonText}>Update Challenge</Text>
+              </TouchableOpacity>;
+    } else {
+      button = <TouchableOpacity onPress={() => {handleInput(this.state.update, this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <Text style={styles.buttonText}>Create Challenge</Text>
+              </TouchableOpacity>
+    }
+
+
+    function addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
-      const reference = ref(db, 'challenge/' + type);
+      const reference = ref(db, 'challenge/' + type + "/");
+      const auth = getAuth();
+      const currentU = auth.currentUser;
     
-      push(reference, {
+      const key = push(reference, {
           badge: badge,
           challengeName: name,
           challengeType: type,
@@ -130,91 +153,177 @@ class CreateChallengeScreen extends Component {
           goal3: goal3,
           tags: tags,
           image: ("/challengeImages/" + imageFileName),
+          creator: currentU.uid,
+      }).key;
+      
+      alert("successfully added challenge!");
+      goToChallenge(type, key);
+    };
 
+    function updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+      
+      const reference = ref(db, 'challenge/' + type + "/" + id);
+      const auth = getAuth();
+      const currentU = auth.currentUser;
+    
+      const key = update(reference, {
+          badge: badge,
+          challengeName: name,
+          challengeType: type,
+          description: description,
+          goal1: goal1,
+          goal2: goal2,
+          goal3: goal3,
+          tags: tags,
+          image: ("/challengeImages/" + imageFileName),
+          creator: currentU.uid,
+      }).key;
+      
+      alert("successfully updated challenge!");
+      goToChallenge(type, key);
+    };
+
+    function goToChallenge(type, key) {
+      navigation.navigate("Challenge", {
+        type: type,
+        challengeID: key,
       });
-  }
+    }
+
+
+    // function for input validation 
+    function handleInput(update, id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+  
+      if (!badge) {
+        alert("Please select a badge");
+        return;
+      }
+      else if (!name) {
+        alert("Please enter a challenge name");
+        return;
+      }
+      else if (!type) {
+        alert("Please select a challenge type");
+        return;
+      }
+      else if (!description) {
+        alert("Please enter a challenge description");
+        return;
+      }
+      else if (!goal1) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!goal2) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!goal3) {
+        alert("Please enter a goal");
+        return;
+      }
+      else if (!tags) {
+        alert("Please enter tags");
+        return;
+      }
+      else if (!imageFileName) {
+        alert("Please add a photo");
+        return;
+      }
+      else if (update == false){
+        addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
+      }
+      else {
+        updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
+      }
+    
+    }
 
     return (
       <KeyboardAvoidingView>
-      <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.logo}>Create Challenge</Text>
-        <View style={styles.inputContainer}>
-        <Text style={styles.instructions}>
-          Fill out the information below to create a challenge the Fitopolis
-          Community can participate in!
-        </Text>
-        <View style={styles.inputContainer}>
-          <TextInput 
-            placeholder="Challenge Name" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ name: value})}
-          />
-          <Picker
-            onValueChange={(value) => {
-              this.setState({ type: value});
-            }}
-          > 
-            <Picker.Item label="Pick a Challenge Type" value=""/>
-            <Picker.Item label="Weightlifting" value="Weightlifting" />
-            <Picker.Item label="Cycling" value="Cycling" />
-            <Picker.Item label="Aerobics" value="Aerobics" />
-            <Picker.Item label="Yoga" value="Yoga" />
-            <Picker.Item label="Cardio" value="Cardio" />
-            <Picker.Item label="Swimming" value="Swimming" />
-            <Picker.Item label="Running" value="Running" />
-          </Picker>
-          <Picker 
-            onValueChange={(value) => {
-              this.setState({ badge: value});
-            }}
-          >
-            <Picker.Item label="Pick a Badge" value=""/>
-            {this.state.badges.map(badge =>
-              <Picker.Item label={badge.data.badgeName} value={badge.key} />  
-            )}
-          </Picker>
-          
-            <TextInput placeholder="Description" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ description: value})}
-            />
-            <TextInput placeholder="Goal 1" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ goal1: value})}
-             />
-            <TextInput placeholder="Goal 2" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ goal2: value})}
-            />
-            <TextInput placeholder="Goal 3" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ goal3: value})}
-            />
-            <TextInput placeholder="Tags" 
-            style={styles.input} 
-            onChangeText={value => this.setState({ tags: value})}
-            />
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.logo}>Create Challenge</Text>
+            <View style={styles.inputContainer}>
+            <Text style={styles.instructions}>
+              Fill out the information below to create a challenge the Fitopolis
+              Community can participate in!
+            </Text>
+            <View style={styles.inputContainer}>
+              <TextInput 
+                placeholder="Challenge Name" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ name: value})}
+              />
+              <Picker
+                onValueChange={(value) => {
+                  this.setState({ type: value});
+                }}
+              > 
+                <Picker.Item label="Pick a Challenge Type" value="" />
+                <Picker.Item label="TEST" value="test" />
+                <Picker.Item label="Weight Lifting" value="Weight Lifting" />
+                <Picker.Item label="Cycling" value="Cycling" />
+                <Picker.Item label="Aerobics" value="Aerobics" />
+                <Picker.Item label="Yoga" value="Yoga" />
+                <Picker.Item label="Cardio" value="Cardio" />
+                <Picker.Item label="Swimming" value="Swimming" />
+                <Picker.Item label="Running" value="Running" />
+              </Picker>
+              <Picker 
+                onValueChange={(value) => {
+                  this.setState({ badge: value});
+                }}
+              >
+                <Picker.Item label="Pick a Badge" value="" />
+                {this.state.badges.map(badge =>
+                  <Picker.Item key={badge.key} label={badge.data.name} value={badge.key} />  
+                )}
+              </Picker>
+                <TextInput placeholder="Description" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ description: value})}
+                />
+                <TextInput placeholder="Goal 1" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ goal1: value})}
+                />
+                <TextInput placeholder="Goal 2" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ goal2: value})}
+                />
+                <TextInput placeholder="Goal 3" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ goal3: value})}
+                />
+                <TextInput placeholder="Tags" 
+                style={styles.input} 
+                onChangeText={value => this.setState({ tags: value})}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                  <Text style={styles.input}>Upload Challenge Image</Text>
+                  <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                  {this.state.image != null && 
+                    (<Image 
+                      source={{ uri: this.state.image }} 
+                      style={{ width: 100, height: 100 }} 
+                      />
+                  )}
+                  {!this.state.uploading ? <Button title="upload" onPress={this.uploadImage} /> : <ActivityIndicator size="small" color="#000" />}
+              </View>    
+            </View>
+            <View style={styles.buttonContainer}>
+              {button}
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-              <Text style={styles.input}>Upload Challenge Image</Text>
-              <Button title="Pick an image from camera roll" onPress={this.pickImage} />
-              {this.state.image != null && <Image source={{ uri: this.state.image }} style={{ width: 100, height: 100 }} />}
-              {!this.state.uploading?<Button title="upload" onPress={this.uploadImage} />:<ActivityIndicator size="small" color="#000"/>}
-          </View>     
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {addNewChallenge(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button}>
-            <Text style={styles.buttonText}>Create Challenge</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }
 
 }
+
 
 
 export default CreateChallengeScreen;

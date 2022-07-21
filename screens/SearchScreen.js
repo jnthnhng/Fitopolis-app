@@ -1,37 +1,49 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SectionList,
-} from 'react-native';
-import { Searchbar, Chip } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-// import AppLoading from 'expo-app-loading';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
-import GetChallenges from '../components/SearchFunction';
-import ListItemComponent from '../components/ListItemComponent';
-import { query } from 'firebase/database';
+import GetChallenges from '../components/GetChallenges';
 
+/**
+ * Search screen component that renders the Search screen.
+ * The screen contains a header for the title of the screen,
+ * a search bar that allows users to search by keyword,
+ * and chips of the type of fitness challenges available. The
+ * fitness chips allows users to quickly pull up challenges based on challenge type.
+ */
 const SearchScreen = ({ navigation }) => {
   const [queryKey, setQueryKey] = useState('');
-  function goToChallengeParticipationScreen() {
-    navigation.navigate('Participate');
-  }
 
-  // ************* Font Loading ********************
+  /**
+   * initialState, resetState function, and the useEffect is still a work in progress.
+   * The plan is to reset the initial state so the intial search message is not retained
+   * with future renders.
+   */
+  const initialState = {
+    queryKey: '',
+  };
 
-  // useFonts() returns a boolean depending on if the fonts are ready, or an error
+  const resetState = () => {
+    setQueryKey(initialState);
+  };
+
+  useEffect(() => {
+    resetState;
+  }, [queryKey]);
+
+  /**
+   * Used to load custom google fonts
+   */
   let [fontsLoaded] = useFonts({
     Inter_900Black,
   });
 
-  // **************************************
-
+  /**
+   * A component that returns a View of the Header
+   * @returns {View} Search   Header of the screen
+   */
   const SearchHeader = () => {
     return (
       <View style={styles.header}>
@@ -40,40 +52,13 @@ const SearchScreen = ({ navigation }) => {
     );
   };
 
-  // const SectionListBasics = () => {
-  //   return (
-  //     <View style={styles.resultsBoxContainer}>
-  //       <SectionList
-  //         sections={[
-  //           { title: 'Running', data: ['5K', '10K', '15K'] },
-  //           {
-  //             title: 'Swimming',
-  //             data: ['25m', '50m', '100m', '200m', '500m'],
-  //           },
-  //         ]}
-  //         renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
-  //         renderSectionHeader={({ section }) => (
-  //           <Text style={styles.sectionHeader}>{section.title}</Text>
-  //         )}
-  //         keyExtractor={(item, index) => item + index}
-  //       />
-  //     </View>
-  //   );
-  // };
-
-  // const SearchBar = () => {
-  //   return (
-  //     <Searchbar
-  //       style={styles.searchBarContainer}
-  //       inputStyle={{ backgroundColor: 'white' }}
-  //       placeholderTextColor={'#c8c8c8'}
-  //       placeholder={'Text here'}
-  //     />
-  //   );
-  // };
-  
+  /**
+   * A SearchBar components that allows users to enter a search word. Left Icon is used to
+   * submit the search, which then is saved to "query".
+   * @returns {String} search value
+   */
   const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const onChangeSearch = (query) => setSearchQuery(query);
 
     return (
@@ -81,35 +66,34 @@ const SearchScreen = ({ navigation }) => {
         style={styles.searchBarContainer}
         inputStyle={{ backgroundColor: 'white' }}
         icon="search-web"
+        iconColor="green"
         clearIcon="delete"
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
-        onIconPress={()=>setQueryKey(searchQuery)}
+        onIconPress={() => setQueryKey(searchQuery)}
       />
     );
   };
 
-  console.log(queryKey)
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View>
+    <ScrollView style={styles.container}>
+      {/* <View>
           <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
-        </View>
-        <SearchHeader />
-        <SearchBar />
-        <SearchChips />
-        <GetChallenges searchType={queryKey} />
-      </ScrollView>
-    </SafeAreaView>
+        </View> */}
+      <SearchHeader />
+      <SearchBar />
+      <SearchChips navigation={navigation} />
+      <GetChallenges navigation={navigation} searchType={queryKey} />
+      {resetState}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 10,
     // alignItems: 'center',
     // justifyContent: 'center',
     // paddingHorizontal: 10,
@@ -138,6 +122,9 @@ const styles = StyleSheet.create({
     margin: 10,
     flexDirection: 'row',
     borderRadius: 10,
+    marginBottom: 200,
+    paddingBottom: 200,
+
     // flexWrap: 'wrap',
   },
   text: {

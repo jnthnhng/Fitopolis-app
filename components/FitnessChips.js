@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SectionList,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
-import GetChallenges from './SearchFunction';
+import GetChallenges from './GetChallenges';
 
-const SearchChips = () => {
+const SearchChips = ({ ...props }) => {
   const [query, setQuery] = useState('');
-  console.log(query);
-  // console.log(typeof query)
-  console.log(query == '');
+
+  useEffect(() => {
+    <DisplayResults />;
+  }, [query]);
+
+  const DisplayResults = () => {
+    return (
+      <View style={styles.results}>
+        {query == '' ? null : (
+          <GetChallenges navigation={props.navigation} searchType={query} />
+        )}
+      </View>
+    );
+  };
 
   return (
     <>
@@ -23,7 +28,7 @@ const SearchChips = () => {
             icon="bike"
             mode="outlined"
             style={{ backgroundColor: '#FF968A' }}
-            // onPress={setTheQuery('Cycling')}
+            onPress={() => setQuery('Cycling')}
           >
             Cycling
           </Chip>
@@ -90,9 +95,7 @@ const SearchChips = () => {
           </Chip>
         </View>
       </View>
-      <View style={styles.results}>
-        {query == '' ? null : <GetChallenges searchType={query} />}
-      </View>
+      <DisplayResults />
     </>
   );
 };

@@ -156,7 +156,7 @@ class CreateChallengeScreen extends Component {
             }}
           > 
             <Picker.Item label="Pick a Challenge Type" value=""/>
-            <Picker.Item label="Weight Lifting" value="Weight Lifting" />
+            <Picker.Item label="Weightlifting" value="Weightlifting" />
             <Picker.Item label="Cycling" value="Cycling" />
             <Picker.Item label="Aerobics" value="Aerobics" />
             <Picker.Item label="Yoga" value="Yoga" />

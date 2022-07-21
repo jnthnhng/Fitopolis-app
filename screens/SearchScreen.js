@@ -6,13 +6,21 @@ import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
 
-function goToChallengeParticipationScreen() {
-  navigation.navigate('Participate');
-}
-
+/**
+ * Search screen component that renders the Search screen.
+ * The screen contains a header for the title of the screen,
+ * a search bar that allows users to search by keyword,
+ * and chips of the type of fitness challenges available. The
+ * fitness chips allows users to quickly pull up challenges based on challenge type.
+ */
 const SearchScreen = ({ navigation }) => {
   const [queryKey, setQueryKey] = useState('');
 
+  /**
+   * initialState, resetState function, and the useEffect is still a work in progress.
+   * The plan is to reset the initial state so the intial search message is not retained
+   * with future renders.
+   */
   const initialState = {
     queryKey: '',
   };
@@ -25,15 +33,17 @@ const SearchScreen = ({ navigation }) => {
     resetState;
   }, [queryKey]);
 
-  // ************* Font Loading ********************
-
-  // useFonts() returns a boolean depending on if the fonts are ready, or an error
+  /**
+   * Used to load custom google fonts
+   */
   let [fontsLoaded] = useFonts({
     Inter_900Black,
   });
 
-  // **************************************
-
+  /**
+   * A component that returns a View of the Header
+   * @returns {View} Search   Header of the screen
+   */
   const SearchHeader = () => {
     return (
       <View style={styles.header}>
@@ -42,8 +52,13 @@ const SearchScreen = ({ navigation }) => {
     );
   };
 
+  /**
+   * A SearchBar components that allows users to enter a search word. Left Icon is used to
+   * submit the search, which then is saved to "query".
+   * @returns {String} search value
+   */
   const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const onChangeSearch = (query) => setSearchQuery(query);
 
     return (

@@ -1,24 +1,6 @@
 import { useState } from 'react';
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  DataTable,
-  Checkbox,
-} from 'react-native-paper';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SectionList,
-  FlatList,
-  Dimensions,
-  Image
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -55,8 +37,6 @@ const ChallengeParticipationScreen = ({ navigation }) => {
     }
   };
 
-
-
   //*************************/
   const LeftContent = (props) => (
     <Avatar.Icon {...props} icon="weight-lifter" />
@@ -89,53 +69,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
     );
   };
 
-  const optionsPerPage = [2, 3, 4];
-
-  const ChallengesContainer = () => {
-    const [page, setPage] = React.useState(0);
-    const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-    const [checked, setChecked] = React.useState(false);
-    React.useEffect(() => {
-      setPage(0);
-    }, [itemsPerPage]);
-
-    return (
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Challenges</DataTable.Title>
-          <DataTable.Title numeric>Distance</DataTable.Title>
-          <DataTable.Title numeric>Complete</DataTable.Title>
-        </DataTable.Header>
-
-        <DataTable.Row>
-          <DataTable.Cell>Running</DataTable.Cell>
-          <DataTable.Cell numeric>5</DataTable.Cell>
-          <DataTable.Cell numeric>
-            <Checkbox
-              status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
-            />
-          </DataTable.Cell>
-        </DataTable.Row>
-
-        <DataTable.Pagination
-          page={page}
-          numberOfPages={3}
-          onPageChange={(page) => setPage(page)}
-          label="1-2 of 6"
-          optionsPerPage={optionsPerPage}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          showFastPagination
-          optionsLabel={'Rows per page'}
-        />
-      </DataTable>
-    );
-  };
-
-  const challengeArry = new Array(5).fill(<ChallengeCard />);
+  const challengeArry = new Array(1).fill(<ChallengeCard />);
   const [challenges, setChallenges] = useState(challengeArry);
 
   function renderChallenges({ challenge }) {
@@ -143,7 +77,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.cardContainer}>
+    <ScrollView style={styles.cardContainer}>
       <View style={styles.inputContainer}>
         <FlatList
           data={challenges}
@@ -153,18 +87,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
           key={1}
         />
       </View>
-      
-    </SafeAreaView>
-
-    // <ScrollView>
-
-    //   <View style={styles.container}>
-    //     {/* <Header /> */}
-    //     <ChallengeCard />
-
-    //     <ChallengesContainer />
-    //   </View>
-    // </ScrollView>
+    </ScrollView>
   );
 };
 
@@ -183,11 +106,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   cardContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 50,
-    flexDirection: 'row',
+    // flex: .05,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // padding: 50,
+    // flexDirection: 'row',
   },
   inputContainer: {
     width: screenWidth,

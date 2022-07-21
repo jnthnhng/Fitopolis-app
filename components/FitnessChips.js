@@ -3,13 +3,23 @@ import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import GetChallenges from './GetChallenges';
 
+/**
+ * A Chip component that renders challenge types as chips. This lets user quickly pull up results
+ * based on the key of the chips.
+ *
+ * @param {Object} navigation     Navigation Objects
+ * @returns {View}                A view components with the fitness chips and the results
+ */
 const SearchChips = ({ ...props }) => {
+  // Initialize a state for the key to be used to query
   const [query, setQuery] = useState('');
 
+  // A hook that is used to display results based on changes to the query state
   useEffect(() => {
     <DisplayResults />;
   }, [query]);
 
+  // A component that renders the results
   const DisplayResults = () => {
     return (
       <View style={styles.results}>
@@ -20,6 +30,7 @@ const SearchChips = ({ ...props }) => {
     );
   };
 
+  // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
       <View style={styles.chipContainer}>

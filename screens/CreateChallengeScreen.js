@@ -130,13 +130,8 @@ class CreateChallengeScreen extends Component {
           goal3: goal3,
           tags: tags,
           image: ("/challengeImages/" + imageFileName),
-<<<<<<< HEAD
-          creator: firebase.auth().currentUser.uid,
-      });
-=======
           creator: currentU.uid,
       }).key;
->>>>>>> bc68091 (able to create challenge and then navigate to page displaying challenge)
       
       alert("successfully added challenge! will navigate to view the challenge");
       goToChallenge(type, key);

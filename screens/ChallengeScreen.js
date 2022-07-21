@@ -30,6 +30,7 @@ class ChallengeScreen extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+    navigation = this.props.navigation;
     this.state = {
       id: props.route.params.challengeID,
       name: null,
@@ -68,13 +69,11 @@ class ChallengeScreen extends Component {
     const reference = sRef(storage, snapshot.val().image);
     await getDownloadURL(reference).then((x) => {
       this.setState({image: x});
-      console.log(reference);
     });
 
     // get badge name using FK stored in challenge
     const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
     this.setState({badgeName : (badgeSnapshot.val().name)});
-    console.log(this.name);
 
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
@@ -88,6 +87,11 @@ class ChallengeScreen extends Component {
 
   render() {
 
+    function goToEdit(id) {
+      navigation.navigate("Create", {
+        id: id,
+      });
+    }
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -149,7 +153,7 @@ class ChallengeScreen extends Component {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <TouchableOpacity onPress={() => {goToEdit(this.challenge().id)}} style={styles.button}>
             <Text style={styles.buttonText}>Edit Challenge</Text>
           </TouchableOpacity>
         </View>

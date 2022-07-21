@@ -41,12 +41,25 @@ const GetChallenges = (props) => {
     get(child(dbRef, 'challenge/' + props.searchType)).then((snapshot) => {
       let data = [];
       snapshot.forEach((child) => {
+        console.log("child.val().challengeType")
+        console.log(child.val().challengeType)
+        // console.log(typeof child.val().challengeType)
+        console.log("props.searchType")
+        console.log(props.searchType)
+        console.log(typeof props.searchType)
+        // console.log(child.val().challengeType == props.searchType)
+        if (child.val().challengeType == props.searchType) {
         data.push(child.val());
+        }
+        
       });
+      console.log("data")
+      console.log(data)
       setChallenges(data);
     });
-  }, []);
-
+  }, [props.searchType]);
+  console.log("challenges")
+  console.log(challenges)
   if (props.searchType.length == 0) {
     return (
       <View>

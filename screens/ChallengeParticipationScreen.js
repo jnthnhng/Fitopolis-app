@@ -5,10 +5,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import * as ImagePicker from 'expo-image-picker';
 
+/**
+ * Retrieve the screen size for a more responsive layout
+ */
 const screenWidth = Dimensions.get('window').width;
 const numColumns = 1;
 const tileSize = screenWidth / numColumns;
 
+/**
+ * A component that renders a Card component with buttons that will allow
+ * users to Particpate, mark as Complete, Post, and or Share.
+ */
 const ChallengeParticipationScreen = ({ navigation }) => {
   const Header = () => {
     return (
@@ -17,10 +24,12 @@ const ChallengeParticipationScreen = ({ navigation }) => {
       </View>
     );
   };
-  //*************** ImagePicker */
 
+  /**
+   * Allow the user to pick a photo from their library to upload.
+   * Implementation is still in progress
+   */
   const [image, setImage] = useState(null);
-
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,7 +46,10 @@ const ChallengeParticipationScreen = ({ navigation }) => {
     }
   };
 
-  //*************************/
+  /**
+   *  A card component to render a chard with challenge data from the data base
+   * @returns
+   */
   const LeftContent = (props) => (
     <Avatar.Icon {...props} icon="weight-lifter" />
   );

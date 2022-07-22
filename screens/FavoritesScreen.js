@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,27 +7,74 @@ import {
   FlatList,
   ScrollView,
   Image,
+  Button,
 } from "react-native";
-import { getAuth, signOut } from "firebase/auth";
 
+// Database imports
+import { getAuth } from "firebase/auth";
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import {
+  set,
+  update,
+  ref,
+  getDatabase,
+  onValue,
+  get,
+  child,
+  push,
+} from "firebase/database";
+import GetFavorites from "../components/GetFavorites";
+
+// Other imports
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const FavoritesScreen = ({ navigation }) => {
+  const [favorites, setFavorites] = useState("");
+  const [user, setUser] = useState("");
+
   const auth = getAuth();
-  function goToCreate() {
-    navigation.navigate("Create");
-  }
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        });
-      })
-      .catch((error) => alert(error.message));
+
+  useEffect(() => {
+    setUser(auth.currentUser.uid);
+  });
+
+  // MOCK to add favorites to user accounts - will need to remove
+  const addFavorite = () => {
+    // Mock creating a challenge, need to hook this up to the Challenge screen
+    const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
+    const db = getDatabase();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/favorites/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      challenge: challengeId,
+    });
   };
+
+  // useEffect(() => {
+  //   // An async called to the database with the path to the search word.
+  //   // In this case, it's a challenge type
+  //   // Adapted from code in GetChallenges.js from Jonathan Hang
+  //   get(ref(db, "users/" + auth.currentUser.uid + "/favorites/")).then(
+  //     (snapshot) => {
+  //       let data = [];
+  //       // Loop through each object and push the favorites to the data array
+  //       snapshot.forEach((child) => {
+  //         data.push(child.val());
+  //       });
+  //       console.log("DATA: ", data);
+  //       // Set data array to the favorites state
+  //       setFavorites(data);
+  //     }
+  //   );
+  // }, []);
 
   return (
     <>
@@ -47,14 +94,12 @@ const FavoritesScreen = ({ navigation }) => {
               <Ionicons name="star" size={50} color="gold" />
               <Text style={styles.favorites}>Favorites</Text>
             </View>
-            <View style={styles.challengeInfo}>
-              <View style={styles.challengeContainer}>
-                <Text style={styles.stat}>Challenge 1</Text>
-              </View>
-              <View style={styles.challengeContainer}>
-                <Text style={styles.stat}>Challenge 2</Text>
-              </View>
+            <View>
+              <Button title="Add Favorite" onPress={addFavorite} />
             </View>
+            <ScrollView>
+              <GetFavorites navigation={navigation} searchType={user} />
+            </ScrollView>
           </View>
         </>
       )}

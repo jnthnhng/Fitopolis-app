@@ -42,7 +42,7 @@ const GetFavorites = ({ ...props }) => {
         // Loop through each object and push the challenge that matches the search type
         // to the data array
         snapshot.forEach((child) => {
-          data.push(child.val());
+          // data.push(child.val());
         });
 
         // Set data array to the challenges state

@@ -57,6 +57,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
         if (snapshot.exists()) {
           setImageName(snapshot.val().profilePhoto);
           getImage(snapshot.val().profilePhoto);
+          console.log("USER", userID);
           console.log("user image: ", snapshot.val().profilePhoto);
         } else {
           console.log("No data available");

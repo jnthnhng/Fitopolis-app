@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { Searchbar, Button } from 'react-native-paper';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-=======
-import { StyleSheet, Text, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
->>>>>>> 90465ab (Installed fonts and created a component to load fonts)
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';

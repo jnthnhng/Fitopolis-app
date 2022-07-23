@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { Searchbar, Button } from 'react-native-paper';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
@@ -25,13 +25,9 @@ const SearchScreen = ({ navigation }) => {
     queryKey: '',
   };
 
-  const resetState = () => {
-    setQueryKey(initialState);
-  };
-
-  useEffect(() => {
-    resetState;
-  }, [queryKey]);
+  function resetQuery() {
+    setQueryKey('');
+  }
 
   /**
    * Used to load custom google fonts
@@ -62,30 +58,39 @@ const SearchScreen = ({ navigation }) => {
     const onChangeSearch = (query) => setSearchQuery(query);
 
     return (
-      <Searchbar
-        style={styles.searchBarContainer}
-        inputStyle={{ backgroundColor: 'white' }}
-        icon="search-web"
-        iconColor="green"
-        clearIcon="delete"
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-        onIconPress={() => setQueryKey(searchQuery)}
-      />
+      <>
+        <Searchbar
+          style={styles.searchBarContainer}
+          inputStyle={{ backgroundColor: 'white' }}
+          icon="search-web"
+          iconColor="green"
+          clearIcon="delete"
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          onIconPress={() => setQueryKey(searchQuery)}
+        />
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            icon="delete"
+            mode="contained"
+            onPress={resetQuery}
+          >
+            Clear Results
+          </Button>
+        </View>
+      </>
     );
   };
 
   return (
     <ScrollView style={styles.container}>
-      {/* <View>
-          <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
-        </View> */}
       <SearchHeader />
       <SearchBar />
       <SearchChips navigation={navigation} />
       <GetChallenges navigation={navigation} searchType={queryKey} />
-      {resetState}
+      {/* {resetState} */}
     </ScrollView>
   );
 };
@@ -93,7 +98,8 @@ const SearchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop: 5,
+    // paddingBottom: '50%',
     // alignItems: 'center',
     // justifyContent: 'center',
     // paddingHorizontal: 10,
@@ -101,11 +107,12 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: '10%',
-    backgroundColor: '#e6e4df',
+    // backgroundColor: '#e6e4df',
     alignItems: 'center',
     justifyContent: 'center',
   },
   searchBarContainer: {
+    flex: 1,
     width: '95%',
     // height: '10%',
     backgroundColor: '#e6e4df',
@@ -114,44 +121,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // flexWrap: 'wrap',
   },
-  resultsBoxContainer: {
-    width: '95%',
-    height: '100%',
-    backgroundColor: '#e6e4df',
-    padding: 10,
-    margin: 10,
-    flexDirection: 'row',
-    borderRadius: 10,
-    marginBottom: 200,
-    paddingBottom: 200,
 
-    // flexWrap: 'wrap',
-  },
   text: {
-    fontSize: 21,
+    fontSize: 28,
     color: 'black',
     // paddingVertical: 5,
     // fontFamily: 'ProximaNova',
     fontFamily: 'Inter_900Black',
   },
-  button: {
+  buttonContainer: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
   },
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
+  button: {
+    // alignContent: 'center',
+    // backgroundColor: '#DDDDDD',
+    // padding: 10,
+    width: '40%',
+    marginLeft: '35%',
+    marginRight: '35%',
+    marginTop: '1%',
+    marginBottom: '1%',
   },
 });
 

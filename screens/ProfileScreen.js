@@ -23,12 +23,14 @@ import {
   get,
   child,
 } from "firebase/database";
+
 // storage imports for images
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-paper";
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 const ProfileScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -45,39 +47,18 @@ const ProfileScreen = ({ navigation }) => {
   const [imageFileName, setImageFileName] = useState(null);
   const [newImage, setNewImage] = useState(null);
 
+    /**
+   * Used to load custom google fonts
+   */
+     let [fontsLoaded] = useFonts({
+      Inter_900Black,
+    });
+
   // Initialize auth and database
   const auth = getAuth();
   const userID = auth.currentUser.uid;
   console.log("current user", auth.currentUser.uid);
   const db = getDatabase();
-
-  // const getData = () => {
-  //   get(ref(db, "users/" + userID))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         setImageName(snapshot.val().profilePhoto);
-  //         getImage(snapshot.val().profilePhoto);
-  //       } else {
-  //         console.log("No data available");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // // Get Image from storage
-  // const getImage = async (profilePhoto) => {
-  //   const storage = getStorage();
-  //   const reference = sRef(storage, profilePhoto);
-  //   await getDownloadURL(reference).then((x) => {
-  //     setUrl(x);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, []);
 
   // Handle name update
   const handleNameUpdate = () => {
@@ -198,7 +179,7 @@ const ProfileScreen = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Ionicons name="person-circle" size={80} />
+          <Ionicons name="person-circle" size={80} color="#7f03fc"/>
           <Text style={styles.logo}>Edit Profile</Text>
           <View style={styles.inputContainer}>
             <TextInput
@@ -262,6 +243,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 50,
     marginBottom: 20,
+    fontFamily: 'Inter_900Black',
   },
   instructions: {
     color: "black",

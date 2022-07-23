@@ -48,6 +48,7 @@ class ChallengeScreen extends Component {
   }
 
   componentDidMount() {
+    this.setState({});
     this.getChallenge();
   }
 

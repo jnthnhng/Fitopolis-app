@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
 import GetChallenges from './GetChallenges';
+import GetFonts from './GetFonts';
 
 /**
  * A Chip component that renders challenge types as chips. This lets user quickly pull up results
@@ -37,8 +38,9 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
+      {/* <Text style={styles.text}>Test Text</Text> */}
       <View style={styles.chipContainer}>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="bike"
             mode="outlined"
@@ -48,7 +50,7 @@ const SearchChips = ({ ...props }) => {
             Cycling
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="swim"
             mode="outlined"
@@ -58,7 +60,7 @@ const SearchChips = ({ ...props }) => {
             Swimming
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="run"
             mode="outlined"
@@ -69,7 +71,7 @@ const SearchChips = ({ ...props }) => {
             Running
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="dumbbell"
             mode="outlined"
@@ -79,7 +81,7 @@ const SearchChips = ({ ...props }) => {
             Weightlifting
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="yoga"
             mode="outlined"
@@ -89,7 +91,7 @@ const SearchChips = ({ ...props }) => {
             Yoga
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="walk"
             mode="outlined"
@@ -99,7 +101,7 @@ const SearchChips = ({ ...props }) => {
             Aerobics
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="run-fast"
             mode="outlined"
@@ -109,7 +111,7 @@ const SearchChips = ({ ...props }) => {
             Cardio
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="delete"
             mode="outlined"
@@ -134,11 +136,15 @@ const styles = StyleSheet.create({
   results: {
     flex: 1,
   },
-  chip: {
+  chipView: {
     // width: 120,
     marginLeft: 20,
     marginTop: 5,
     marginBottom: 10,
+  },
+  text: {
+    fontSize: 45,
+    // fontFamily: 'Lato_900Black',
   },
 });
 

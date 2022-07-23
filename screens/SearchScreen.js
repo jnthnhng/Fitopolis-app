@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { Searchbar, Button } from 'react-native-paper';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
+import GetFonts from '../components/GetFonts';
 
 /**
  * Search screen component that renders the Search screen.
@@ -28,13 +28,6 @@ const SearchScreen = ({ navigation }) => {
   function resetQuery() {
     setQueryKey('');
   }
-
-  /**
-   * Used to load custom google fonts
-   */
-  let [fontsLoaded] = useFonts({
-    Inter_900Black,
-  });
 
   /**
    * A component that returns a View of the Header
@@ -123,11 +116,9 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 28,
+    fontSize: 25,
     color: 'black',
-    // paddingVertical: 5,
-    // fontFamily: 'ProximaNova',
-    fontFamily: 'Inter_900Black',
+    // fontFamily: 'Lato_400Regular',
   },
   buttonContainer: {
     alignItems: 'center',

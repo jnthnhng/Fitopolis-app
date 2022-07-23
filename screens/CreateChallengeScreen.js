@@ -120,7 +120,7 @@ class CreateChallengeScreen extends Component {
 
   render() {
 
-    function addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+    function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
       const reference = ref(db, 'challenge/' + type + "/");
       const auth = getAuth();
@@ -140,8 +140,16 @@ class CreateChallengeScreen extends Component {
       }).key;
       
       alert("successfully added challenge!");
+      addToUserCreatedList(type, key, currentU.uid);
       goToChallenge(type, key);
     };
+
+    function addToUserCreatedList(type, key, uid){
+      const reference = ref(db, 'users/' + uid + "/created");
+      push(reference, {
+        challenge: (type + "/" + key)
+      });
+    }
 
     function goToChallenge(type, key) {
       navigation.navigate("Challenge", {
@@ -152,7 +160,7 @@ class CreateChallengeScreen extends Component {
 
 
     // function for input validation 
-    function handleInput(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+    function handleInput(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
   
       if (!badge) {
         alert("Please select a badge");
@@ -191,7 +199,7 @@ class CreateChallengeScreen extends Component {
         return;
       }
       else {
-        addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
+        addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
       }
     
     }
@@ -271,7 +279,7 @@ class CreateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <TouchableOpacity onPress={() => {handleInput(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                 <Text style={styles.buttonText}>Create Challenge</Text>
               </TouchableOpacity>
             </View>

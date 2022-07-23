@@ -12,6 +12,10 @@ const ListResults = ({ ...props }) => {
   // Initialize state
   const [badgeView, setBadgeView] = useState([]);
 
+  function alertFunc() {
+    alert("hi")
+  }
+
   // A function to navigate to the Challenge Participation Screen
   function navigationToParticipate() {
     return props.navigation.navigate('Participate');
@@ -48,7 +52,7 @@ const ListResults = ({ ...props }) => {
               title={item.challengeName}
               description={item.description}
               left={(props) => <List.Icon {...props} icon="run" />}
-              right={(props) => <List.Icon icon={{ uri: badgeUri }} />}
+              right={(props) => <List.Icon icon={{ uri: badgeUri }} onPress={alertFunc}/>}
               onPress={navigationToParticipate}
             />
           </>,

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
+import GetFonts from '../components/getFonts';
 
 /**
  * Search screen component that renders the Search screen.
@@ -32,13 +32,6 @@ const SearchScreen = ({ navigation }) => {
   useEffect(() => {
     resetState;
   }, [queryKey]);
-
-  /**
-   * Used to load custom google fonts
-   */
-  let [fontsLoaded] = useFonts({
-    Inter_900Black,
-  });
 
   /**
    * A component that returns a View of the Header
@@ -78,9 +71,6 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <View>
-          <Text onPress={goToChallengeParticipationScreen}> Participate</Text>
-        </View> */}
       <SearchHeader />
       <SearchBar />
       <SearchChips navigation={navigation} />
@@ -128,25 +118,14 @@ const styles = StyleSheet.create({
     // flexWrap: 'wrap',
   },
   text: {
-    fontSize: 21,
+    fontSize: 25,
     color: 'black',
-    // paddingVertical: 5,
-    // fontFamily: 'ProximaNova',
-    fontFamily: 'Inter_900Black',
+    fontFamily: 'Lato_400Regular',
   },
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
-  },
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
   },
   item: {
     padding: 10,

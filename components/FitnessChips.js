@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
 import GetChallenges from './GetChallenges';
+import GetFonts from './GetFonts';
 
 /**
  * A Chip component that renders challenge types as chips. This lets user quickly pull up results
@@ -37,7 +38,6 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
-      <Text style={styles.text}>Test Text</Text>
       <View style={styles.chipContainer}>
         <View style={styles.chipView}>
           <Chip
@@ -110,7 +110,7 @@ const SearchChips = ({ ...props }) => {
             Cardio
           </Chip>
         </View>
-        <View style={styles.chip}>
+        <View style={styles.chipView}>
           <Chip
             icon="delete"
             mode="outlined"
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 45,
-    fontFamily: 'Lato_700Bold',
+    // fontFamily: 'Lato_900Black',
   },
 });
 

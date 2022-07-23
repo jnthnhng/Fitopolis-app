@@ -83,10 +83,6 @@ const FitopolisHomeScreen = ({ navigation }) => {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   getImage();
-  // }, []);
-
   // Navigate to Create screen
 
   function goToCreate() {

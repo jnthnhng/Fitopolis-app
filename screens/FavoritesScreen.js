@@ -31,6 +31,10 @@ import GetFavorites from "../components/GetFavorites";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 const FavoritesScreen = ({ navigation }) => {
   const [favorites, setFavorites] = useState("");
   const [user, setUser] = useState("");
@@ -77,19 +81,8 @@ const FavoritesScreen = ({ navigation }) => {
   // }, []);
 
   return (
-    <>
-      {auth.currentUser == null ? (
-        <View style={styles.container1}>
-          <Text>Please login to access data</Text>
-          <View style={styles.buttonSOContainer}>
-            <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
-              <Text style={styles.buttonSOText}>Login</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
         <>
-          <View style={styles.container}>
+          <View style={styles.headerContainer}>
             <View style={styles.header}>
               <Ionicons name="star" size={50} color="gold" />
               <Text style={styles.favorites}>Favorites</Text>
@@ -97,23 +90,27 @@ const FavoritesScreen = ({ navigation }) => {
             <View>
               <Button title="Add Favorite" onPress={addFavorite} />
             </View>
-            <ScrollView>
+            <View style={styles.container}>
               <GetFavorites navigation={navigation} searchType={user} />
-            </ScrollView>
+            </View>
           </View>
         </>
-      )}
-    </>
   );
 };
 
 export default FavoritesScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  headerContainer: {
     flex: 1,
     backgroundColor: "#e6e4df",
     alignItems: "center",
+  },
+  container: {
+    flex: 4,
+    paddingTop: 10,
+    backgroundColor: "red",
+    width: "95%",
   },
   container1: {
     flex: 1,

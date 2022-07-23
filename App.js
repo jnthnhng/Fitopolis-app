@@ -68,6 +68,10 @@ function FavoritesStackScreen() {
   return (
     <FavoritesStack.Navigator>
       <FavoritesStack.Screen name="My Favorites" component={FavoritesScreen} />
+      <FavoritesStack.Screen
+        name="Participate"
+        component={ChallengeParticipationScreen}
+      />
     </FavoritesStack.Navigator>
   );
 }

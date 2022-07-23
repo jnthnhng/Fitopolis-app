@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
-import { Searchbar, Button } from 'react-native-paper';
+import { StyleSheet, Text, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
+import GetFonts from '../components/getFonts';
 
 /**
  * Search screen component that renders the Search screen.

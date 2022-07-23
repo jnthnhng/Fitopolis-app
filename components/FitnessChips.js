@@ -38,6 +38,7 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
+      <Text style={styles.text}>Test Text</Text>
       <View style={styles.chipContainer}>
         <View style={styles.chipView}>
           <Chip
@@ -143,7 +144,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 45,
+<<<<<<< HEAD
     // fontFamily: 'Lato_900Black',
+=======
+    fontFamily: 'Lato_700Bold',
+>>>>>>> 90465ab (Installed fonts and created a component to load fonts)
   },
 });
 

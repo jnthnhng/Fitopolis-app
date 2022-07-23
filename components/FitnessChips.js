@@ -38,6 +38,7 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
+      <Text style={styles.text}>Test Text</Text>
       <View style={styles.chipContainer}>
         <View style={styles.chipView}>
           <Chip

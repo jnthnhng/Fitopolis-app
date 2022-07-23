@@ -26,6 +26,7 @@ import {
   push,
 } from "firebase/database";
 import GetFavorites from "../components/GetFavorites";
+import ListResults from "../components/ListResultsComponent.js";
 
 // Other imports
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -36,14 +37,48 @@ if (!firebase.apps.length) {
 }
 
 const FavoritesScreen = ({ navigation }) => {
-  const [favorites, setFavorites] = useState("");
+  const [favorites, setFavorites] = useState(null);
   const [user, setUser] = useState("");
+  const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
+  const userID = auth.currentUser.uid;
+  const db = getDatabase();
+
+  const addChallengeToEnd = (newChallenge) => {
+    setChallenges(state => [...state, newChallenge]);
+  }
+
+  const getFavorites = () => {
+    get(ref(db, "users/" + userID + "/favorites/")).then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((element) => {
+          console.log("fave element: ", element.val().challenge);
+          getChallengeInfo(element.val().challenge);
+        });
+      }
+    });
+  };
+
+  const getChallengeInfo = (challengePath) => {
+    get(ref(db, "challenge/" + challengePath)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log("challenge snapshot: ", snapshot.val());
+        addChallengeToEnd(snapshot.val());
+      }
+    });
+  };
 
   useEffect(() => {
-    setUser(auth.currentUser.uid);
-  });
+    console.log("NEW");
+    getFavorites();
+  }, []);
+
+    // Navigate to Participate screen
+
+    function goToParticipate() {
+      navigation.navigate("Participate", {id: false});
+    }
 
   // MOCK to add favorites to user accounts - will need to remove
   const addFavorite = () => {
@@ -62,39 +97,28 @@ const FavoritesScreen = ({ navigation }) => {
     });
   };
 
-  // useEffect(() => {
-  //   // An async called to the database with the path to the search word.
-  //   // In this case, it's a challenge type
-  //   // Adapted from code in GetChallenges.js from Jonathan Hang
-  //   get(ref(db, "users/" + auth.currentUser.uid + "/favorites/")).then(
-  //     (snapshot) => {
-  //       let data = [];
-  //       // Loop through each object and push the favorites to the data array
-  //       snapshot.forEach((child) => {
-  //         data.push(child.val());
-  //       });
-  //       console.log("DATA: ", data);
-  //       // Set data array to the favorites state
-  //       setFavorites(data);
-  //     }
-  //   );
-  // }, []);
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.item} onPress={goToParticipate}>
+      <Text style={styles.itemHeader}>{item.challengeName}</Text>
+      <Text style={styles.itemDescription}>{item.description}</Text>
+    </TouchableOpacity>
+  );
 
   return (
-        <>
-          <View style={styles.headerContainer}>
-            <View style={styles.header}>
-              <Ionicons name="star" size={50} color="gold" />
-              <Text style={styles.favorites}>Favorites</Text>
-            </View>
-            <View>
-              <Button title="Add Favorite" onPress={addFavorite} />
-            </View>
-            <View style={styles.container}>
-              <GetFavorites navigation={navigation} searchType={user} />
-            </View>
-          </View>
-        </>
+    <>
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <Ionicons name="star" size={50} color="#ebcafc" />
+          <Text style={styles.favorites}>Favorites</Text>
+        </View>
+        <View>
+          <Button title="Add Favorite" onPress={addFavorite} />
+        </View>
+        <View>
+          <FlatList data={challenges} renderItem={renderItem} />
+        </View>
+      </View>
+    </>
   );
 };
 
@@ -112,11 +136,23 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     width: "95%",
   },
-  container1: {
-    flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+  item: {
+    backgroundColor: '#f6ebfc',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    elevation: 2,
+    shadowColor: "black",
+    shadowOpacity: 0.25
+  },
+  itemHeader: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  itemDescription: {
+    fontSize: 12,
+    fontStyle: "italic",
   },
   header: {
     alignItems: "center",
@@ -128,37 +164,6 @@ const styles = StyleSheet.create({
     fontSize: 50,
     marginBottom: 20,
   },
-  challengeInfo: {
-    flexDirection: "row",
-    flexShrink: 1,
-    paddingTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-  },
-  challengeContainer: {
-    padding: 5,
-    elevation: 4,
-    backgroundColor: "#c7c7c3",
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    textAlign: "center",
-    flexShrink: 1,
-  },
-  stat: {
-    flexShrink: 1,
-    textAlign: "center",
-    fontWeight: "600",
-    fontSize: 20,
-  },
-  buttonContainer: {
-    flex: 2,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-  },
   button: {
     backgroundColor: "#3b3a39",
     width: "70%",
@@ -166,32 +171,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "600",
-    fontSize: 20,
-  },
-  manageText: {
-    fontWeight: "600",
-    fontSize: 25,
-    paddingBottom: 15,
-  },
-  buttonSOContainer: {
-    width: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-  },
-  buttonSO: {
-    width: "100%",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonSOText: {
-    color: "black",
-    fontWeight: "600",
-    fontSize: 18,
   },
 });

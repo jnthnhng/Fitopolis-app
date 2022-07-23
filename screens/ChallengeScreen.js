@@ -87,9 +87,10 @@ class ChallengeScreen extends Component {
 
   render() {
 
-    function goToEdit(id) {
-      navigation.navigate("Create", {
+    function goToEdit(id, type) {
+      navigation.navigate("Update", {
         id: id,
+        type: type,
       });
     }
 
@@ -153,7 +154,7 @@ class ChallengeScreen extends Component {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {goToEdit(this.challenge().id)}} style={styles.button}>
+          <TouchableOpacity onPress={() => {goToEdit(this.challenge().id, this.challenge().type)}} style={styles.button}>
             <Text style={styles.buttonText}>Edit Challenge</Text>
           </TouchableOpacity>
         </View>

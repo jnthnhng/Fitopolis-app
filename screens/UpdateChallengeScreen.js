@@ -26,7 +26,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 
 
-class CreateChallengeScreen extends Component {
+class UpdateChallengeScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -39,7 +39,7 @@ class CreateChallengeScreen extends Component {
       badges: [],
       image: null,
       name: null,
-      type: null,
+      type: props.route.params.type,
       badge: null,
       description: null,
       goal1: null,
@@ -55,6 +55,7 @@ class CreateChallengeScreen extends Component {
   // get badge info for displaying
   componentDidMount() {
     this.getBadges();
+    this.getChallenge();
   }
 
   getBadges = async () => {
@@ -68,6 +69,37 @@ class CreateChallengeScreen extends Component {
       }));
     })
     
+  }
+
+  getChallenge = async () => {
+    
+    // get challenge values from db
+    const snapshot = await get(ref(db, '/challenge/' + this.state.type + '/' + this.state.id));
+    this.setState({name : (snapshot.val().challengeName)});
+    this.setState({description : (snapshot.val().description)});
+    this.setState({type : (snapshot.val().challengeType)});
+    this.setState({goal1 : (snapshot.val().goal1)});
+    this.setState({goal2 : (snapshot.val().goal2)});
+    this.setState({goal3 : (snapshot.val().goal3)});
+    this.setState({tags : (snapshot.val().tags)});
+    this.setState({badge : (snapshot.val().badge)});
+    this.setState({imageFileName : (snapshot.val().image).slice(17)})
+
+    // get image from storage using image path
+    var storage = getStorage();
+    const reference = sRef(storage, snapshot.val().image);
+    await getDownloadURL(reference).then((x) => {
+      this.setState({image: x});
+    });
+
+    // get badge name using FK stored in challenge
+    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
+    this.setState({badgeName : (badgeSnapshot.val().name)});
+
+    // get creator username using FK stored in challenge
+    const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
+    this.setState({creator : (userSnapshot.val().username)});
+
   }
 
   pickImage = async () => {
@@ -120,13 +152,14 @@ class CreateChallengeScreen extends Component {
 
   render() {
 
-    function addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
+
+    function updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
-      const reference = ref(db, 'challenge/' + type + "/");
+      const reference = ref(db, 'challenge/' + type + "/" + id);
       const auth = getAuth();
       const currentU = auth.currentUser;
     
-      const key = push(reference, {
+      const key = update(reference, {
           badge: badge,
           challengeName: name,
           challengeType: type,
@@ -139,7 +172,7 @@ class CreateChallengeScreen extends Component {
           creator: currentU.uid,
       }).key;
       
-      alert("successfully added challenge!");
+      alert("successfully updated challenge!");
       goToChallenge(type, key);
     };
 
@@ -191,7 +224,7 @@ class CreateChallengeScreen extends Component {
         return;
       }
       else {
-        addNewChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
+        updateChallenge(id, badge, name, type, description, goal1, goal2, goal3, tags, imageFileName)
       }
     
     }
@@ -200,15 +233,14 @@ class CreateChallengeScreen extends Component {
       <KeyboardAvoidingView>
         <ScrollView>
           <View style={styles.container}>
-            <Text style={styles.logo}>Create Challenge</Text>
+            <Text style={styles.logo}>Update Challenge</Text>
             <View style={styles.inputContainer}>
             <Text style={styles.instructions}>
-              Fill out the information below to create a challenge the Fitopolis
-              Community can participate in!
+              Edit your challenge!
             </Text>
             <View style={styles.inputContainer}>
               <TextInput 
-                placeholder="Challenge Name" 
+                value={this.state.name} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
@@ -217,7 +249,7 @@ class CreateChallengeScreen extends Component {
                   this.setState({ type: value});
                 }}
               > 
-                <Picker.Item label="Pick a Challenge Type" value="" />
+                <Picker.Item label={this.state.type} value={this.state.type} />
                 <Picker.Item label="TEST" value="test" />
                 <Picker.Item label="Weight Lifting" value="Weight Lifting" />
                 <Picker.Item label="Cycling" value="Cycling" />
@@ -237,23 +269,23 @@ class CreateChallengeScreen extends Component {
                   <Picker.Item key={badge.key} label={badge.data.name} value={badge.key} />  
                 )}
               </Picker>
-                <TextInput placeholder="Description" 
+                <TextInput value={this.state.description} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ description: value})}
                 />
-                <TextInput placeholder="Goal 1" 
+                <TextInput value={this.state.goal1} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ goal1: value})}
                 />
-                <TextInput placeholder="Goal 2" 
+                <TextInput value={this.state.goal2} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ goal2: value})}
                 />
-                <TextInput placeholder="Goal 3" 
+                <TextInput value={this.state.goal3}  
                 style={styles.input} 
                 onChangeText={value => this.setState({ goal3: value})}
                 />
-                <TextInput placeholder="Tags" 
+                <TextInput value={this.state.tags} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ tags: value})}
                 />
@@ -271,9 +303,9 @@ class CreateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
-                <Text style={styles.buttonText}>Create Challenge</Text>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+                    <Text style={styles.buttonText}>Update Challenge</Text>
+                </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -285,7 +317,7 @@ class CreateChallengeScreen extends Component {
 
 
 
-export default CreateChallengeScreen;
+export default UpdateChallengeScreen;
 
 const styles = StyleSheet.create({
   container: {

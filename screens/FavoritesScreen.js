@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,57 +7,125 @@ import {
   FlatList,
   ScrollView,
   Image,
+  Button,
 } from "react-native";
-import { getAuth, signOut } from "firebase/auth";
 
+// Database imports
+import { getAuth } from "firebase/auth";
+import "firebase/compat/storage";
+import firebase from "firebase/compat/app";
+import { db, storage, firebaseConfig } from "../database/firebase.js";
+import {
+  set,
+  update,
+  ref,
+  getDatabase,
+  onValue,
+  get,
+  child,
+  push,
+} from "firebase/database";
+import GetFavorites from "../components/GetFavorites";
+import ListResults from "../components/ListResultsComponent.js";
+
+// Other imports
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const FavoritesScreen = ({ navigation }) => {
+  const [favorites, setFavorites] = useState(null);
+  const [user, setUser] = useState("");
+  const [challenges, setChallenges] = useState([]);
+
   const auth = getAuth();
-  function goToCreate() {
-    navigation.navigate("Create");
+  const userID = auth.currentUser.uid;
+  const db = getDatabase();
+
+    /**
+   * Used to load custom google fonts
+   */
+     let [fontsLoaded] = useFonts({
+      Inter_900Black,
+    });
+
+  const addChallengeToEnd = (newChallenge) => {
+    setChallenges(state => [...state, newChallenge]);
   }
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
+
+  const getFavorites = () => {
+    get(ref(db, "users/" + userID + "/favorites/")).then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((element) => {
+          console.log("fave element: ", element.val().challenge);
+          getChallengeInfo(element.val().challenge);
         });
-      })
-      .catch((error) => alert(error.message));
+      }
+    });
   };
+
+  const getChallengeInfo = (challengePath) => {
+    get(ref(db, "challenge/" + challengePath)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log("challenge snapshot: ", snapshot.val());
+        addChallengeToEnd(snapshot.val());
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log("NEW");
+    getFavorites();
+  }, []);
+
+    // Navigate to Participate screen
+
+    function goToParticipate() {
+      navigation.navigate("Participate", {id: false});
+    }
+
+  // MOCK to add favorites to user accounts - will need to remove
+  const addFavorite = () => {
+    // Mock creating a challenge, need to hook this up to the Challenge screen
+    const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
+    const db = getDatabase();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/favorites/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      challenge: challengeId,
+    });
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.item} onPress={goToParticipate}>
+      <Text style={styles.itemHeader}>{item.challengeName}</Text>
+      <Text style={styles.itemDescription}>{item.description}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <>
-      {auth.currentUser == null ? (
-        <View style={styles.container1}>
-          <Text>Please login to access data</Text>
-          <View style={styles.buttonSOContainer}>
-            <TouchableOpacity onPress={handleSignOut} style={styles.buttonSO}>
-              <Text style={styles.buttonSOText}>Login</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <Ionicons name="star" size={50} color="#7f03fc" />
+          <Text style={styles.favorites}>Favorites</Text>
         </View>
-      ) : (
-        <>
-          <View style={styles.container}>
-            <View style={styles.header}>
-              <Ionicons name="star" size={50} color="gold" />
-              <Text style={styles.favorites}>Favorites</Text>
-            </View>
-            <View style={styles.challengeInfo}>
-              <View style={styles.challengeContainer}>
-                <Text style={styles.stat}>Challenge 1</Text>
-              </View>
-              <View style={styles.challengeContainer}>
-                <Text style={styles.stat}>Challenge 2</Text>
-              </View>
-            </View>
-          </View>
-        </>
-      )}
+        <View>
+          <Button title="Add Favorite" onPress={addFavorite} />
+        </View>
+        <View>
+          <FlatList data={challenges} renderItem={renderItem} />
+        </View>
+      </View>
     </>
   );
 };
@@ -65,16 +133,34 @@ const FavoritesScreen = ({ navigation }) => {
 export default FavoritesScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  headerContainer: {
     flex: 1,
     backgroundColor: "#e6e4df",
     alignItems: "center",
   },
-  container1: {
-    flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+  container: {
+    flex: 4,
+    paddingTop: 10,
+    backgroundColor: "red",
+    width: "95%",
+  },
+  item: {
+    backgroundColor: '#f6ebfc',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    elevation: 2,
+    shadowColor: "black",
+    shadowOpacity: 0.25
+  },
+  itemHeader: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  itemDescription: {
+    fontSize: 12,
+    fontStyle: "italic",
   },
   header: {
     alignItems: "center",
@@ -82,40 +168,10 @@ const styles = StyleSheet.create({
   },
   favorites: {
     color: "black",
+    fontFamily: 'Inter_900Black',
     fontWeight: "bold",
     fontSize: 50,
     marginBottom: 20,
-  },
-  challengeInfo: {
-    flexDirection: "row",
-    flexShrink: 1,
-    paddingTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-  },
-  challengeContainer: {
-    padding: 5,
-    elevation: 4,
-    backgroundColor: "#c7c7c3",
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    textAlign: "center",
-    flexShrink: 1,
-  },
-  stat: {
-    flexShrink: 1,
-    textAlign: "center",
-    fontWeight: "600",
-    fontSize: 20,
-  },
-  buttonContainer: {
-    flex: 2,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
   },
   button: {
     backgroundColor: "#3b3a39",
@@ -124,32 +180,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "600",
-    fontSize: 20,
-  },
-  manageText: {
-    fontWeight: "600",
-    fontSize: 25,
-    paddingBottom: 15,
-  },
-  buttonSOContainer: {
-    width: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-  },
-  buttonSO: {
-    width: "100%",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  buttonSOText: {
-    color: "black",
-    fontWeight: "600",
-    fontSize: 18,
   },
 });

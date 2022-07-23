@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,13 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-} from "react-native";
+} from 'react-native';
 
 // Database imports
-import { getAuth, signOut, updateEmail, updatePassword } from "firebase/auth";
-import "firebase/compat/storage";
-import firebase from "firebase/compat/app";
-import { db, storage, firebaseConfig } from "../database/firebase.js";
+import { getAuth, signOut, updateEmail, updatePassword } from 'firebase/auth';
+import 'firebase/compat/storage';
+import firebase from 'firebase/compat/app';
+import { db, storage, firebaseConfig } from '../database/firebase.js';
 import {
   set,
   update,
@@ -22,71 +22,64 @@ import {
   onValue,
   get,
   child,
-} from "firebase/database";
+} from 'firebase/database';
 
 // storage imports for images
-import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
+import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import * as ImagePicker from "expo-image-picker";
-import { Avatar } from "react-native-paper";
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as ImagePicker from 'expo-image-picker';
+import { Avatar } from 'react-native-paper';
+import GetFonts from '../components/GetFonts.js';
 
 const ProfileScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [fnName, setFName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [fnName, setFName] = useState('');
+  const [password, setPassword] = useState('');
   const [nameUploaded, setNameUploaded] = useState(false);
   const [usernameUploaded, setUserNameUploaded] = useState(false);
-  const [image, setImage] = useState("");
-  const [imageName, setImageName] = useState("");
+  const [image, setImage] = useState('');
+  const [imageName, setImageName] = useState('');
   const [uploading, setUploading] = useState(null);
   const [transferred, setTransferred] = useState(null);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
   const [imageFileName, setImageFileName] = useState(null);
   const [newImage, setNewImage] = useState(null);
-
-    /**
-   * Used to load custom google fonts
-   */
-     let [fontsLoaded] = useFonts({
-      Inter_900Black,
-    });
 
   // Initialize auth and database
   const auth = getAuth();
   const userID = auth.currentUser.uid;
-  console.log("current user", auth.currentUser.uid);
+  console.log('current user', auth.currentUser.uid);
   const db = getDatabase();
 
   // Handle name update
   const handleNameUpdate = () => {
-    update(ref(db, "users/" + auth.currentUser.uid), {
+    update(ref(db, 'users/' + auth.currentUser.uid), {
       name: fnName,
     }).then(() => {
-      console.log("name updated");
+      console.log('name updated');
       setNameUploaded(true);
     });
   };
 
   // Handle name update
   const handleUserNameUpdate = () => {
-    update(ref(db, "users/" + auth.currentUser.uid), {
+    update(ref(db, 'users/' + auth.currentUser.uid), {
       username: username,
     }).then(() => {
-      console.log("name updated");
+      console.log('name updated');
       setUserNameUploaded(true);
     });
   };
 
   // Handle profile photo update
   const handleProfileUpdate = (imageFile) => {
-    console.log("Image File Name: ", imageFile);
-    update(ref(db, "users/" + auth.currentUser.uid), {
-      profilePhoto: "userImages/" + imageFile,
+    console.log('Image File Name: ', imageFile);
+    update(ref(db, 'users/' + auth.currentUser.uid), {
+      profilePhoto: 'userImages/' + imageFile,
     }).then(() => {
-      console.log("profile updated");
+      console.log('profile updated');
     });
   };
 
@@ -96,7 +89,7 @@ const ProfileScreen = ({ navigation }) => {
       .then(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: "Splash" }],
+          routes: [{ name: 'Splash' }],
         });
       })
       .catch((error) => alert(error.message));
@@ -112,7 +105,7 @@ const ProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log("RESULT: ", result.uri);
+    console.log('RESULT: ', result.uri);
 
     if (!result.cancelled) {
       setNewImage(result.uri);
@@ -128,21 +121,21 @@ const ProfileScreen = ({ navigation }) => {
         resolve(xhr.response);
       };
       xhr.onerror = function () {
-        reject(new TypeError("Network request failed"));
+        reject(new TypeError('Network request failed'));
       };
-      xhr.responseType = "blob";
-      xhr.open("GET", newImage, true);
+      xhr.responseType = 'blob';
+      xhr.open('GET', newImage, true);
       xhr.send(null);
     });
 
-    const imageFile = newImage.substring(newImage.lastIndexOf("/") + 1);
-    console.log("Full Image Name: ", newImage);
-    console.log("Image File Name: ", imageFile);
+    const imageFile = newImage.substring(newImage.lastIndexOf('/') + 1);
+    console.log('Full Image Name: ', newImage);
+    console.log('Image File Name: ', imageFile);
     setImageFileName(imageFile);
     const ref = firebase
       .storage()
       .ref()
-      .child("userImages/" + imageFile);
+      .child('userImages/' + imageFile);
     const snapshot = ref.put(blob);
     handleProfileUpdate(imageFile);
 
@@ -159,7 +152,7 @@ const ProfileScreen = ({ navigation }) => {
       () => {
         snapshot.snapshot.ref.getDownloadURL().then((url) => {
           setTransferred(true);
-          console.log("download url: ", url);
+          console.log('download url: ', url);
           return url;
         });
       }
@@ -179,7 +172,7 @@ const ProfileScreen = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Ionicons name="person-circle" size={80} color="#7f03fc"/>
+          <Ionicons name="person-circle" size={80} color="#7f03fc" />
           <Text style={styles.logo}>Edit Profile</Text>
           <View style={styles.inputContainer}>
             <TextInput
@@ -234,77 +227,77 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#e6e4df',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    color: "black",
-    fontWeight: "bold",
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 50,
     marginBottom: 20,
-    fontFamily: 'Inter_900Black',
+    // fontFamily: 'Lato_900Black',
   },
   instructions: {
-    color: "black",
+    color: 'black',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   inputContainer: {
-    flexDirection: "row",
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
-    width: "70%",
+    width: '70%',
   },
   inputImage: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   update: {
     fontSize: 15,
     paddingLeft: 5,
   },
   buttonContainer: {
-    width: "50%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 40,
   },
   buttonSOContainer: {
-    width: "50%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 40,
   },
   buttonSO: {
-    width: "100%",
+    width: '100%',
     padding: 10,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   button: {
-    backgroundColor: "#3b3a39",
-    width: "100%",
+    backgroundColor: '#3b3a39',
+    width: '100%',
     padding: 10,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttonText: {
-    color: "white",
-    fontWeight: "600",
+    color: 'white',
+    fontWeight: '600',
     fontSize: 18,
   },
   buttonSOText: {
-    color: "black",
-    fontWeight: "600",
+    color: 'black',
+    fontWeight: '600',
     fontSize: 18,
   },
 });

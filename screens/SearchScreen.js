@@ -4,7 +4,7 @@ import { Searchbar, Button } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
-import GetFonts from '../components/getFonts';
+import GetFonts from '../components/GetFonts';
 
 /**
  * Search screen component that renders the Search screen.
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
     color: 'black',
-    fontFamily: 'Lato_400Regular',
+    // fontFamily: 'Lato_400Regular',
   },
   buttonContainer: {
     alignItems: 'center',

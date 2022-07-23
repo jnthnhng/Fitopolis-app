@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
 import { Searchbar, Button } from 'react-native-paper';
+
+import { StyleSheet, Text, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
@@ -13,7 +16,7 @@ import GetChallenges from '../components/GetChallenges';
  * fitness chips allows users to quickly pull up challenges based on challenge type.
  */
 const SearchScreen = ({ navigation, ...props }) => {
-  console.log(props)
+  console.log(props);
   const [queryKey, setQueryKey] = useState('');
 
   /**
@@ -29,13 +32,6 @@ const SearchScreen = ({ navigation, ...props }) => {
     console.log('resetQuery');
     setQueryKey(initialState.queryKey);
   }
-
-  /**
-   * Used to load custom google fonts
-   */
-  // let [fontsLoaded] = useFonts({
-  //   Inter_900Black,
-  // });
 
   /**
    * A component that returns a View of the Header
@@ -126,11 +122,8 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 28,
+    fontSize: 25,
     color: 'black',
-    // paddingVertical: 5,
-    // fontFamily: 'ProximaNova',
-    // fontFamily: 'Inter_900Black',
   },
   buttonContainer: {
     alignItems: 'center',

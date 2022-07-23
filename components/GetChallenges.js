@@ -4,6 +4,7 @@ import { ref, get, child } from 'firebase/database';
 
 import { StyleSheet, Text, View } from 'react-native';
 import ListResults from './ListResultsComponent.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * A component that takes in a search word and retrieves the data.
@@ -51,26 +52,24 @@ const GetChallenges = ({ ...props }) => {
       setChallenges(data);
     });
   }, [props.searchType]);
-
-  // A message for the inital load
-  if (props.searchType.length == 0 && challenges.length == 0) {
-    return (
-      <View>
-        <Text style={styles.text}> Search for your next challenge!</Text>
-      </View>
-    );
-  } else {
-    // Otherwise, return the results or display "No Results"
-    return (
-      <View style={styles.resultsContainer}>
-        {challenges.length > 0 ? (
-          <ListResults results={challenges} navigation={navigation} />
-        ) : (
-          <Text style={styles.text}> No results</Text>
-        )}
-      </View>
-    );
-  }
+  
+  return (
+    <>
+      <ScrollView>
+        {challenges.length > 0 && props.searchType.length != 0 ? (
+          <View style={styles.resultsContainer}>
+            <ListResults results={challenges} navigation={navigation} />
+          </View>
+        ) : null}
+        {challenges.length == 0 && props.searchType.length != 0 ? (
+          <View style={styles.resultsContainer}>
+            <Text style={styles.text}> No results</Text>
+          </View>
+        ) : null}
+      </ScrollView>
+    </>
+  );
+  // }
 };
 
 export default GetChallenges;
@@ -78,12 +77,13 @@ export default GetChallenges;
 const styles = StyleSheet.create({
   resultsContainer: {
     flex: 1,
-    width: '95%',
-    height: '100%',
-    backgroundColor: '#e6e4df',
-    padding: 10,
+    // width: '95%',
+    // height: '95%',
+    backgroundColor: 'white',
+    // padding: 100,
     margin: 10,
-    borderRadius: 10,
+    borderRadius: 15,
+    marginBottom: '15%',
   },
   text: {
     margin: 20,

@@ -68,6 +68,10 @@ function FavoritesStackScreen() {
   return (
     <FavoritesStack.Navigator>
       <FavoritesStack.Screen name="My Favorites" component={FavoritesScreen} />
+      <FavoritesStack.Screen
+        name="Participate"
+        component={ChallengeParticipationScreen}
+      />
     </FavoritesStack.Navigator>
   );
 }
@@ -116,7 +120,7 @@ function HomeTabs() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "blue",
+        tabBarActiveTintColor: "#7f03fc",
         tabBarInactiveTintColor: "gray",
       })}
     >

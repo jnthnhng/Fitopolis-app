@@ -30,6 +30,10 @@ const SearchChips = ({ ...props }) => {
     );
   };
 
+  function resetQuery() {
+    setQuery('');
+  }
+
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
@@ -104,6 +108,16 @@ const SearchChips = ({ ...props }) => {
             onPress={() => setQuery('Cardio')}
           >
             Cardio
+          </Chip>
+        </View>
+        <View style={styles.chip}>
+          <Chip
+            icon="delete"
+            mode="outlined"
+            style={{ backgroundColor: '#1581C3' }}
+            onPress={resetQuery}
+          >
+            Reset
           </Chip>
         </View>
       </View>

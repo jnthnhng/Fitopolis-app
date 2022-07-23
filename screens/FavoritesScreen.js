@@ -31,6 +31,7 @@ import ListResults from "../components/ListResultsComponent.js";
 // Other imports
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -44,6 +45,13 @@ const FavoritesScreen = ({ navigation }) => {
   const auth = getAuth();
   const userID = auth.currentUser.uid;
   const db = getDatabase();
+
+    /**
+   * Used to load custom google fonts
+   */
+     let [fontsLoaded] = useFonts({
+      Inter_900Black,
+    });
 
   const addChallengeToEnd = (newChallenge) => {
     setChallenges(state => [...state, newChallenge]);
@@ -108,7 +116,7 @@ const FavoritesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="star" size={50} color="#ebcafc" />
+          <Ionicons name="star" size={50} color="#7f03fc" />
           <Text style={styles.favorites}>Favorites</Text>
         </View>
         <View>
@@ -160,6 +168,7 @@ const styles = StyleSheet.create({
   },
   favorites: {
     color: "black",
+    fontFamily: 'Inter_900Black',
     fontWeight: "bold",
     fontSize: 50,
     marginBottom: 20,

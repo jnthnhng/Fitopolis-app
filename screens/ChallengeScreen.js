@@ -11,6 +11,7 @@ import {
 
 // database imports
 // storage imports for images
+import { getAuth } from 'firebase/auth';
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 // db imports
 import 'firebase/compat/storage';
@@ -19,6 +20,7 @@ import { db, firebaseConfig } from '../database/firebase.js';
 import {
     ref,
     get,
+    push,
     set
 } from 'firebase/database';
 import { ScrollView } from "react-native-gesture-handler";
@@ -33,10 +35,12 @@ class ChallengeScreen extends Component {
     navigation = this.props.navigation;
     this.state = {
       id: props.route.params.challengeID,
+      //id: "-N7VeL8p6THzVjwq_jbg",
       name: null,
       description: null,
       image: null,
       type: props.route.params.type,
+      //type: "Yoga",
       goal1: null,
       goal2: null,
       goal3: null,
@@ -87,10 +91,40 @@ class ChallengeScreen extends Component {
 
   render() {
 
-    function goToEdit(id) {
-      navigation.navigate("Create", {
+    function goToEdit(id, type) {
+      navigation.navigate("Update", {
         id: id,
+        type: type,
       });
+    }
+
+    async function addFavorite(id, type) {
+
+      const auth = getAuth();
+      const userID = auth.currentUser.uid;
+      const challengeId = type + '/' + id;
+      let favorited = false;
+
+      const snapshot = await get(ref(db, 'users/' + userID + '/favorites'))
+      snapshot.forEach((child) => {
+        if (child.val().challenge == challengeId) {
+          favorited = true;
+        }
+      })
+      
+      if (!favorited){
+        // Create database reference
+        const postListRef = ref(db, 'users/' + userID + '/favorites/');
+        const newPostRef = push(postListRef);
+        // Set child as challenge ID
+        set(newPostRef, {
+          challenge: challengeId,
+        });
+        alert("challenge added to your favorites!");
+      } else {
+        alert("This challenge is already in your favorites!");
+      }
+      
     }
 
     return (
@@ -101,6 +135,11 @@ class ChallengeScreen extends Component {
             style={styles.logo}
             >{this.challenge().name}
           </Text>
+          <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => {addFavorite(this.challenge().id, this.challenge().type)}} style={styles.button}>
+            <Text style={styles.buttonText}>Favorite this Challenge</Text>
+          </TouchableOpacity>
+        </View>
           <View style={styles.container}>
             <Image style={styles.image} source={{uri: this.challenge().image}} />
           </View>
@@ -151,11 +190,11 @@ class ChallengeScreen extends Component {
               >{this.challenge().tags}
               </Text>
           </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {goToEdit(this.challenge().id)}} style={styles.button}>
+          <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => {goToEdit(this.challenge().id, this.challenge().type)}} style={styles.button}>
             <Text style={styles.buttonText}>Edit Challenge</Text>
           </TouchableOpacity>
+          </View>
         </View>
         </ScrollView>
       </KeyboardAvoidingView>

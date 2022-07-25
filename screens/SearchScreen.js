@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, Button } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
@@ -13,7 +13,6 @@ import GetChallenges from '../components/GetChallenges';
  * fitness chips allows users to quickly pull up challenges based on challenge type.
  */
 const SearchScreen = ({ navigation, ...props }) => {
-  console.log(props);
   const [queryKey, setQueryKey] = useState('');
 
   /**
@@ -26,7 +25,6 @@ const SearchScreen = ({ navigation, ...props }) => {
   };
 
   function resetQuery() {
-    console.log('resetQuery');
     setQueryKey(initialState.queryKey);
   }
 

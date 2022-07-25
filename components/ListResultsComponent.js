@@ -9,14 +9,12 @@ import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
  * @returns
  */
 const ListResults = ({ ...props }) => {
-  // console.log(props)
-
   // Initialize state
   const [badgeView, setBadgeView] = useState([]);
 
   // A function to navigate to the Challenge Participation Screen
   function navigationToParticipate(params) {
-    return props.navigation.navigate('Participate', { param: params });
+    return props.navigation.navigate('Participate', { challenges: params });
   }
 
   // A hook that query the database with an async function for the badge image and add it to the badgeView state
@@ -40,14 +38,13 @@ const ListResults = ({ ...props }) => {
      * and then set the our badgeView state with the List.Item that includes the challenge information and badge URI.
      * */
     if (props.results != null) {
-      console.log('>>>>>>>>>>>>>>>>>>>>list results');
-
-      // console.log(props.results);
       props.results.map((item) => {
-        console.log(item.val().challengeName);
         if (item != null) {
           // async function to get the badge URI
           getBadge(item.val().badge).then((badgeUri) =>
+          (item['badgeURI'] = badgeUri,
+            console.log("item" + item),
+            console.log(item),
             // set state by adding to it all the challenges from the map
             setBadgeView((badgeView) => [
               badgeView,
@@ -61,7 +58,7 @@ const ListResults = ({ ...props }) => {
                 />
               </>,
             ])
-          );
+          ));
         }
       });
     }

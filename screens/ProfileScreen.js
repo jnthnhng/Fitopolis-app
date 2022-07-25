@@ -30,7 +30,6 @@ import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
-import GetFonts from '../components/GetFonts.js';
 
 const ProfileScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

@@ -16,7 +16,9 @@ const tileSize = screenWidth / numColumns;
  * A component that renders a Card component with buttons that will allow
  * users to Particpate, mark as Complete, Post, and or Share.
  */
-const ChallengeParticipationScreen = ({ navigation }) => {
+const ChallengeParticipationScreen = ({navigation, ...props}) => {
+  // console.log(props);
+  
   const Header = () => {
     return (
       <View style={styles.container}>
@@ -39,7 +41,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);

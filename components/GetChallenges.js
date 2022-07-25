@@ -16,8 +16,11 @@ import { ScrollView } from 'react-native-gesture-handler';
  *          On the initial render, the component will render a welcome message.
  */
 const GetChallenges = ({ ...props }) => {
+  console.log('props.searchType: ' + props.searchType);
   // Initialize state
+  console.log('above set navigation');
   const [navigation, setNavigation] = useState([]);
+  console.log('above setChallenges');
   const [challenges, setChallenges] = useState([]);
 
   // Get reference to the database
@@ -29,43 +32,101 @@ const GetChallenges = ({ ...props }) => {
     setNavigation(props.navigation);
   }, []);
 
+  const DisplayResults = () => {
+    if (challenges.length > 0) {
+      return (
+        <View style={styles.resultsContainer}>
+          <ListResults results={challenges} navigation={navigation} />
+        </View>
+      );
+    } else if (challenges.length == 0 && props.searchType != null) {
+      return (
+        <View style={styles.resultsContainer}>
+          <Text style={styles.text}> No results</Text>
+        </View>
+      );
+    } else {
+      return <Text> no challenges</Text>;
+    }
+  };
+
   /**
    * A hook that does an async call to the database to retrieve the challenge data
    * And deps is set to [props.searchType] so that if the searchType changes, the useEffect will run again
    * Obtaining new data
    */
   useEffect(() => {
-    // An async called to the database with the path to the search word.
-    // In this case, it's a challenge type
-    get(child(dbRef, 'challenge/' + props.searchType)).then((snapshot) => {
-      let data = [];
+    const challengeArr = [
+      'Cycling',
+      'Swimming',
+      'Running',
+      'Weightliftin',
+      'Yoga',
+      'Aerobics',
+      'Cardio',
+    ];
 
-      // Loop through each object and push the challenge that matches the search type
-      // to the data array
-      snapshot.forEach((child) => {
-        if (child.val().challengeType == props.searchType) {
-          data.push(child.val());
-        }
+    function getResults(param) {
+      get(child(dbRef, 'challenge/' + props.searchType)).then((snapshot) => {
+        let data = [];
+
+        // Loop through each object and push the challenge that matches the search type
+        // to the data array
+        snapshot.forEach((child) => {
+          if (child.val().challengeType == props.searchType) {
+            data.push(child);
+          }
+        });
+
+        // Set data array to the challenges state
+        setChallenges(data);
       });
+    }
 
-      // Set data array to the challenges state
-      setChallenges(data);
-    });
+    // Get challenges based on challenge type
+    if (challengeArr.includes(props.searchType)) {
+      // An async called to the database with the path to the search word.
+      // In this case, it's a challenge type
+      getResults(props.searchType);
+    } else if (props.searchType == '') {
+      // Returns all results
+      getResults('');
+    } else {
+      // Search challenge based on tags
+      let data = [];
+      get(child(dbRef, 'challenge/')).then((snapshot) => {
+        
+        // Snapshop contains an array of objects of challenges by challenge type
+        snapshot.forEach((challengeType) => {
+          let childData = [];
+          // Loop through each of the challenge type's child, and search through tags
+          challengeType.forEach((child) => {
+            // Use regex to find if the search query is in the tags
+            const regex = new RegExp(props.searchType, 'i');
+
+            if (regex.test(child.val().tags)) {
+              console.log(child.val());
+              data.push(child);
+              console.log("childAdded to ChildData")
+            }
+          });
+          // Set data array to the challenges state
+          console.log('----------------Data--------------');
+          console.log(data);
+          console.log('----------------Child Data--------------');
+          console.log(childData);
+          // data.push(childData);
+        });
+        setChallenges(data);
+      });
+    }
   }, [props.searchType]);
-  
+  console.log('challenge.length: ' + challenges.length);
+
   return (
     <>
       <ScrollView>
-        {challenges.length > 0 && props.searchType.length != 0 ? (
-          <View style={styles.resultsContainer}>
-            <ListResults results={challenges} navigation={navigation} />
-          </View>
-        ) : null}
-        {challenges.length == 0 && props.searchType.length != 0 ? (
-          <View style={styles.resultsContainer}>
-            <Text style={styles.text}> No results</Text>
-          </View>
-        ) : null}
+        <DisplayResults />
       </ScrollView>
     </>
   );

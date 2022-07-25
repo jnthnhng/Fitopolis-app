@@ -15,7 +15,7 @@ import {
 } from '@expo-google-fonts/lato';
 
 export default function GetFonts() {
-  const [fontsLoaded] = useFonts({
+  let [fontsLoaded] = useFonts({
     Lato_100Thin,
     Lato_100Thin_Italic,
     Lato_300Light,

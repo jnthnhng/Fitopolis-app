@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Searchbar, Button } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
@@ -13,7 +13,7 @@ import GetFonts from '../components/GetFonts';
  * and chips of the type of fitness challenges available. The
  * fitness chips allows users to quickly pull up challenges based on challenge type.
  */
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
 
   /**
@@ -26,7 +26,7 @@ const SearchScreen = ({ navigation }) => {
   };
 
   function resetQuery() {
-    setQueryKey('');
+    setQueryKey(initialState.queryKey);
   }
 
   /**
@@ -47,7 +47,7 @@ const SearchScreen = ({ navigation }) => {
    * @returns {String} search value
    */
   const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState([]);
     const onChangeSearch = (query) => setSearchQuery(query);
 
     return (
@@ -56,7 +56,7 @@ const SearchScreen = ({ navigation }) => {
           style={styles.searchBarContainer}
           inputStyle={{ backgroundColor: 'white' }}
           icon="search-web"
-          iconColor="green"
+          iconColor="#6200ee"
           clearIcon="delete"
           placeholder="Search"
           onChangeText={onChangeSearch}
@@ -66,11 +66,10 @@ const SearchScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Button
             style={styles.button}
-            icon="delete"
             mode="contained"
-            onPress={resetQuery}
+            onPress={() => setQueryKey(initialState.queryKey)}
           >
-            Clear Results
+            Show All
           </Button>
         </View>
       </>
@@ -82,6 +81,9 @@ const SearchScreen = ({ navigation }) => {
       <SearchHeader />
       <SearchBar />
       <SearchChips navigation={navigation} />
+      <View>
+        <Text>Search Screen Results</Text>
+      </View>
       <GetChallenges navigation={navigation} searchType={queryKey} />
       {/* {resetState} */}
     </ScrollView>
@@ -118,7 +120,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
     color: 'black',
-    // fontFamily: 'Lato_400Regular',
   },
   buttonContainer: {
     alignItems: 'center',

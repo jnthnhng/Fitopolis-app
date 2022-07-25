@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import {
+  Avatar,
+  Button,
+  Card,
+  Title,
+  Paragraph,
+  useTheme,
+} from 'react-native-paper';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -16,11 +23,14 @@ const tileSize = screenWidth / numColumns;
  * A component that renders a Card component with buttons that will allow
  * users to Particpate, mark as Complete, Post, and or Share.
  */
-const ChallengeParticipationScreen = ({ navigation }) => {
+const ChallengeParticipationScreen = ({ navigation, ...props }) => {
+  // console.log(props);
+  const { colors } = useTheme();
+
   const Header = () => {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}> Header</Text>
+        <Text style={{ color: colors.primary }}> Header</Text>
       </View>
     );
   };
@@ -39,7 +49,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -58,13 +68,28 @@ const ChallengeParticipationScreen = ({ navigation }) => {
     return (
       <Card mode={'outlined'} style={styles.cardBorder}>
         <Card.Title
-          title="Running"
+          title={props.route.params.challenges.val().challengeType}
           //   subtitle="Bench"
           left={LeftContent}
         />
         <Card.Content>
-          <Title>5K</Title>
-          <Paragraph>Run 5K in 5 minutes for an awesome badge!</Paragraph>
+          <Title>{props.route.params.challenges.val().challengeName}</Title>
+          <Paragraph>
+            Description: {props.route.params.challenges.val().description}
+          </Paragraph>
+          <Paragraph>
+            Goal 1:{props.route.params.challenges.val().goal1}
+          </Paragraph>
+          <Paragraph>
+            Goal 2:{props.route.params.challenges.val().goal2}
+          </Paragraph>
+          <Paragraph>
+            Goal 3:{props.route.params.challenges.val().goal3}
+          </Paragraph>
+          <Paragraph>
+            Tags: {props.route.params.challenges.val().tags}
+          </Paragraph>
+          <Paragraph></Paragraph>
         </Card.Content>
         <Card.Cover
           source={{
@@ -91,6 +116,7 @@ const ChallengeParticipationScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.cardContainer}>
       <View style={styles.inputContainer}>
+        <Header />
         <FlatList
           data={challenges}
           renderItem={renderChallenges}
@@ -115,6 +141,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+    // color: colors.primary,
     fontSize: 20,
   },
   cardContainer: {
@@ -131,13 +158,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   cardBorder: {
-    flex: 0.3,
-    backgroundColor: '#6486B6',
+    flex: 1,
+    backgroundColor: 'gray',
     borderWidth: 3,
     padding: 5,
     borderRadius: 10,
     marginBottom: 15,
-    height: tileSize,
+    // height: tileSize,
     width: tileSize,
   },
 });

@@ -5,25 +5,21 @@ import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 /**
  * A component that takes in an array of objects, map through them and display them as List items.
  * @param {Object} navigation     Navigation object from the parent
- * @param {results} challenges    Challenge data from GetChallenges component
+ * @param {results} challenges    Challenge data object from GetChallenges component
  * @returns
  */
 const ListResults = ({ ...props }) => {
   // Initialize state
   const [badgeView, setBadgeView] = useState([]);
 
-  function alertFunc() {
-    alert("hi")
-  }
-
   // A function to navigate to the Challenge Participation Screen
-  function navigationToParticipate() {
-    return props.navigation.navigate('Participate');
+  function navigationToParticipate(params) {
+    return props.navigation.navigate('Participate', { challenges: params });
   }
 
   // A hook that query the database with an async function for the badge image and add it to the badgeView state
   useEffect(() => {
-    // An async function that retried the challenge's badge image.
+    // An async function that retrieve the challenge's badge image.
     async function getBadge(badgePath) {
       // Get the firebase reference for the app's storage
       const storage = getStorage();
@@ -41,24 +37,31 @@ const ListResults = ({ ...props }) => {
      * A map method ran on the results array. The map will will get the challenge's badge image URI,
      * and then set the our badgeView state with the List.Item that includes the challenge information and badge URI.
      * */
-    props.results.map((item) => {
-      // async function to get the badge URI
-      getBadge(item.badge).then((badgeUri) =>
-        // set state by adding to it all the challenges from the map
-        setBadgeView((badgeView) => [
-          badgeView,
-          <>
-            <List.Item
-              title={item.challengeName}
-              description={item.description}
-              left={(props) => <List.Icon {...props} icon="run" />}
-              right={(props) => <List.Icon icon={{ uri: badgeUri }} onPress={alertFunc}/>}
-              onPress={navigationToParticipate}
-            />
-          </>,
-        ])
-      );
-    });
+    if (props.results != null) {
+      props.results.map((item) => {
+        if (item != null) {
+          // async function to get the badge URI
+          getBadge(item.val().badge).then((badgeUri) =>
+          (item['badgeURI'] = badgeUri,
+            console.log("item" + item),
+            console.log(item),
+            // set state by adding to it all the challenges from the map
+            setBadgeView((badgeView) => [
+              badgeView,
+              <>
+                <List.Item
+                  title={item.val().challengeName}
+                  description={item.val().description}
+                  left={(props) => <List.Icon {...props} icon="run" />}
+                  right={(props) => <List.Icon icon={{ uri: badgeUri }} />}
+                  onPress={() => navigationToParticipate(item)}
+                />
+              </>,
+            ])
+          ));
+        }
+      });
+    }
   }, []);
 
   // Returns the state which includes all the challenges as an array of List.Item components.

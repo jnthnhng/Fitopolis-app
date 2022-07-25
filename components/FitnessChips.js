@@ -18,6 +18,7 @@ const SearchChips = ({ ...props }) => {
   // A hook that is used to display results based on changes to the query state
   useEffect(() => {
     <DisplayResults />;
+    // <GetFonts />;
   }, [query]);
 
   // A component that renders the results
@@ -115,7 +116,8 @@ const SearchChips = ({ ...props }) => {
           <Chip
             icon="delete"
             mode="outlined"
-            style={{ backgroundColor: '#1581C3' }}
+            style={{ backgroundColor: '#6200ee' }}
+            textStyle={{ color: 'white' }}
             onPress={resetQuery}
           >
             Reset
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 45,
-    // fontFamily: 'Lato_900Black',
   },
 });
 

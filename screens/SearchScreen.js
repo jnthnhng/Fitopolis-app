@@ -4,7 +4,6 @@ import { Searchbar, Button } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
-import GetFonts from '../components/GetFonts';
 
 /**
  * Search screen component that renders the Search screen.

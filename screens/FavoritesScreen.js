@@ -5,31 +5,21 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  ScrollView,
-  Image,
-  Button,
+  SafeAreaView,
 } from "react-native";
 
 // Database imports
 import { getAuth } from "firebase/auth";
 import "firebase/compat/storage";
 import firebase from "firebase/compat/app";
-import { db, storage, firebaseConfig } from "../database/firebase.js";
+import { firebaseConfig } from "../database/firebase.js";
 import {
-  set,
-  update,
   ref,
   getDatabase,
-  onValue,
   get,
-  child,
-  push,
 } from "firebase/database";
-import GetFavorites from "../components/GetFavorites";
-import ListResults from "../components/ListResultsComponent.js";
 
 // Other imports
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 if (!firebase.apps.length) {
@@ -37,21 +27,23 @@ if (!firebase.apps.length) {
 }
 
 const FavoritesScreen = ({ navigation }) => {
-  const [favorites, setFavorites] = useState(null);
-  const [user, setUser] = useState("");
   const [challenges, setChallenges] = useState([]);
-  const [rawChallenges, setRawChallenges] = useState([]);
 
   const auth = getAuth();
   const userID = auth.currentUser.uid;
   const db = getDatabase();
 
+  // This adds the favorite to the end of the challenges array
   const addChallengeToEnd = (newChallenge) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
+
   const getFavorites = () => {
+    // Get favorites from user ID on realtime database
     get(ref(db, "users/" + userID + "/favorites/")).then((snapshot) => {
+      // Loop through them and get the challenge information from each favorited item
+      // These are stored in the challenges array
       if (snapshot.exists()) {
         snapshot.forEach((element) => {
           console.log("fave element: ", element.val().challenge);
@@ -61,6 +53,7 @@ const FavoritesScreen = ({ navigation }) => {
     });
   };
 
+  // Retrieves challenge object from the path saved in user favorites
   const getChallengeInfo = (challengePath) => {
     get(ref(db, "challenge/" + challengePath)).then((snapshot) => {
       if (snapshot.exists()) {
@@ -93,6 +86,7 @@ const FavoritesScreen = ({ navigation }) => {
   //   });
   // };
 
+  // Renders flatlist item
   const renderItem = ({ item }) => (
     <TouchableOpacity
       key={item.key}
@@ -111,9 +105,9 @@ const FavoritesScreen = ({ navigation }) => {
           <Ionicons name="star" size={50} color="#7f03fc" />
           <Text style={styles.favorites}>Favorites</Text>
         </View>
-        <View>
+        <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
-        </View>
+        </SafeAreaView>
       </View>
     </>
   );

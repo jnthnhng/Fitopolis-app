@@ -40,6 +40,7 @@ const FavoritesScreen = ({ navigation }) => {
   const [favorites, setFavorites] = useState(null);
   const [user, setUser] = useState('');
   const [challenges, setChallenges] = useState([]);
+  const [rawChallenges, setRawChallenges] = useState([]);
 
   const auth = getAuth();
   const userID = auth.currentUser.uid;
@@ -63,8 +64,8 @@ const FavoritesScreen = ({ navigation }) => {
   const getChallengeInfo = (challengePath) => {
     get(ref(db, 'challenge/' + challengePath)).then((snapshot) => {
       if (snapshot.exists()) {
-        console.log('challenge snapshot: ', snapshot.val());
-        addChallengeToEnd(snapshot.val());
+        console.log('challenge snapshot: ', snapshot);
+        addChallengeToEnd(snapshot);
       }
     });
   };
@@ -76,9 +77,10 @@ const FavoritesScreen = ({ navigation }) => {
 
   // Navigate to Participate screen
 
-  function goToParticipate() {
-    navigation.navigate('Participate', { id: false });
-  }
+  // function goToParticipate(item) {
+  //   console.log("ITEM: ", item)
+  //   // navigation.navigate('Participate', { challenges: item });
+  // }
 
   // MOCK to add favorites to user accounts - will need to remove
   const addFavorite = () => {
@@ -98,9 +100,9 @@ const FavoritesScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={goToParticipate}>
-      <Text style={styles.itemHeader}>{item.challengeName}</Text>
-      <Text style={styles.itemDescription}>{item.description}</Text>
+    <TouchableOpacity key={item.key} style={styles.item} onPress={() => navigation.navigate('Participate', {challenges: item})} >
+      <Text style={styles.itemHeader}>{item.val().challengeName}</Text>
+      <Text style={styles.itemDescription}>{item.val().description}</Text>
     </TouchableOpacity>
   );
 

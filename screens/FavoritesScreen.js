@@ -103,7 +103,7 @@ const FavoritesScreen = ({ navigation }) => {
       <View style={styles.headerContainer}>
         <View style={styles.header}>
           <Ionicons name="star" size={50} color="#7f03fc" />
-          <Text style={styles.favorites}>Favorites</Text>
+          <Text style={styles.favorites}>FAVORITES</Text>
         </View>
         <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
   favorites: {
     color: "black",
     // fontFamily: 'Lato_700Bold',
-    fontWeight: "bold",
-    fontSize: 50,
+    fontWeight: "200",
+    fontSize: 40,
     marginBottom: 20,
   },
   button: {

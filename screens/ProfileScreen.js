@@ -172,7 +172,7 @@ const ProfileScreen = ({ navigation }) => {
       ) : (
         <>
           <Ionicons name="person-circle" size={80} color="#7f03fc" />
-          <Text style={styles.logo}>Edit Profile</Text>
+          <Text style={styles.logo}>EDIT PROFILE</Text>
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="First & Last Name"
@@ -232,8 +232,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     color: 'black',
-    fontWeight: 'bold',
-    fontSize: 50,
+    fontWeight: "200",
+    fontSize: 40,
     marginBottom: 20,
     // fontFamily: 'Lato_900Black',
   },

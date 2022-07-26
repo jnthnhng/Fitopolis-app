@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -9,16 +9,19 @@ import {
   List,
   Checkbox,
   IconButton,
-} from 'react-native-paper';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+} from "react-native-paper";
+import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import * as ImagePicker from 'expo-image-picker';
+import { set, ref, getDatabase, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
+import * as ImagePicker from "expo-image-picker";
 
 /**
  * Retrieve the screen size for a more responsive layout
  */
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get("window").width;
 const numColumns = 1;
 const tileSize = screenWidth / numColumns;
 
@@ -65,6 +68,25 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     }
   };
 
+  const addFavorite = (type, key) => {
+    // Create path to challenge with type and key
+    const challengeId = type + "/" + key;
+    console.log(challengeId);
+    // Initiate database and get user ID of currently logged in user
+    const db = getDatabase();
+    const auth = getAuth();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/favorites/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      challenge: challengeId,
+    });
+  };
+
   /**
    *  A card component to render a chard with challenge data from the data base
    * @returns
@@ -75,7 +97,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   const ChallengeCard = () => {
     return (
-      <Card mode={'outlined'} style={styles.cardBorder}>
+      <Card mode={"outlined"} style={styles.cardBorder}>
         <Card.Title
           title={props.route.params.challenges.val().challengeType}
           //   subtitle="Bench"
@@ -85,7 +107,13 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               icon="star"
               color={"yellow"}
               size={35}
-              onPress={() => console.log('Pressed')}
+              onPress={() =>
+                addFavorite(
+                  props.route.params.challenges.val().challengeType,
+                  props.route.params.challenges.key
+                )
+              }
+              // onPress={() => console.log('Pressed')}
               animated={true}
             />
           )}
@@ -108,7 +136,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox
-                  status={checkedGoal1 ? 'checked' : 'unchecked'}
+                  status={checkedGoal1 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal1(!checkedGoal1);
                   }}
@@ -120,7 +148,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox
-                  status={checkedGoal2 ? 'checked' : 'unchecked'}
+                  status={checkedGoal2 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal2(!checkedGoal2);
                   }}
@@ -133,7 +161,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox
-                  status={checkedGoal3 ? 'checked' : 'unchecked'}
+                  status={checkedGoal3 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal3(!checkedGoal3);
                   }}
@@ -149,7 +177,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         </Card.Content>
         <Card.Cover
           source={{
-            uri: 'https://images.unsplash.com/photo-1483721310020-03333e577078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cnVubmluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+            uri: "https://images.unsplash.com/photo-1483721310020-03333e577078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cnVubmluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
           }}
         />
         <Card.Actions style={styles.cardActionText}>
@@ -189,8 +217,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   header: {
     flex: 0.7,
@@ -211,11 +239,11 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   cardActionText: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   cardBorder: {
     flex: 1,
-    backgroundColor: '#96A6BC',
+    backgroundColor: "#96A6BC",
     borderWidth: 3,
     padding: 5,
     borderRadius: 10,

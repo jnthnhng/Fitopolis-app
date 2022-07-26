@@ -220,7 +220,8 @@ class CreateChallengeScreen extends Component {
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
-              <Picker
+              <Picker 
+                selectedValue={this.state.type}
                 onValueChange={(value) => {
                   this.setState({ type: value});
                 }}
@@ -236,6 +237,7 @@ class CreateChallengeScreen extends Component {
                 <Picker.Item label="Running" value="Running" />
               </Picker>
               <Picker 
+                selectedValue={this.state.badge}
                 onValueChange={(value) => {
                   this.setState({ badge: value});
                 }}

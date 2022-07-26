@@ -104,7 +104,7 @@ const FavoritesScreen = ({ navigation }) => {
         </SafeAreaView>
         <SafeAreaView>
           <Text>IN PROGRESS CHALLENGES</Text>
-          <FlatList data={challenges} renderItem={renderItem} />
+
         </SafeAreaView>
       </View>
     </>

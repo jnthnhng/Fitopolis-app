@@ -101,29 +101,36 @@ const FitopolisHomeScreen = ({ navigation }) => {
           {url == null ? (
             <ActivityIndicator size="small" color="#000" />
           ) : (
-            <Avatar.Image source={{ uri: url }} size={110} />
+            <Avatar.Image source={{ uri: url }} size={150} />
           )}
           {/* <Avatar.Image source={{ uri: url }} size={110} /> */}
-          <Text style={styles.number}>4</Text>
-          <Ionicons name="trophy-outline" size={60} />
+          {/* <Text style={styles.number}>4</Text>
+          <Ionicons name="trophy-outline" size={60} /> */}
         </View>
+        <Text style={styles.manageText}>CHALLENGES</Text>
         <View style={styles.challengeInfo}>
-          <View style={styles.challengeContainer}>
+          <TouchableOpacity style={styles.challengeContainer}>
             <Text style={styles.stat}>
-              Challenges Created {"\n"}
+              CREATED {"\n"}
               {"\n"} 4
             </Text>
-          </View>
-          <View style={styles.challengeContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.challengeContainer}>
             <Text style={styles.stat}>
-              Challenges Completed {"\n"}
+              COMPLETED {"\n"}
               {"\n"} 6
             </Text>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.challengeContainer}>
+            <Text style={styles.stat}>
+              IN PROGRESS {"\n"}
+              {"\n"} 6
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
-          <Text style={styles.manageText}>Manage Challenges</Text>
+          <Text style={styles.manageText}>MANAGE</Text>
           <TouchableOpacity style={styles.button} onPress={goToCreate}>
             <Text style={styles.buttonText}>Create</Text>
           </TouchableOpacity>
@@ -149,8 +156,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
+    // borderBottomColor: "black",
+    // borderBottomWidth: 1,
+    padding: 10,
+    marginBottom: 10,
+    marginTop: 10,
   },
   userPhoto: {
     width: 100,
@@ -201,6 +211,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#3b3a39",
+    opacity: "20%",
     width: "70%",
     padding: 10,
     borderRadius: 10,
@@ -209,11 +220,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: "600",
+    fontWeight: "300",
     fontSize: 20,
+
   },
   manageText: {
-    fontWeight: "600",
+    fontWeight: "200",
     fontSize: 25,
     paddingBottom: 15,
   },

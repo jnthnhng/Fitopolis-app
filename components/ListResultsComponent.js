@@ -43,8 +43,7 @@ const ListResults = ({ ...props }) => {
           // async function to get the badge URI
           getBadge(item.val().badge).then((badgeUri) =>
           (item['badgeURI'] = badgeUri,
-            console.log("item" + item),
-            console.log(item),
+
             // set state by adding to it all the challenges from the map
             setBadgeView((badgeView) => [
               badgeView,

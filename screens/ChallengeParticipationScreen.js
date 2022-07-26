@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -6,6 +6,9 @@ import {
   Title,
   Paragraph,
   useTheme,
+  List,
+  Checkbox,
+  IconButton,
 } from 'react-native-paper';
 import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -26,6 +29,12 @@ const tileSize = screenWidth / numColumns;
 const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   // console.log(props);
   const { colors } = useTheme();
+  const [expanded, setExpanded] = React.useState(true);
+  const [checkedGoal1, setCheckedGoal1] = React.useState(false);
+  const [checkedGoal2, setCheckedGoal2] = React.useState(false);
+  const [checkedGoal3, setCheckedGoal3] = React.useState(false);
+
+  const handlePress = () => setExpanded(!expanded);
 
   const Header = () => {
     return (
@@ -71,21 +80,68 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           title={props.route.params.challenges.val().challengeType}
           //   subtitle="Bench"
           left={LeftContent}
+          right={() => (
+            <IconButton
+              icon="star"
+              color={"yellow"}
+              size={35}
+              onPress={() => console.log('Pressed')}
+              animated={true}
+            />
+          )}
         />
         <Card.Content>
           <Title>{props.route.params.challenges.val().challengeName}</Title>
           <Paragraph>
             Description: {props.route.params.challenges.val().description}
           </Paragraph>
-          <Paragraph>
-            Goal 1:{props.route.params.challenges.val().goal1}
-          </Paragraph>
-          <Paragraph>
-            Goal 2:{props.route.params.challenges.val().goal2}
-          </Paragraph>
-          <Paragraph>
-            Goal 3:{props.route.params.challenges.val().goal3}
-          </Paragraph>
+
+          <List.Section>
+            <List.Subheader>Goals</List.Subheader>
+            {/* <List.Item
+            title="First Item"
+            left={() => <List.Icon icon="folder" />}
+          /> */}
+
+            <List.Item
+              title={props.route.params.challenges.val().goal1}
+              // left={() =>  <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal1 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    setCheckedGoal1(!checkedGoal1);
+                  }}
+                />
+              )}
+            />
+            <List.Item
+              title={props.route.params.challenges.val().goal2}
+              // left={() => <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal2 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    setCheckedGoal2(!checkedGoal2);
+                  }}
+                />
+              )}
+            />
+
+            <List.Item
+              title={props.route.params.challenges.val().goal3}
+              // left={() => <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal3 ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    setCheckedGoal3(!checkedGoal3);
+                  }}
+                />
+              )}
+            />
+          </List.Section>
+
           <Paragraph>
             Tags: {props.route.params.challenges.val().tags}
           </Paragraph>
@@ -159,7 +215,7 @@ const styles = StyleSheet.create({
   },
   cardBorder: {
     flex: 1,
-    backgroundColor: 'gray',
+    backgroundColor: '#96A6BC',
     borderWidth: 3,
     padding: 5,
     borderRadius: 10,

@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
 import GetChallenges from './GetChallenges';
+<<<<<<< HEAD
 import GetFonts from './getFonts.js';
+=======
+>>>>>>> a8493c6a627bfbad08beb950ecb465d6f804cfb8
 
 /**
  * A Chip component that renders challenge types as chips. This lets user quickly pull up results

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -6,16 +6,22 @@ import {
   Title,
   Paragraph,
   useTheme,
-} from 'react-native-paper';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+  List,
+  Checkbox,
+  IconButton,
+} from "react-native-paper";
+import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import * as ImagePicker from 'expo-image-picker';
+import { set, ref, getDatabase, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
+import * as ImagePicker from "expo-image-picker";
 
 /**
  * Retrieve the screen size for a more responsive layout
  */
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get("window").width;
 const numColumns = 1;
 const tileSize = screenWidth / numColumns;
 
@@ -26,6 +32,12 @@ const tileSize = screenWidth / numColumns;
 const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   // console.log(props);
   const { colors } = useTheme();
+  const [expanded, setExpanded] = React.useState(true);
+  const [checkedGoal1, setCheckedGoal1] = React.useState(false);
+  const [checkedGoal2, setCheckedGoal2] = React.useState(false);
+  const [checkedGoal3, setCheckedGoal3] = React.useState(false);
+
+  const handlePress = () => setExpanded(!expanded);
 
   const Header = () => {
     return (
@@ -56,6 +68,25 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     }
   };
 
+  const addFavorite = (type, key) => {
+    // Create path to challenge with type and key
+    const challengeId = type + "/" + key;
+    console.log(challengeId);
+    // Initiate database and get user ID of currently logged in user
+    const db = getDatabase();
+    const auth = getAuth();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/favorites/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      challenge: challengeId,
+    });
+  };
+
   /**
    *  A card component to render a chard with challenge data from the data base
    * @returns
@@ -66,26 +97,79 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   const ChallengeCard = () => {
     return (
-      <Card mode={'outlined'} style={styles.cardBorder}>
+      <Card mode={"outlined"} style={styles.cardBorder}>
         <Card.Title
           title={props.route.params.challenges.val().challengeType}
           //   subtitle="Bench"
           left={LeftContent}
+          right={() => (
+            <IconButton
+              icon="star"
+              color={"yellow"}
+              size={35}
+              onPress={() =>
+                addFavorite(
+                  props.route.params.challenges.val().challengeType,
+                  props.route.params.challenges.key
+                )
+              }
+              // onPress={() => console.log('Pressed')}
+              animated={true}
+            />
+          )}
         />
         <Card.Content>
           <Title>{props.route.params.challenges.val().challengeName}</Title>
           <Paragraph>
             Description: {props.route.params.challenges.val().description}
           </Paragraph>
-          <Paragraph>
-            Goal 1:{props.route.params.challenges.val().goal1}
-          </Paragraph>
-          <Paragraph>
-            Goal 2:{props.route.params.challenges.val().goal2}
-          </Paragraph>
-          <Paragraph>
-            Goal 3:{props.route.params.challenges.val().goal3}
-          </Paragraph>
+
+          <List.Section>
+            <List.Subheader>Goals</List.Subheader>
+            {/* <List.Item
+            title="First Item"
+            left={() => <List.Icon icon="folder" />}
+          /> */}
+
+            <List.Item
+              title={props.route.params.challenges.val().goal1}
+              // left={() =>  <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal1 ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setCheckedGoal1(!checkedGoal1);
+                  }}
+                />
+              )}
+            />
+            <List.Item
+              title={props.route.params.challenges.val().goal2}
+              // left={() => <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal2 ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setCheckedGoal2(!checkedGoal2);
+                  }}
+                />
+              )}
+            />
+
+            <List.Item
+              title={props.route.params.challenges.val().goal3}
+              // left={() => <List.Icon color={'red'} icon="folder" />}
+              right={() => (
+                <Checkbox
+                  status={checkedGoal3 ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setCheckedGoal3(!checkedGoal3);
+                  }}
+                />
+              )}
+            />
+          </List.Section>
+
           <Paragraph>
             Tags: {props.route.params.challenges.val().tags}
           </Paragraph>
@@ -93,7 +177,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         </Card.Content>
         <Card.Cover
           source={{
-            uri: 'https://images.unsplash.com/photo-1483721310020-03333e577078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cnVubmluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+            uri: "https://images.unsplash.com/photo-1483721310020-03333e577078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cnVubmluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
           }}
         />
         <Card.Actions style={styles.cardActionText}>
@@ -133,8 +217,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   header: {
     flex: 0.7,
@@ -155,11 +239,11 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   cardActionText: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   cardBorder: {
     flex: 1,
-    backgroundColor: 'gray',
+    backgroundColor: "#96A6BC",
     borderWidth: 3,
     padding: 5,
     borderRadius: 10,

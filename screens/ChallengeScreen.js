@@ -34,13 +34,13 @@ class ChallengeScreen extends Component {
     }
     navigation = this.props.navigation;
     this.state = {
-      id: props.route.params.challengeID,
-      //id: "-N7VeL8p6THzVjwq_jbg",
+      //id: props.route.params.challengeID,
+      id: "-N7wasM9-QkXhZTwG_1r",
       name: null,
       description: null,
       image: null,
-      type: props.route.params.type,
-      //type: "Yoga",
+      //type: props.route.params.type,
+      type: "test",
       goal1: null,
       goal2: null,
       goal3: null,
@@ -75,9 +75,17 @@ class ChallengeScreen extends Component {
       this.setState({image: x});
     });
 
+    this.state.badge.map(badge => {
+      const badgeSnapshot = get(ref(db, '/badges./' + badge.val().badge))
+      this.setState(prevState => ({
+        badgeName: [...prevState.badgeName, badgeSnapshot.val().name ] 
+      }));
+    })
+
+
     // get badge name using FK stored in challenge
-    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
-    this.setState({badgeName : (badgeSnapshot.val().name)});
+    // const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
+    // this.setState({badgeName : (badgeSnapshot.val().name)});
 
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));

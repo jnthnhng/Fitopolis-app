@@ -22,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const FavoritesScreen = ({ navigation }) => {
+const CreatedChallengeScreen = ({ navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -35,13 +35,12 @@ const FavoritesScreen = ({ navigation }) => {
   };
 
   const getCreated = () => {
-    // Get favorites from user ID on realtime database
+    // Get created from user ID on realtime database
     get(ref(db, "users/" + userID + "/created/")).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
         snapshot.forEach((element) => {
-          console.log("fave element: ", element.val().challenge);
           getChallengeInfo(element.val().challenge);
         });
       }
@@ -59,6 +58,7 @@ const FavoritesScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log("NEW");
     getCreated();
   }, []);
 
@@ -95,23 +95,18 @@ const FavoritesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="stats-chart" size={50} color="#7f03fc" />
-          <Text style={styles.favorites}>My Challenges</Text>
+          <Ionicons name="create" size={50} color="#6200ee" />
+          <Text style={styles.favorites}>CREATED CHALLENGES</Text>
         </View>
         <SafeAreaView>
-          <Text>CREATED CHALLENGES</Text>
           <FlatList data={challenges} renderItem={renderItem} />
-        </SafeAreaView>
-        <SafeAreaView>
-          <Text>IN PROGRESS CHALLENGES</Text>
-
         </SafeAreaView>
       </View>
     </>
   );
 };
 
-export default FavoritesScreen;
+export default CreatedChallengeScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -150,9 +145,10 @@ const styles = StyleSheet.create({
   favorites: {
     color: "black",
     // fontFamily: 'Lato_700Bold',
-    fontWeight: "bold",
-    fontSize: 50,
+    fontWeight: "200",
+    fontSize: 40,
     marginBottom: 20,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#3b3a39",

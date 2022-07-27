@@ -168,7 +168,7 @@ export default function App() {
             <Stack.Group initialRouteName={"Splash"}>
               <Stack.Screen
                 name="Splash"
-                component={ChallengeScreen}
+                component={SplashScreen}
                 options={{ headerShown: false }}
               />
               <Stack.Screen name="Login" component={LoginScreen} />

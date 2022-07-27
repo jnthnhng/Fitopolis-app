@@ -24,6 +24,7 @@ import {
     set
 } from 'firebase/database';
 import { ScrollView } from "react-native-gesture-handler";
+import UpdateChallengeScreen from "./UpdateChallengeScreen.js";
 
 class ChallengeScreen extends Component {
 
@@ -34,13 +35,13 @@ class ChallengeScreen extends Component {
     }
     navigation = this.props.navigation;
     this.state = {
-      //id: props.route.params.challengeID,
-      id: "-N7wasM9-QkXhZTwG_1r",
+      id: props.route.params.challengeID,
+      //id: "-N7wasM9-QkXhZTwG_1r",
       name: null,
       description: null,
       image: null,
-      //type: props.route.params.type,
-      type: "test",
+      type: props.route.params.type,
+      //type: "test",
       goal1: null,
       goal2: null,
       goal3: null,

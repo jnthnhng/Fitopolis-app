@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
+import SelectMultiple from "react-native-select-multiple";
+
 
 import {
   getAuth,
@@ -36,10 +38,12 @@ class UpdateChallengeScreen extends Component {
     navigation = this.props.navigation;
     this.state = {
       id: props.route.params.id,
+      //id: "-N7wasM9-QkXhZTwG_1r",
       badges: [],
       image: null,
       name: null,
       type: props.route.params.type,
+      //type: "test",
       badge: null,
       description: null,
       goal1: null,
@@ -49,7 +53,12 @@ class UpdateChallengeScreen extends Component {
       uploading: null,
       imageFileName: null,
       creator: null,
+      selectedBadges: [],
     }
+  }
+
+  onSelectionsChange = (selectedBadges) => {
+    this.setState({ selectedBadges })
   }
 
   // get badge info for displaying
@@ -62,10 +71,11 @@ class UpdateChallengeScreen extends Component {
 
     const snapshot = await get(ref(db, '/badges'))
     snapshot.forEach((child) => {
-      var key = child.key;
+      var value = child.key;
       var data = child.val();
+      var label = child.val().name;
       this.setState(prevState => ({
-        badges: [...prevState.badges, {key, data} ] 
+        badges: [...prevState.badges, {value, data, label} ] 
       }));
     })
     
@@ -91,10 +101,6 @@ class UpdateChallengeScreen extends Component {
     await getDownloadURL(reference).then((x) => {
       this.setState({image: x});
     });
-
-    // get badge name using FK stored in challenge
-    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
-    this.setState({badgeName : (badgeSnapshot.val().name)});
 
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
@@ -230,8 +236,8 @@ class UpdateChallengeScreen extends Component {
     }
 
     return (
-      <KeyboardAvoidingView>
-        <ScrollView>
+      <ScrollView>
+        <KeyboardAvoidingView>
           <View style={styles.container}>
             <Text style={styles.logo}>Update Challenge</Text>
             <View style={styles.inputContainer}>
@@ -259,16 +265,11 @@ class UpdateChallengeScreen extends Component {
                 <Picker.Item label="Swimming" value="Swimming" />
                 <Picker.Item label="Running" value="Running" />
               </Picker>
-              <Picker 
-                onValueChange={(value) => {
-                  this.setState({ badge: value});
-                }}
-              >
-                <Picker.Item label="Pick a Badge" value="" />
-                {this.state.badges.map(badge =>
-                  <Picker.Item key={badge.key} label={badge.data.name} value={badge.key} />  
-                )}
-              </Picker>
+              <SelectMultiple
+                  items={this.state.badges}
+                  selectedItems={this.state.selectedBadges}
+                  onSelectionsChange={this.onSelectionsChange}
+              />
                 <TextInput value={this.state.description} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ description: value})}
@@ -303,13 +304,14 @@ class UpdateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+                <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.selectedBadges, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                     <Text style={styles.buttonText}>Update Challenge</Text>
                 </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+      </ScrollView>
+      
     );
   }
 

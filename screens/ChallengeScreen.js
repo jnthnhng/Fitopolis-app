@@ -46,7 +46,8 @@ class ChallengeScreen extends Component {
       goal3: null,
       tags: null,
       badgeFK: null,
-      badgeName: null,
+      badges: [],
+      badgeImages: [],
       creator: null,
     }
   }
@@ -75,17 +76,19 @@ class ChallengeScreen extends Component {
       this.setState({image: x});
     });
 
-    this.state.badge.map(badge => {
-      const badgeSnapshot = get(ref(db, '/badges./' + badge.val().badge))
-      this.setState(prevState => ({
-        badgeName: [...prevState.badgeName, badgeSnapshot.val().name ] 
-      }));
-    })
+    for (const badge of this.state.badgeFK) {
+      const badgeSnapshot = await get(ref(db, '/badges/' + badge.value))
+      var image = badgeSnapshot.val().image;
+      var name = badgeSnapshot.val().name;
+      const reference = sRef(storage, image);
+      await getDownloadURL(reference).then((x) => {
+        this.setState(prevState => ({
+          badges: [...prevState.badges, {name, image: x} ] 
+        }));
+      });
+    }
 
 
-    // get badge name using FK stored in challenge
-    // const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
-    // this.setState({badgeName : (badgeSnapshot.val().name)});
 
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
@@ -136,8 +139,8 @@ class ChallengeScreen extends Component {
     }
 
     return (
+      <ScrollView>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <ScrollView>
         <View style={styles.container}>
           <Text 
             style={styles.logo}
@@ -187,10 +190,16 @@ class ChallengeScreen extends Component {
               </Text>
           </View>
           <View style={styles.displayContainer}>
-            <Text
-              style={styles.text}
-              >Badge: {this.challenge().badgeName}
-              </Text>
+            <Text style={styles.text}>Badges:</Text>
+            {this.state.badges.map(badge =>
+              <View style={styles.displayContainer}>
+                <Text style={styles.text}>
+                  <Image style={styles.badge} source={{uri: badge.image}} />
+                  {'    '}
+                  {badge.name}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.displayContainer}>
             <Text 
@@ -203,9 +212,9 @@ class ChallengeScreen extends Component {
             <Text style={styles.buttonText}>Edit Challenge</Text>
           </TouchableOpacity>
           </View>
-        </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>  
+        </KeyboardAvoidingView>
+      </ScrollView>
     )
   }
 
@@ -224,6 +233,12 @@ const styles = StyleSheet.create({
     width: 300,
     height: undefined,
     aspectRatio: 1.5,
+    justifyContent: "center",
+  },
+  badge: {
+    width: 15,
+    height: undefined,
+    aspectRatio: .9,
     justifyContent: "center",
   },
   title: {

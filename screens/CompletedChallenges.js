@@ -13,11 +13,7 @@ import { getAuth } from "firebase/auth";
 import "firebase/compat/storage";
 import firebase from "firebase/compat/app";
 import { firebaseConfig } from "../database/firebase.js";
-import {
-  ref,
-  getDatabase,
-  get,
-} from "firebase/database";
+import { ref, getDatabase, get } from "firebase/database";
 
 // Other imports
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -26,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const FavoritesScreen = ({ navigation }) => {
+const CompletedChallengesScreen = ({ navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -38,15 +34,13 @@ const FavoritesScreen = ({ navigation }) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
-
-  const getFavorites = () => {
-    // Get favorites from user ID on realtime database
-    get(ref(db, "users/" + userID + "/favorites/")).then((snapshot) => {
+  const getCompleted = () => {
+    // Get created from user ID on realtime database
+    get(ref(db, "users/" + userID + "/completed/")).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
         snapshot.forEach((element) => {
-          console.log("fave element: ", element.val().challenge);
           getChallengeInfo(element.val().challenge);
         });
       }
@@ -65,26 +59,8 @@ const FavoritesScreen = ({ navigation }) => {
 
   useEffect(() => {
     console.log("NEW");
-    getFavorites();
+    getCompleted();
   }, []);
-
-
-  // MOCK to add favorites to user accounts - will need to remove
-  // const addFavorite = () => {
-  //   // Mock creating a challenge, need to hook this up to the Challenge screen
-  //   const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
-  //   const db = getDatabase();
-  //   // Create database reference
-  //   const postListRef = ref(
-  //     db,
-  //     "users/" + auth.currentUser.uid + "/favorites/"
-  //   );
-  //   const newPostRef = push(postListRef);
-  //   // Set child as challenge ID
-  //   set(newPostRef, {
-  //     challenge: challengeId,
-  //   });
-  // };
 
   // Renders flatlist item
   const renderItem = ({ item }) => (
@@ -102,8 +78,8 @@ const FavoritesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="star" size={50} color="#6200ee" />
-          <Text style={styles.favorites}>FAVORITES</Text>
+          <Ionicons name="checkmark-done-circle" size={50} color="#6200ee" />
+          <Text style={styles.favorites}>COMPLETED CHALLENGES</Text>
         </View>
         <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
@@ -113,7 +89,7 @@ const FavoritesScreen = ({ navigation }) => {
   );
 };
 
-export default FavoritesScreen;
+export default CompletedChallengesScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -155,6 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     fontSize: 40,
     marginBottom: 20,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#3b3a39",

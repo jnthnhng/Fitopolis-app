@@ -171,7 +171,7 @@ const ProfileScreen = ({ navigation }) => {
         </>
       ) : (
         <>
-          <Ionicons name="person-circle" size={80} color="#7f03fc" />
+          <Ionicons name="person-circle" size={80} color="#6200ee" />
           <Text style={styles.logo}>EDIT PROFILE</Text>
           <View style={styles.inputContainer}>
             <TextInput

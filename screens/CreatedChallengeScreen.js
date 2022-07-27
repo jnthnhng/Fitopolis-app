@@ -13,11 +13,7 @@ import { getAuth } from "firebase/auth";
 import "firebase/compat/storage";
 import firebase from "firebase/compat/app";
 import { firebaseConfig } from "../database/firebase.js";
-import {
-  ref,
-  getDatabase,
-  get,
-} from "firebase/database";
+import { ref, getDatabase, get } from "firebase/database";
 
 // Other imports
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -26,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const FavoritesScreen = ({ navigation }) => {
+const CreatedChallengeScreen = ({ navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -38,15 +34,13 @@ const FavoritesScreen = ({ navigation }) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
-
-  const getFavorites = () => {
-    // Get favorites from user ID on realtime database
-    get(ref(db, "users/" + userID + "/favorites/")).then((snapshot) => {
+  const getCreated = () => {
+    // Get created from user ID on realtime database
+    get(ref(db, "users/" + userID + "/created/")).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
         snapshot.forEach((element) => {
-          console.log("fave element: ", element.val().challenge);
           getChallengeInfo(element.val().challenge);
         });
       }
@@ -65,9 +59,8 @@ const FavoritesScreen = ({ navigation }) => {
 
   useEffect(() => {
     console.log("NEW");
-    getFavorites();
+    getCreated();
   }, []);
-
 
   // MOCK to add favorites to user accounts - will need to remove
   // const addFavorite = () => {
@@ -102,8 +95,8 @@ const FavoritesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="star" size={50} color="#6200ee" />
-          <Text style={styles.favorites}>FAVORITES</Text>
+          <Ionicons name="create" size={50} color="#6200ee" />
+          <Text style={styles.favorites}>CREATED CHALLENGES</Text>
         </View>
         <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
@@ -113,7 +106,7 @@ const FavoritesScreen = ({ navigation }) => {
   );
 };
 
-export default FavoritesScreen;
+export default CreatedChallengeScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -155,6 +148,7 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     fontSize: 40,
     marginBottom: 20,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#3b3a39",

@@ -25,6 +25,7 @@ import {
   getDatabase,
   onValue,
   get,
+  push,
   child,
 } from "firebase/database";
 // storage imports for images
@@ -41,6 +42,9 @@ if (!firebase.apps.length) {
 const FitopolisHomeScreen = ({ navigation }) => {
   const [imageName, setImageName] = useState(null);
   const [url, setUrl] = useState(null);
+  const [numCreated, setNumCreated] = useState(null);
+  const [numCompleted, setNumCompleted] = useState(null);
+  const [name, setName] = useState(null);
 
   // Get image from firebase storage
   // Get user ID and file name from realtime database
@@ -49,14 +53,34 @@ const FitopolisHomeScreen = ({ navigation }) => {
   const userID = auth.currentUser.uid;
 
   const db = getDatabase();
-  // const imageSnapshot =  get(ref(db, "users/" + userID));
-  // console.log("image snap: ", imageSnapshot);
+
+  // MOCK to add favorites to user accounts - will need to remove
+  const addCompleted = () => {
+    // Mock creating a challenge, need to hook this up to the Challenge screen
+    const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
+    const db = getDatabase();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/completed/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      challenge: challengeId,
+    });
+  };
+
   const getData = () => {
     get(ref(db, "users/" + userID))
       .then((snapshot) => {
         if (snapshot.exists()) {
           setImageName(snapshot.val().profilePhoto);
           getImage(snapshot.val().profilePhoto);
+          setNumCreated(Object.keys(snapshot.val().created).length);
+          setNumCompleted(Object.keys(snapshot.val().completed).length);
+          setName(snapshot.val().name);
+          console.log("created", Object.keys(snapshot.val().favorites).length);
           console.log("USER", userID);
           console.log("user image: ", snapshot.val().profilePhoto);
         } else {
@@ -70,12 +94,10 @@ const FitopolisHomeScreen = ({ navigation }) => {
 
   // Get Image from storage
   const getImage = async (profilePhoto) => {
-    console.log("image name: ", profilePhoto);
     const storage = getStorage();
     const reference = sRef(storage, profilePhoto);
     await getDownloadURL(reference).then((x) => {
       setUrl(x);
-      console.log("download url: ", x);
     });
   };
 
@@ -86,13 +108,25 @@ const FitopolisHomeScreen = ({ navigation }) => {
   // Navigate to Create screen
 
   function goToCreate() {
-    navigation.navigate("Create", {id: false});
+    navigation.navigate("Create", { id: false });
   }
 
   // Navigate to Search screen
   function goToSearch() {
     navigation.navigate("Search");
   }
+
+  // Navigate to Created screen
+  function goToCreated() {
+    console.log("Here");
+    navigation.navigate("Created");
+  }
+  
+    // Navigate to Completed screen
+    function goToCompleted() {
+      console.log("Here");
+      navigation.navigate("Completed");
+    }
 
   return (
     <>
@@ -107,21 +141,23 @@ const FitopolisHomeScreen = ({ navigation }) => {
           {/* <Text style={styles.number}>4</Text>
           <Ionicons name="trophy-outline" size={60} /> */}
         </View>
-        <Text style={styles.manageText}>CHALLENGES</Text>
+        <Text style={styles.nameText}>{name}</Text>
         <View style={styles.challengeInfo}>
-          <TouchableOpacity style={styles.challengeContainer}>
+          <TouchableOpacity style={styles.created} onPress={goToCreated}>
             <Text style={styles.stat}>
               CREATED {"\n"}
-              {"\n"} 4
+              {"\n"} {numCreated}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.challengeContainer}>
+          <TouchableOpacity style={styles.completed} onPress={goToCompleted}>
             <Text style={styles.stat}>
               COMPLETED {"\n"}
-              {"\n"} 6
+              {"\n"} {numCompleted}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.challengeContainer}>
+        </View>
+        <View style={styles.challengeInfo2}>
+          <TouchableOpacity style={styles.progress}>
             <Text style={styles.stat}>
               IN PROGRESS {"\n"}
               {"\n"} 6
@@ -130,12 +166,15 @@ const FitopolisHomeScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <Text style={styles.manageText}>MANAGE</Text>
+          {/* <Text style={styles.manageText}>MANAGE</Text> */}
           <TouchableOpacity style={styles.button} onPress={goToCreate}>
             <Text style={styles.buttonText}>Create</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToSearch}>
             <Text style={styles.buttonText}>Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={addCompleted}>
+            <Text style={styles.buttonText}>Add Completed</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -152,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userInfo: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -183,37 +222,56 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     paddingTop: 10,
     alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
+    justifyContent: "space-between",
+    width: "80%",
   },
-  challengeContainer: {
-    padding: 5,
-    elevation: 4,
-    backgroundColor: "#c7c7c3",
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    textAlign: "center",
+  challengeInfo2: {
+    flex: 1,
+    flexDirection: "row",
     flexShrink: 1,
+    paddingTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "38%",
+  },
+  created: {
+    flex: 1,
+    backgroundColor: "red",
+    borderRadius: 50,
+    marginRight: 10,
+    backgroundColor: "#FA8072",
+    opacity: "20%",
+  },
+  progress: {
+    flex: 1,
+    backgroundColor: "#97C1a9",
+    borderRadius: 50,
+    width: "40%",
+  },
+  completed: {
+    flex: 1,
+    backgroundColor: "#ABDEE6",
+    borderRadius: 50,
+    marginLeft: 10,
   },
   stat: {
-    flexShrink: 1,
+    // flexShrink: 1,
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: "300",
     fontSize: 20,
+    padding: 12,
   },
   buttonContainer: {
-    flex: 2,
+    flex: 3,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
   },
   button: {
     backgroundColor: "#3b3a39",
     opacity: "20%",
-    width: "70%",
-    padding: 10,
+    width: "60%",
+    padding: 20,
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,
@@ -222,11 +280,16 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "300",
     fontSize: 20,
-
   },
   manageText: {
     fontWeight: "200",
     fontSize: 25,
     paddingBottom: 15,
+  },
+  nameText: {
+    fontWeight: "300",
+    fontSize: 30,
+    paddingBottom: 15,
+    textTransform: "uppercase",
   },
 });

@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
+import SelectMultiple from "react-native-select-multiple";
 
 import {
   getAuth,
@@ -35,12 +36,11 @@ class CreateChallengeScreen extends Component {
     }
     navigation = this.props.navigation;
     this.state = {
-      id: props.route.params.id,
       badges: [],
       image: null,
       name: null,
       type: null,
-      badge: null,
+      selectedBadges: [],
       description: null,
       goal1: null,
       goal2: null,
@@ -52,6 +52,10 @@ class CreateChallengeScreen extends Component {
     }
   }
 
+  onSelectionsChange = (selectedBadges) => {
+    this.setState({ selectedBadges })
+  }
+
   // get badge info for displaying
   componentDidMount() {
     this.getBadges();
@@ -61,10 +65,11 @@ class CreateChallengeScreen extends Component {
 
     const snapshot = await get(ref(db, '/badges'))
     snapshot.forEach((child) => {
-      var key = child.key;
+      var value = child.key;
       var data = child.val();
+      var label = child.val().name;
       this.setState(prevState => ({
-        badges: [...prevState.badges, {key, data} ] 
+        badges: [...prevState.badges, {value, data, label} ] 
       }));
     })
     
@@ -118,7 +123,10 @@ class CreateChallengeScreen extends Component {
   }
 
 
+
   render() {
+
+    
 
     function addNewChallenge(badge, name, type, description, goal1, goal2, goal3, tags, imageFileName) {
       
@@ -205,8 +213,8 @@ class CreateChallengeScreen extends Component {
     }
 
     return (
-      <KeyboardAvoidingView>
-        <ScrollView>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <KeyboardAvoidingView>
           <View style={styles.container}>
             <Text style={styles.logo}>Create Challenge</Text>
             <View style={styles.inputContainer}>
@@ -220,7 +228,8 @@ class CreateChallengeScreen extends Component {
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
-              <Picker
+              <Picker 
+                selectedValue={this.state.type}
                 onValueChange={(value) => {
                   this.setState({ type: value});
                 }}
@@ -235,16 +244,13 @@ class CreateChallengeScreen extends Component {
                 <Picker.Item label="Swimming" value="Swimming" />
                 <Picker.Item label="Running" value="Running" />
               </Picker>
-              <Picker 
-                onValueChange={(value) => {
-                  this.setState({ badge: value});
-                }}
-              >
-                <Picker.Item label="Pick a Badge" value="" />
-                {this.state.badges.map(badge =>
-                  <Picker.Item key={badge.key} label={badge.data.name} value={badge.key} />  
-                )}
-              </Picker>
+              <ScrollView>
+                <SelectMultiple
+                  items={this.state.badges}
+                  selectedItems={this.state.selectedBadges}
+                  onSelectionsChange={this.onSelectionsChange}
+                />
+              </ScrollView>
                 <TextInput placeholder="Description" 
                 style={styles.input} 
                 onChangeText={value => this.setState({ description: value})}
@@ -279,13 +285,14 @@ class CreateChallengeScreen extends Component {
               </View>    
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => {handleInput(this.state.badge, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
+              <TouchableOpacity onPress={() => {handleInput(this.state.selectedBadges, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                 <Text style={styles.buttonText}>Create Challenge</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
+      
     );
   }
 

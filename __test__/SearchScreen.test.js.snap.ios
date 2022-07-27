@@ -139,14 +139,14 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
           ]
         }
         underlineColorAndroid="transparent"
-        value=""
+        value={Array []}
       />
       <View
         accessibilityLabel="clear"
         accessibilityRole="button"
         accessibilityState={
           Object {
-            "disabled": true,
+            "disabled": false,
           }
         }
         accessible={true}
@@ -183,9 +183,7 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
                 "height": 36,
                 "width": 36,
               },
-              Object {
-                "opacity": 0.32,
-              },
+              false,
               undefined,
             ],
           ]
@@ -268,16 +266,6 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
               ]
             }
           >
-            <View
-              style={
-                Object {
-                  "marginLeft": 12,
-                  "marginRight": -4,
-                }
-              }
-            >
-              <Text />
-            </View>
             <Text
               numberOfLines={1}
               selectable={false}
@@ -316,7 +304,7 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
                 ]
               }
             >
-              Clear Results
+              Show All
             </Text>
           </View>
         </View>
@@ -1205,7 +1193,7 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
           collapsable={false}
           style={
             Object {
-              "backgroundColor": "#1581C3",
+              "backgroundColor": "#6200ee",
               "borderColor": "rgba(0, 0, 0, 0.29)",
               "borderRadius": 16,
               "borderStyle": "solid",
@@ -1304,7 +1292,9 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
                         "marginLeft": 4,
                         "marginRight": 8,
                       },
-                      undefined,
+                      Object {
+                        "color": "white",
+                      },
                     ],
                   ]
                 }
@@ -1323,12 +1313,41 @@ exports[`<SearchScreen /> should match snapshot 1`] = `
         }
       }
     />
+    <View>
+      <Text>
+        Search Screen Results
+      </Text>
+    </View>
     <RCTScrollView
       collapsable={false}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
     >
-      <View />
+      <View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 15,
+              "flex": 1,
+              "margin": 10,
+              "marginBottom": "15%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "alignContent": "center",
+                "margin": 20,
+                "padding": 20,
+              }
+            }
+          >
+             No results
+          </Text>
+        </View>
+      </View>
     </RCTScrollView>
   </View>
 </RCTScrollView>

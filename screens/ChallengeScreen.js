@@ -24,6 +24,7 @@ import {
     set
 } from 'firebase/database';
 import { ScrollView } from "react-native-gesture-handler";
+import UpdateChallengeScreen from "./UpdateChallengeScreen.js";
 
 class ChallengeScreen extends Component {
 
@@ -35,18 +36,19 @@ class ChallengeScreen extends Component {
     navigation = this.props.navigation;
     this.state = {
       id: props.route.params.challengeID,
-      //id: "-N7VeL8p6THzVjwq_jbg",
+      //id: "-N7wasM9-QkXhZTwG_1r",
       name: null,
       description: null,
       image: null,
       type: props.route.params.type,
-      //type: "Yoga",
+      //type: "test",
       goal1: null,
       goal2: null,
       goal3: null,
       tags: null,
       badgeFK: null,
-      badgeName: null,
+      badges: [],
+      badgeImages: [],
       creator: null,
     }
   }
@@ -75,9 +77,19 @@ class ChallengeScreen extends Component {
       this.setState({image: x});
     });
 
-    // get badge name using FK stored in challenge
-    const badgeSnapshot = await get(ref(db, '/badges/' + snapshot.val().badge));
-    this.setState({badgeName : (badgeSnapshot.val().name)});
+    for (const badge of this.state.badgeFK) {
+      const badgeSnapshot = await get(ref(db, '/badges/' + badge.value))
+      var image = badgeSnapshot.val().image;
+      var name = badgeSnapshot.val().name;
+      const reference = sRef(storage, image);
+      await getDownloadURL(reference).then((x) => {
+        this.setState(prevState => ({
+          badges: [...prevState.badges, {name, image: x} ] 
+        }));
+      });
+    }
+
+
 
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
@@ -128,8 +140,8 @@ class ChallengeScreen extends Component {
     }
 
     return (
+      <ScrollView>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <ScrollView>
         <View style={styles.container}>
           <Text 
             style={styles.logo}
@@ -179,10 +191,16 @@ class ChallengeScreen extends Component {
               </Text>
           </View>
           <View style={styles.displayContainer}>
-            <Text
-              style={styles.text}
-              >Badge: {this.challenge().badgeName}
-              </Text>
+            <Text style={styles.text}>Badges:</Text>
+            {this.state.badges.map(badge =>
+              <View style={styles.displayContainer}>
+                <Text style={styles.text}>
+                  <Image style={styles.badge} source={{uri: badge.image}} />
+                  {'    '}
+                  {badge.name}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.displayContainer}>
             <Text 
@@ -195,9 +213,9 @@ class ChallengeScreen extends Component {
             <Text style={styles.buttonText}>Edit Challenge</Text>
           </TouchableOpacity>
           </View>
-        </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>  
+        </KeyboardAvoidingView>
+      </ScrollView>
     )
   }
 
@@ -216,6 +234,12 @@ const styles = StyleSheet.create({
     width: 300,
     height: undefined,
     aspectRatio: 1.5,
+    justifyContent: "center",
+  },
+  badge: {
+    width: 15,
+    height: undefined,
+    aspectRatio: .9,
     justifyContent: "center",
   },
   title: {

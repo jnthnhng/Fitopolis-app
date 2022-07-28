@@ -28,6 +28,7 @@ import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen
 import UpdateChallengeScreen from "./screens/UpdateChallengeScreen";
 import CreatedChallengeScreen from "./screens/CreatedChallengeScreen";
 import CompletedChallengesScreen from "./screens/CompletedChallenges";
+import InProgressScreen from "./screens/InProgressScreen";
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -45,7 +46,11 @@ function HomeStackScreen({ navigation, route }) {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
       <HomeStack.Screen name="Created" component={CreatedChallengeScreen} />
-      <HomeStack.Screen name="Completed" component={CompletedChallengesScreen} />
+      <HomeStack.Screen
+        name="Completed"
+        component={CompletedChallengesScreen}
+      />
+      <HomeStack.Screen name="In Progress" component={InProgressScreen} />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="Challenge" component={ChallengeScreen} />

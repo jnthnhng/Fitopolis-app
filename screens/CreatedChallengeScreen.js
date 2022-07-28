@@ -84,7 +84,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <TouchableOpacity
       key={item.key}
       style={styles.item}
-      onPress={() => navigation.navigate("Participate", { challenges: item })}
+      onPress={() => navigation.navigate("Challenge", {type : item.val().challengeType, challengeID : item.key})}
     >
       <Text style={styles.itemHeader}>{item.val().challengeName}</Text>
       <Text style={styles.itemDescription}>{item.val().description}</Text>
@@ -95,7 +95,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="create" size={50} color="#6200ee" />
+          <Ionicons name="create" size={50} color="#FA8072" />
           <Text style={styles.favorites}>CREATED CHALLENGES</Text>
         </View>
         <SafeAreaView>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     width: "95%",
   },
   item: {
-    backgroundColor: "#f6ebfc",
+    backgroundColor: "#FA8072",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

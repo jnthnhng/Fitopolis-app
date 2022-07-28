@@ -22,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const CompletedChallengesScreen = ({ navigation }) => {
+const InProgressScreen = ({ navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -34,9 +34,9 @@ const CompletedChallengesScreen = ({ navigation }) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
-  const getCompleted = () => {
+  const getInProgress = () => {
     // Get created from user ID on realtime database
-    get(ref(db, "users/" + userID + "/completed/")).then((snapshot) => {
+    get(ref(db, "users/" + userID + "/progress/")).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
@@ -59,7 +59,7 @@ const CompletedChallengesScreen = ({ navigation }) => {
 
   useEffect(() => {
     console.log("NEW");
-    getCompleted();
+    getInProgress();
   }, []);
 
   // Renders flatlist item
@@ -78,8 +78,8 @@ const CompletedChallengesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="checkmark-done-circle" size={50} color="#ABDEE6" />
-          <Text style={styles.favorites}>COMPLETED CHALLENGES</Text>
+          <Ionicons name="stopwatch" size={50} color="#97C1a9" />
+          <Text style={styles.favorites}>IN PROGRESS CHALLENGES</Text>
         </View>
         <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
@@ -89,7 +89,7 @@ const CompletedChallengesScreen = ({ navigation }) => {
   );
 };
 
-export default CompletedChallengesScreen;
+export default InProgressScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     width: "95%",
   },
   item: {
-    backgroundColor: "#ABDEE6",
+    backgroundColor: "#97C1a9",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

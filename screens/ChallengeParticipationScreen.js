@@ -13,7 +13,7 @@ import {
 import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { set, ref, getDatabase, push, get } from "firebase/database";
+import { set, ref, getDatabase, push, get, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 import * as ImagePicker from "expo-image-picker";
@@ -152,6 +152,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
       });
     }
 
+    // Add in progress to challenge ID
     // Create database reference
     const postListRef = ref(
       db,
@@ -162,10 +163,38 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         "/completedUsers/"
     );
     const newPostRef = push(postListRef);
+
     // Set child as challenge ID
     set(newPostRef, {
       user: auth.currentUser.uid,
     });
+
+    // If user has challenge in progress, remove from in progress
+    const challengeURI = props.route.params.challenges.val().challengeType + "/" + props.route.params.challenges.key
+    const referenceTwo =
+      "users/" +
+      auth.currentUser.uid + "/progress/"
+
+    // Call database to get In progress items
+    get(
+      ref(
+        db,
+        referenceTwo
+      )
+    ).then((snapshot) => {
+
+      // Loop through them and get the challenge information from each favorited item
+      // These are stored in the challenges array
+      if (snapshot.exists()) {
+        snapshot.forEach((element) => { 
+          if (element.val().challenge == challengeURI){
+            const removeRef =  ref(db, "users/" + auth.currentUser.uid + "/progress/" + element.key);
+            remove(removeRef);
+          }
+        });
+      }
+    });
+    
     // Navigate to Wall of Fame
     navigation.navigate("Wall of Fame", {
       challengeID: props.route.params.challenges.key,

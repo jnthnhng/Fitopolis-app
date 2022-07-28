@@ -90,7 +90,13 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   };
 
   const goToWallofFame = () => {
-    // const auth = getAuth()
+    const auth = getAuth()
+
+    // checks to see if user completed all three goals
+    if (!checkedGoal1 || !checkedGoal2 || !checkedGoal3) {
+      alert("You must complete all three goals before completing this challenge!");
+      return
+    }
 
     // Add user to Challenge
     const db = getDatabase();

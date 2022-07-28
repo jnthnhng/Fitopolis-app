@@ -92,16 +92,23 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const goToWallofFame = () => {
     // const auth = getAuth()
 
-    // // Add user to Challenge
-    // const db = getDatabase();
-    // // Create database reference
-    // const postListRef = ref(db, "challenge/" + props.route.params.challenges.val().challengeType + "/" + props.route.params.challenges.key + "/completedUsers/" );
-    // const newPostRef = push(postListRef);
-    // // Set child as challenge ID
-    // set(newPostRef, {
-    //   user: auth.currentUser.uid,
-    // });
-    console.log("Challenge key:", props.route.params.challenges.key)
+    // Add user to Challenge
+    const db = getDatabase();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "challenge/" +
+        props.route.params.challenges.val().challengeType +
+        "/" +
+        props.route.params.challenges.key +
+        "/completedUsers/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      user: auth.currentUser.uid,
+    });
+    // Navigate to Wall of Fame
     navigation.navigate("Wall of Fame", {
       challengeID: props.route.params.challenges.key,
       challengeType: props.route.params.challenges.val().challengeType,

@@ -44,6 +44,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
   const [url, setUrl] = useState(null);
   const [numCreated, setNumCreated] = useState(null);
   const [numCompleted, setNumCompleted] = useState(null);
+  const [numInProgress, setNumInProgress] = useState(null);
   const [name, setName] = useState(null);
 
   // Get image from firebase storage
@@ -57,13 +58,10 @@ const FitopolisHomeScreen = ({ navigation }) => {
   // MOCK to add favorites to user accounts - will need to remove
   const addCompleted = () => {
     // Mock creating a challenge, need to hook this up to the Challenge screen
-    const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
+    const challengeId = "Running/" + "-N74GoijcLLEhSYqwYPf";
     const db = getDatabase();
     // Create database reference
-    const postListRef = ref(
-      db,
-      "users/" + auth.currentUser.uid + "/completed/"
-    );
+    const postListRef = ref(db, "users/" + auth.currentUser.uid + "/progress/");
     const newPostRef = push(postListRef);
     // Set child as challenge ID
     set(newPostRef, {
@@ -79,6 +77,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
           getImage(snapshot.val().profilePhoto);
           setNumCreated(Object.keys(snapshot.val().created).length);
           setNumCompleted(Object.keys(snapshot.val().completed).length);
+          setNumInProgress(Object.keys(snapshot.val().progress).length);
           setName(snapshot.val().name);
           console.log("created", Object.keys(snapshot.val().favorites).length);
           console.log("USER", userID);
@@ -121,12 +120,18 @@ const FitopolisHomeScreen = ({ navigation }) => {
     console.log("Here");
     navigation.navigate("Created");
   }
-  
-    // Navigate to Completed screen
-    function goToCompleted() {
-      console.log("Here");
-      navigation.navigate("Completed");
-    }
+
+  // Navigate to Completed screen
+  function goToCompleted() {
+    console.log("Here");
+    navigation.navigate("Completed");
+  }
+
+  // Navigate to In Progress screen
+  function goToInProgress() {
+    console.log("Here");
+    navigation.navigate("In Progress");
+  }
 
   return (
     <>
@@ -157,10 +162,10 @@ const FitopolisHomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.challengeInfo2}>
-          <TouchableOpacity style={styles.progress}>
+          <TouchableOpacity style={styles.progress} onPress={goToInProgress}>
             <Text style={styles.stat}>
               IN PROGRESS {"\n"}
-              {"\n"} 6
+              {"\n"} {numInProgress}
             </Text>
           </TouchableOpacity>
         </View>
@@ -174,7 +179,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
             <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={addCompleted}>
-            <Text style={styles.buttonText}>Add Completed</Text>
+            <Text style={styles.buttonText}>Add In Progress</Text>
           </TouchableOpacity>
         </View>
       </View>

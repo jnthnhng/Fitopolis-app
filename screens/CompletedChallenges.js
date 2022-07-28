@@ -78,7 +78,7 @@ const CompletedChallengesScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="checkmark-done-circle" size={50} color="#6200ee" />
+          <Ionicons name="checkmark-done-circle" size={50} color="#ABDEE6" />
           <Text style={styles.favorites}>COMPLETED CHALLENGES</Text>
         </View>
         <SafeAreaView>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     width: "95%",
   },
   item: {
-    backgroundColor: "#f6ebfc",
+    backgroundColor: "#ABDEE6",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

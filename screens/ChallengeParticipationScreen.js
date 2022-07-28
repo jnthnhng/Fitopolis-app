@@ -36,6 +36,8 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const [checkedGoal1, setCheckedGoal1] = React.useState(false);
   const [checkedGoal2, setCheckedGoal2] = React.useState(false);
   const [checkedGoal3, setCheckedGoal3] = React.useState(false);
+  const [key, setKey] = React.useState(null);
+  const [challengeID, setChallengeID] = React.useState(null);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -84,6 +86,32 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Set child as challenge ID
     set(newPostRef, {
       challenge: challengeId,
+    });
+  };
+
+  const goToWallofFame = () => {
+    // const auth = getAuth()
+
+    // Add user to Challenge
+    const db = getDatabase();
+    // Create database reference
+    const postListRef = ref(
+      db,
+      "challenge/" +
+        props.route.params.challenges.val().challengeType +
+        "/" +
+        props.route.params.challenges.key +
+        "/completedUsers/"
+    );
+    const newPostRef = push(postListRef);
+    // Set child as challenge ID
+    set(newPostRef, {
+      user: auth.currentUser.uid,
+    });
+    // Navigate to Wall of Fame
+    navigation.navigate("Wall of Fame", {
+      challengeID: props.route.params.challenges.key,
+      challengeType: props.route.params.challenges.val().challengeType,
     });
   };
 
@@ -182,7 +210,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         />
         <Card.Actions style={styles.cardActionText}>
           <Button>Participate</Button>
-          <Button>Complete</Button>
+          <Button onPress={goToWallofFame}>Complete</Button>
           <Button onPress={pickImage}>Post </Button>
           <Button onPress={pickImage}>Share </Button>
         </Card.Actions>

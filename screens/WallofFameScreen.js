@@ -22,7 +22,10 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const CreatedChallengeScreen = ({ navigation }) => {
+// route.params.challengeID = challenge ID of wall of fame
+// route.params.challengeType = challenge type for wall of fame
+
+const WallofFameScreen = ({ route, navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -34,22 +37,38 @@ const CreatedChallengeScreen = ({ navigation }) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
-  const getCreated = () => {
+  const getCompleted = () => {
     // Get created from user ID on realtime database
-    get(ref(db, "users/" + userID + "/created/")).then((snapshot) => {
+    const challengeURL =
+      "challenge/" +
+      route.params.challengeType +
+      "/" +
+      route.params.challengeID +
+      "/completedUsers/";
+    console.log(challengeURL);
+
+    // Call database to get completed users
+    get(
+      ref(
+        db,
+        challengeURL
+      )
+    ).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
+      console.log("here", snapshot)
       if (snapshot.exists()) {
-        snapshot.forEach((element) => {
-          getChallengeInfo(element.val().challenge);
+        snapshot.forEach((element) => { 
+        console.log(element.val().user);
+          getUserInfo(element.val().user);
         });
       }
     });
   };
 
   // Retrieves challenge object from the path saved in user favorites
-  const getChallengeInfo = (challengePath) => {
-    get(ref(db, "challenge/" + challengePath)).then((snapshot) => {
+  const getUserInfo = (userId) => {
+    get(ref(db, "users/" + userID)).then((snapshot) => {
       if (snapshot.exists()) {
         console.log("challenge snapshot: ", snapshot);
         addChallengeToEnd(snapshot);
@@ -59,7 +78,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
 
   useEffect(() => {
     console.log("NEW");
-    getCreated();
+    getCompleted();
   }, []);
 
   // Renders flatlist item
@@ -67,10 +86,9 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <TouchableOpacity
       key={item.key}
       style={styles.item}
-      onPress={() => navigation.navigate("Challenge", {type : item.val().challengeType, challengeID : item.key})}
     >
-      <Text style={styles.itemHeader}>{item.val().challengeName}</Text>
-      <Text style={styles.itemDescription}>{item.val().description}</Text>
+      <Text style={styles.itemHeader}>{item.val().name}</Text>
+      <Text style={styles.itemDescription}>{item.val().username}</Text>
     </TouchableOpacity>
   );
 
@@ -78,18 +96,18 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="create" size={50} color="#FA8072" />
-          <Text style={styles.favorites}>CREATED CHALLENGES</Text>
+          <Ionicons name="trophy" size={50} color="#C2778B" />
+          <Text style={styles.favorites}>WALL OF FAME</Text>
         </View>
         <SafeAreaView>
-          <FlatList data={challenges} renderItem={renderItem} />
+          <FlatList data={challenges} renderItem={renderItem} numColumns={2}/>
         </SafeAreaView>
       </View>
     </>
   );
 };
 
-export default CreatedChallengeScreen;
+export default WallofFameScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -104,7 +122,7 @@ const styles = StyleSheet.create({
     width: "95%",
   },
   item: {
-    backgroundColor: "#FA8072",
+    backgroundColor: "#C2778B",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -112,6 +130,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     shadowColor: "black",
     shadowOpacity: 0.25,
+    justifyContent: "center",
+    alignContent: "center",
   },
   itemHeader: {
     fontSize: 15,

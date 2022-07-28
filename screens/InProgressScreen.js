@@ -22,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const CreatedChallengeScreen = ({ navigation }) => {
+const InProgressScreen = ({ navigation }) => {
   const [challenges, setChallenges] = useState([]);
 
   const auth = getAuth();
@@ -34,9 +34,9 @@ const CreatedChallengeScreen = ({ navigation }) => {
     setChallenges((state) => [...state, newChallenge]);
   };
 
-  const getCreated = () => {
+  const getInProgress = () => {
     // Get created from user ID on realtime database
-    get(ref(db, "users/" + userID + "/created/")).then((snapshot) => {
+    get(ref(db, "users/" + userID + "/progress/")).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
@@ -59,7 +59,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
 
   useEffect(() => {
     console.log("NEW");
-    getCreated();
+    getInProgress();
   }, []);
 
   // Renders flatlist item
@@ -67,7 +67,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <TouchableOpacity
       key={item.key}
       style={styles.item}
-      onPress={() => navigation.navigate("Challenge", {type : item.val().challengeType, challengeID : item.key})}
+      onPress={() => navigation.navigate("Participate", { challenges: item })}
     >
       <Text style={styles.itemHeader}>{item.val().challengeName}</Text>
       <Text style={styles.itemDescription}>{item.val().description}</Text>
@@ -78,8 +78,8 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="create" size={50} color="#FA8072" />
-          <Text style={styles.favorites}>CREATED CHALLENGES</Text>
+          <Ionicons name="stopwatch" size={50} color="#97C1a9" />
+          <Text style={styles.favorites}>IN PROGRESS CHALLENGES</Text>
         </View>
         <SafeAreaView>
           <FlatList data={challenges} renderItem={renderItem} />
@@ -89,7 +89,7 @@ const CreatedChallengeScreen = ({ navigation }) => {
   );
 };
 
-export default CreatedChallengeScreen;
+export default InProgressScreen;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     width: "95%",
   },
   item: {
-    backgroundColor: "#FA8072",
+    backgroundColor: "#97C1a9",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

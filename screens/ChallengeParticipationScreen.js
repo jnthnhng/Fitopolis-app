@@ -92,23 +92,31 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const addToInProgress = () => {
     // adds to in progress under user profile
 
-    const auth = getAuth()
+    const auth = getAuth();
     const db = getDatabase();
-    const challengeId = props.route.params.challenges.val().challengeType + '/' + props.route.params.challenges.key;
+    const challengeId =
+      props.route.params.challenges.val().challengeType +
+      "/" +
+      props.route.params.challenges.key;
     let inProgress = false;
 
-    const snapshot = get(ref(db, 'users/' + auth.currentUser.uid + '/progress')).then((snapshot) => {
+    const snapshot = get(
+      ref(db, "users/" + auth.currentUser.uid + "/progress")
+    ).then((snapshot) => {
       snapshot.forEach((child) => {
-        console.log(child.val().challenge)
-        console.log(challengeId)
+        console.log(child.val().challenge);
+        console.log(challengeId);
         if (child.val().challenge == challengeId) {
           inProgress = true;
         }
-      })
+      });
 
-      if (!inProgress){
+      if (!inProgress) {
         // Create database reference
-        const postListRef = ref(db, 'users/' + auth.currentUser.uid + '/progress/');
+        const postListRef = ref(
+          db,
+          "users/" + auth.currentUser.uid + "/progress/"
+        );
         const newPostRef = push(postListRef);
         // Set child as challenge ID
         set(newPostRef, {
@@ -118,28 +126,29 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
       } else {
         alert("You are already participating in this challenge!");
       }
-    })
-
-  }
+    });
+  };
 
   const goToWallofFame = () => {
-    const auth = getAuth()
+    const auth = getAuth();
 
     // checks to see if user completed all three goals
     if (!checkedGoal1 || !checkedGoal2 || !checkedGoal3) {
-      alert("You must complete all three goals before completing this challenge!");
-      return
+      alert(
+        "You must complete all three goals before completing this challenge!"
+      );
+      return;
     }
 
     // Add user to Challenge
     const db = getDatabase();
 
     // Add badges to user profile
-    const reference = ref(db, 'users/' + auth.currentUser.uid + "/badges/");
+    const reference = ref(db, "users/" + auth.currentUser.uid + "/badges/");
     for (const badge of props.route.params.challenges.val().badge) {
-      console.log(badge)
+      console.log(badge);
       push(reference, {
-        badge: badge.value
+        badge: badge.value,
       });
     }
 
@@ -212,7 +221,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal1}
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal1 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal1(!checkedGoal1);
@@ -224,7 +233,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal2}
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal2 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal2(!checkedGoal2);
@@ -237,7 +246,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal3}
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal3 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal3(!checkedGoal3);

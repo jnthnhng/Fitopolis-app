@@ -45,13 +45,13 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen({ navigation, route }) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} />
+      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} options={{ unmountOnBlur: true }}/>
       <HomeStack.Screen name="Created" component={CreatedChallengeScreen} />
       <HomeStack.Screen
         name="Completed"
         component={CompletedChallengesScreen}
       />
-      <HomeStack.Screen name="In Progress" component={InProgressScreen} />
+      <HomeStack.Screen name="In Progress" component={InProgressScreen} options={{ unmountOnBlur: true }}/>
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="Challenge" component={ChallengeScreen} />

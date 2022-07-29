@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useFocusEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -56,6 +56,7 @@ const InProgressScreen = ({ navigation }) => {
       }
     });
   };
+
 
   useEffect(() => {
     console.log("NEW");

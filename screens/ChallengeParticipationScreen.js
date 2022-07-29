@@ -146,11 +146,23 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Add badges to user profile
     const reference = ref(db, "users/" + auth.currentUser.uid + "/badges/");
     for (const badge of props.route.params.challenges.val().badge) {
-      console.log(badge);
+      console.log("badge", badge.value);
       push(reference, {
         badge: badge.value,
       });
     }
+
+    // Add challenge to completed section of user profile
+    const referenceComplete = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/completed/"
+    );
+    push(referenceComplete, {
+      challenge:
+        props.route.params.challenges.val().challengeType +
+        "/" +
+        props.route.params.challenges.key,
+    });
 
     // Add in progress to challenge ID
     // Create database reference
@@ -170,31 +182,29 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     });
 
     // If user has challenge in progress, remove from in progress
-    const challengeURI = props.route.params.challenges.val().challengeType + "/" + props.route.params.challenges.key
-    const referenceTwo =
-      "users/" +
-      auth.currentUser.uid + "/progress/"
+    const challengeURI =
+      props.route.params.challenges.val().challengeType +
+      "/" +
+      props.route.params.challenges.key;
+    const referenceTwo = "users/" + auth.currentUser.uid + "/progress/";
 
     // Call database to get In progress items
-    get(
-      ref(
-        db,
-        referenceTwo
-      )
-    ).then((snapshot) => {
-
+    get(ref(db, referenceTwo)).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
       if (snapshot.exists()) {
-        snapshot.forEach((element) => { 
-          if (element.val().challenge == challengeURI){
-            const removeRef =  ref(db, "users/" + auth.currentUser.uid + "/progress/" + element.key);
+        snapshot.forEach((element) => {
+          if (element.val().challenge == challengeURI) {
+            const removeRef = ref(
+              db,
+              "users/" + auth.currentUser.uid + "/progress/" + element.key
+            );
             remove(removeRef);
           }
         });
       }
     });
-    
+
     // Navigate to Wall of Fame
     navigation.navigate("Wall of Fame", {
       challengeID: props.route.params.challenges.key,

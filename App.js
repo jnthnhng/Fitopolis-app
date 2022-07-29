@@ -30,6 +30,7 @@ import CreatedChallengeScreen from "./screens/CreatedChallengeScreen";
 import CompletedChallengesScreen from "./screens/CompletedChallenges";
 import InProgressScreen from "./screens/InProgressScreen";
 import WallofFameScreen from "./screens/WallofFameScreen";
+import MilestoneScreen from "./screens/MilestoneScreen";
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -45,13 +46,21 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen({ navigation, route }) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Fitopolis" component={FitopolisHomeScreen} options={{ unmountOnBlur: true }}/>
+      <HomeStack.Screen
+        name="Fitopolis"
+        component={FitopolisHomeScreen}
+        options={{ unmountOnBlur: true }}
+      />
       <HomeStack.Screen name="Created" component={CreatedChallengeScreen} />
       <HomeStack.Screen
         name="Completed"
         component={CompletedChallengesScreen}
       />
-      <HomeStack.Screen name="In Progress" component={InProgressScreen} options={{ unmountOnBlur: true }}/>
+      <HomeStack.Screen
+        name="In Progress"
+        component={InProgressScreen}
+        options={{ unmountOnBlur: true }}
+      />
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
       <HomeStack.Screen name="My Badges" component={BadgesScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
@@ -106,7 +115,7 @@ const BadgesStack = createNativeStackNavigator();
 function BadgesStackScreen() {
   return (
     <BadgesStack.Navigator>
-      <BadgesStack.Screen name="My Badges" component={BadgesScreen} />
+      <BadgesStack.Screen name="Milestones" component={MilestoneScreen} />
     </BadgesStack.Navigator>
   );
 }
@@ -128,8 +137,8 @@ function HomeTabs() {
             iconName = focused ? "star" : "star-outline";
           } else if (route.name === "Stats") {
             iconName = focused ? "stats-chart" : "stats-chart-outline";
-          } else if (route.name === "Badges") {
-            iconName = focused ? "trophy" : "trophy-outline";
+          } else if (route.name === "Milestones") {
+            iconName = focused ? "ribbon" : "ribbon-outline";
           }
 
           // You can return any component that you like here!
@@ -163,7 +172,7 @@ function HomeTabs() {
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Badges"
+        name="Milestones"
         component={BadgesStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />

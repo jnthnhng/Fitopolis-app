@@ -53,6 +53,7 @@ function HomeStackScreen({ navigation, route }) {
       />
       <HomeStack.Screen name="In Progress" component={InProgressScreen} options={{ unmountOnBlur: true }}/>
       <HomeStack.Screen name="Create" component={CreateChallengeScreen} />
+      <HomeStack.Screen name="My Badges" component={BadgesScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="Challenge" component={ChallengeScreen} />
       <HomeStack.Screen name="Update" component={UpdateChallengeScreen} />

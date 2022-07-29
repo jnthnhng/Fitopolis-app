@@ -182,9 +182,9 @@ const FitopolisHomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={goToSearch}>
             <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={addCompleted}>
+          {/* <TouchableOpacity style={styles.button} onPress={addCompleted}>
             <Text style={styles.buttonText}>Add In Progress</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </>

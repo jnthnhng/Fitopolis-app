@@ -68,24 +68,6 @@ const FavoritesScreen = ({ navigation }) => {
     getFavorites();
   }, []);
 
-
-  // MOCK to add favorites to user accounts - will need to remove
-  // const addFavorite = () => {
-  //   // Mock creating a challenge, need to hook this up to the Challenge screen
-  //   const challengeId = "Aerobics/" + "-N7Vaz_2b6FDT2pcsFfp";
-  //   const db = getDatabase();
-  //   // Create database reference
-  //   const postListRef = ref(
-  //     db,
-  //     "users/" + auth.currentUser.uid + "/favorites/"
-  //   );
-  //   const newPostRef = push(postListRef);
-  //   // Set child as challenge ID
-  //   set(newPostRef, {
-  //     challenge: challengeId,
-  //   });
-  // };
-
   // Renders flatlist item
   const renderItem = ({ item }) => (
     <TouchableOpacity

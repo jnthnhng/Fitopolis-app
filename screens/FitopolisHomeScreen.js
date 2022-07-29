@@ -101,8 +101,12 @@ const FitopolisHomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    const refreshData = navigation.addListener('focus', () => {
+      getData();
+    })
+    return refreshData;
+    // getData();
+  }, [navigation]);
 
   // Navigate to Create screen
 

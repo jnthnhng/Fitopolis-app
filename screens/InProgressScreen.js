@@ -57,11 +57,19 @@ const InProgressScreen = ({ navigation }) => {
     });
   };
 
-
   useEffect(() => {
-    console.log("NEW");
-    getInProgress();
-  }, []);
+    const refreshData = navigation.addListener('focus', () => {
+      getInProgress();
+    })
+    return refreshData;
+    // getData();
+  }, [navigation]);
+
+
+  // useEffect(() => {
+  //   console.log("NEW");
+  //   getInProgress();
+  // }, []);
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

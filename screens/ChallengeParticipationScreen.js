@@ -146,7 +146,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Add badges to user profile
     const reference = ref(db, "users/" + auth.currentUser.uid + "/badges/");
     for (const badge of props.route.params.challenges.val().badge) {
-      console.log("badge", badge.value);
       push(reference, {
         badge: badge.value,
       });

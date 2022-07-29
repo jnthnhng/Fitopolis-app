@@ -77,9 +77,13 @@ const WallofFameScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    console.log("NEW");
-    getCompleted();
-  }, []);
+    const refreshData = navigation.addListener('focus', () => {
+      getCompleted();
+    })
+    return refreshData;
+    // getData();
+  }, [navigation]);
+
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

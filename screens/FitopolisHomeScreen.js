@@ -31,10 +31,6 @@ import {
 // storage imports for images
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 
-// Screen Imports
-import ProfileScreen from "./ProfileScreen";
-import BadgesScreen from "./BadgesScreen";
-
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -45,6 +41,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
   const [numCreated, setNumCreated] = useState(null);
   const [numCompleted, setNumCompleted] = useState(null);
   const [numInProgress, setNumInProgress] = useState(null);
+  const [numBadges, setNumBadges] = useState(null);
   const [name, setName] = useState(null);
 
   // Get image from firebase storage
@@ -78,6 +75,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
           setNumCreated(Object.keys(snapshot.val().created).length);
           setNumCompleted(Object.keys(snapshot.val().completed).length);
           setNumInProgress(Object.keys(snapshot.val().progress).length);
+          setNumBadges(Object.keys(snapshot.val().badges).length);
           setName(snapshot.val().name);
           console.log("created", Object.keys(snapshot.val().favorites).length);
           console.log("USER", userID);
@@ -101,8 +99,12 @@ const FitopolisHomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    const refreshData = navigation.addListener('focus', () => {
+      getData();
+    })
+    return refreshData;
+    // getData();
+  }, [navigation]);
 
   // Navigate to Create screen
 
@@ -120,6 +122,12 @@ const FitopolisHomeScreen = ({ navigation }) => {
     console.log("Here");
     navigation.navigate("Created");
   }
+
+    // Navigate to Badges screen
+    function goToBadges() {
+      console.log("Here");
+      navigation.navigate("My Badges");
+    }
 
   // Navigate to Completed screen
   function goToCompleted() {
@@ -142,9 +150,6 @@ const FitopolisHomeScreen = ({ navigation }) => {
           ) : (
             <Avatar.Image source={{ uri: url }} size={150} />
           )}
-          {/* <Avatar.Image source={{ uri: url }} size={110} /> */}
-          {/* <Text style={styles.number}>4</Text>
-          <Ionicons name="trophy-outline" size={60} /> */}
         </View>
         <Text style={styles.nameText}>{name}</Text>
         <View style={styles.challengeInfo}>
@@ -168,6 +173,12 @@ const FitopolisHomeScreen = ({ navigation }) => {
               {"\n"} {numInProgress}
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.badges} onPress={goToBadges}>
+            <Text style={styles.stat}>
+              BADGES {"\n"}
+              {"\n"} {numBadges}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -178,9 +189,9 @@ const FitopolisHomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={goToSearch}>
             <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={addCompleted}>
+          {/* <TouchableOpacity style={styles.button} onPress={addCompleted}>
             <Text style={styles.buttonText}>Add In Progress</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </>
@@ -236,8 +247,8 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     paddingTop: 10,
     alignItems: "center",
-    justifyContent: "center",
-    width: "38%",
+    justifyContent: "space-between",
+    width: "80%",
   },
   created: {
     flex: 1,
@@ -252,6 +263,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#97C1a9",
     borderRadius: 50,
     width: "40%",
+    marginRight: 10
+  },
+  badges: {
+    flex: 1,
+    backgroundColor: "#ffffb5",
+    borderRadius: 50,
+    width: "40%",
+    marginLeft: 10
   },
   completed: {
     flex: 1,

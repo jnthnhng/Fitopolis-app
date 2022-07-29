@@ -13,7 +13,7 @@ import {
 import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { set, ref, getDatabase, push, get } from "firebase/database";
+import { set, ref, getDatabase, push, get, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 import * as ImagePicker from "expo-image-picker";
@@ -92,23 +92,31 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const addToInProgress = () => {
     // adds to in progress under user profile
 
-    const auth = getAuth()
+    const auth = getAuth();
     const db = getDatabase();
-    const challengeId = props.route.params.challenges.val().challengeType + '/' + props.route.params.challenges.key;
+    const challengeId =
+      props.route.params.challenges.val().challengeType +
+      "/" +
+      props.route.params.challenges.key;
     let inProgress = false;
 
-    const snapshot = get(ref(db, 'users/' + auth.currentUser.uid + '/progress')).then((snapshot) => {
+    const snapshot = get(
+      ref(db, "users/" + auth.currentUser.uid + "/progress")
+    ).then((snapshot) => {
       snapshot.forEach((child) => {
-        console.log(child.val().challenge)
-        console.log(challengeId)
+        console.log(child.val().challenge);
+        console.log(challengeId);
         if (child.val().challenge == challengeId) {
           inProgress = true;
         }
-      })
+      });
 
-      if (!inProgress){
+      if (!inProgress) {
         // Create database reference
-        const postListRef = ref(db, 'users/' + auth.currentUser.uid + '/progress/');
+        const postListRef = ref(
+          db,
+          "users/" + auth.currentUser.uid + "/progress/"
+        );
         const newPostRef = push(postListRef);
         // Set child as challenge ID
         set(newPostRef, {
@@ -118,31 +126,44 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
       } else {
         alert("You are already participating in this challenge!");
       }
-    })
-
-  }
+    });
+  };
 
   const goToWallofFame = () => {
-    const auth = getAuth()
+    const auth = getAuth();
 
     // checks to see if user completed all three goals
     if (!checkedGoal1 || !checkedGoal2 || !checkedGoal3) {
-      alert("You must complete all three goals before completing this challenge!");
-      return
+      alert(
+        "You must complete all three goals before completing this challenge!"
+      );
+      return;
     }
 
     // Add user to Challenge
     const db = getDatabase();
 
     // Add badges to user profile
-    const reference = ref(db, 'users/' + auth.currentUser.uid + "/badges/");
+    const reference = ref(db, "users/" + auth.currentUser.uid + "/badges/");
     for (const badge of props.route.params.challenges.val().badge) {
-      console.log(badge)
       push(reference, {
-        badge: badge.value
+        badge: badge.value,
       });
     }
 
+    // Add challenge to completed section of user profile
+    const referenceComplete = ref(
+      db,
+      "users/" + auth.currentUser.uid + "/completed/"
+    );
+    push(referenceComplete, {
+      challenge:
+        props.route.params.challenges.val().challengeType +
+        "/" +
+        props.route.params.challenges.key,
+    });
+
+    // Add in progress to challenge ID
     // Create database reference
     const postListRef = ref(
       db,
@@ -153,10 +174,36 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         "/completedUsers/"
     );
     const newPostRef = push(postListRef);
+
     // Set child as challenge ID
     set(newPostRef, {
       user: auth.currentUser.uid,
     });
+
+    // If user has challenge in progress, remove from in progress
+    const challengeURI =
+      props.route.params.challenges.val().challengeType +
+      "/" +
+      props.route.params.challenges.key;
+    const referenceTwo = "users/" + auth.currentUser.uid + "/progress/";
+
+    // Call database to get In progress items
+    get(ref(db, referenceTwo)).then((snapshot) => {
+      // Loop through them and get the challenge information from each favorited item
+      // These are stored in the challenges array
+      if (snapshot.exists()) {
+        snapshot.forEach((element) => {
+          if (element.val().challenge == challengeURI) {
+            const removeRef = ref(
+              db,
+              "users/" + auth.currentUser.uid + "/progress/" + element.key
+            );
+            remove(removeRef);
+          }
+        });
+      }
+    });
+
     // Navigate to Wall of Fame
     navigation.navigate("Wall of Fame", {
       challengeID: props.route.params.challenges.key,
@@ -212,7 +259,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal1}
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal1 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal1(!checkedGoal1);
@@ -224,7 +271,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal2}
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal2 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal2(!checkedGoal2);
@@ -237,7 +284,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               title={props.route.params.challenges.val().goal3}
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
-                <Checkbox
+                <Checkbox.Android
                   status={checkedGoal3 ? "checked" : "unchecked"}
                   onPress={() => {
                     setCheckedGoal3(!checkedGoal3);

@@ -58,9 +58,18 @@ const CreatedChallengeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("NEW");
-    getCreated();
-  }, []);
+    const refreshData = navigation.addListener('focus', () => {
+      getCreated();
+    })
+    return refreshData;
+    // getData();
+  }, [navigation]);
+
+
+  // useEffect(() => {
+  //   console.log("NEW");
+  //   getCreated();
+  // }, []);
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

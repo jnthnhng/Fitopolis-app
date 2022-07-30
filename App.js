@@ -105,18 +105,18 @@ const StatsStack = createNativeStackNavigator();
 function StatsStackScreen() {
   return (
     <StatsStack.Navigator>
-      <StatsStack.Screen name="Wall of Fame" component={WallofFameScreen} />
+      <StatsStack.Screen name="Stats" component={StatsScreen} />
     </StatsStack.Navigator>
   );
 }
 
-const BadgesStack = createNativeStackNavigator();
+const MilestonesStack = createNativeStackNavigator();
 
-function BadgesStackScreen() {
+function MilestonesStackScreen() {
   return (
-    <BadgesStack.Navigator>
-      <BadgesStack.Screen name="Milestones" component={MilestoneScreen} />
-    </BadgesStack.Navigator>
+    <MilestonesStack.Navigator>
+      <MilestonesStack.Screen name="Milestones" component={MilestoneScreen} />
+    </MilestonesStack.Navigator>
   );
 }
 
@@ -173,7 +173,7 @@ function HomeTabs() {
       />
       <Tab.Screen
         name="Milestones"
-        component={BadgesStackScreen}
+        component={MilestonesStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
     </Tab.Navigator>

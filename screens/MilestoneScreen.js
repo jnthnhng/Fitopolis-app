@@ -150,14 +150,14 @@ const FavoritesScreen = ({ navigation }) => {
         <View style={styles.challengeInfo}>
           <TouchableOpacity style={styles.badge}>
             {numCompleted >= 1 && (
-              <Avatar.Image source={{ uri: badge1 }} size={70} />
+              <Avatar.Image source={{ uri: badge1 }} size={80} />
 
             )}
             <Text style={styles.stat}>1st Challenge Badge</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.badge}>
           {numCompleted >= 5 && (
-              <Avatar.Image source={{ uri: badge2 }} size={70} />
+              <Avatar.Image source={{ uri: badge2 }} size={80} />
 
             )}
             <Text style={styles.stat}>5th Challenge Badge</Text>
@@ -166,14 +166,14 @@ const FavoritesScreen = ({ navigation }) => {
         <View style={styles.challengeInfo}>
           <TouchableOpacity style={styles.badge}>
           {numCompleted >= 10 && (
-              <Avatar.Image source={{ uri: badge3 }} size={70} />
+              <Avatar.Image source={{ uri: badge3 }} size={80} />
 
             )}
             <Text style={styles.stat}>10th Challenge Badge</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.badge}>
           {numCompleted >= 50 && (
-              <Avatar.Image source={{ uri: badge4 }} size={70} />
+              <Avatar.Image source={{ uri: badge4 }} size={80} />
 
             )}
             <Text style={styles.stat}>50th Challenge Badge</Text>
@@ -182,7 +182,7 @@ const FavoritesScreen = ({ navigation }) => {
         <View style={styles.challengeInfo2}>
           <TouchableOpacity style={styles.progress}>
           {numCompleted >= 100 && (
-              <Avatar.Image source={{ uri: badge5 }} size={70} />
+              <Avatar.Image source={{ uri: badge5 }} size={80} />
 
             )}
             <Text style={styles.stat}>100th Challenge Badge</Text>
@@ -267,6 +267,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#6891C3",
     borderRadius: 50,
     width: "40%",
+    elevation: 2,
+    shadowColor: "black",
+    shadowOpacity: 0.25,
   },
   badge: {
     flex: 1,
@@ -275,6 +278,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
     alignContent: "center",
+    alignItems: "center",
+    elevation: 2,
+    shadowColor: "black",
+    shadowOpacity: 0.25,
   },
   stat: {
     // flexShrink: 1,

@@ -55,8 +55,6 @@ class ChallengeScreen extends Component {
   }
  
   componentDidMount() {
-    this.getChallenge();
-  
     this.focusListener = this.props.navigation.addListener('focus', () => {
       this.getChallenge();
     });
@@ -75,6 +73,7 @@ class ChallengeScreen extends Component {
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
     this.setState({badgeFK : (snapshot.val().badge)});
+    this.setState({badges : ([])});
 
     // get image from storage using image path
     var storage = getStorage();
@@ -83,10 +82,12 @@ class ChallengeScreen extends Component {
       this.setState({image: x});
     });
 
+    console.log(this.state.badgeFK);
     for (const badge of this.state.badgeFK) {
       const badgeSnapshot = await get(ref(db, '/badges/' + badge.value))
       var image = badgeSnapshot.val().image;
       var name = badgeSnapshot.val().name;
+      console.log(name);
       const reference = sRef(storage, image);
       await getDownloadURL(reference).then((x) => {
         this.setState(prevState => ({

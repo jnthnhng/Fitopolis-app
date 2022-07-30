@@ -155,9 +155,6 @@ class ChallengeScreen extends Component {
             >{this.challenge().name}
           </Text>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {addFavorite(this.challenge().id, this.challenge().type)}} style={styles.button}>
-            <Text style={styles.buttonText}>Favorite this Challenge</Text>
-          </TouchableOpacity>
         </View>
           <View style={styles.container}>
             <Image style={styles.image} source={{uri: this.challenge().image}} />

@@ -13,10 +13,12 @@ import {
 import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { set, ref, getDatabase, push, get, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 import * as ImagePicker from "expo-image-picker";
+import { async } from "@firebase/util";
 
 /**
  * Retrieve the screen size for a more responsive layout
@@ -69,6 +71,12 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
       setImage(result.uri);
     }
   };
+
+  var storage = getStorage();
+  const reference = sRef(storage, props.route.params.challenges.val().image);
+  getDownloadURL(reference).then((x) => {
+    setImage(x);
+  });
 
   const addFavorite = (type, key) => {
     // Create path to challenge with type and key
@@ -220,6 +228,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   );
 
   const ChallengeCard = () => {
+
     return (
       <Card mode={"outlined"} style={styles.cardBorder}>
         <Card.Title
@@ -301,7 +310,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         </Card.Content>
         <Card.Cover
           source={{
-            uri: "https://images.unsplash.com/photo-1483721310020-03333e577078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cnVubmluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+            uri: image,
           }}
         />
         <Card.Actions style={styles.cardActionText}>

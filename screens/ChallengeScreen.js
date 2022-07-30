@@ -26,6 +26,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import UpdateChallengeScreen from "./UpdateChallengeScreen.js";
 
+
 class ChallengeScreen extends Component {
 
   constructor(props) {
@@ -52,10 +53,15 @@ class ChallengeScreen extends Component {
       creator: null,
     }
   }
-
+ 
   componentDidMount() {
     this.getChallenge();
+  
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getChallenge();
+    });
   }
+
 
   getChallenge = async () => {
     

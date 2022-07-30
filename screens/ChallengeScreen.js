@@ -97,7 +97,6 @@ class ChallengeScreen extends Component {
     }
 
 
-
     // get creator username using FK stored in challenge
     const userSnapshot = await get(ref(db, '/users/' + snapshot.val().creator));
     this.setState({creator : (userSnapshot.val().username)});

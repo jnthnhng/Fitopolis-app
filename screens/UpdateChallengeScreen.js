@@ -201,10 +201,6 @@ class UpdateChallengeScreen extends Component {
         alert("Please enter a challenge name");
         return;
       }
-      else if (!type) {
-        alert("Please select a challenge type");
-        return;
-      }
       else if (!description) {
         alert("Please enter a challenge description");
         return;
@@ -250,21 +246,6 @@ class UpdateChallengeScreen extends Component {
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
-              <Picker
-                onValueChange={(value) => {
-                  this.setState({ type: value});
-                }}
-              > 
-                <Picker.Item label={this.state.type} value={this.state.type} />
-                <Picker.Item label="TEST" value="test" />
-                <Picker.Item label="Weight Lifting" value="Weight Lifting" />
-                <Picker.Item label="Cycling" value="Cycling" />
-                <Picker.Item label="Aerobics" value="Aerobics" />
-                <Picker.Item label="Yoga" value="Yoga" />
-                <Picker.Item label="Cardio" value="Cardio" />
-                <Picker.Item label="Swimming" value="Swimming" />
-                <Picker.Item label="Running" value="Running" />
-              </Picker>
               <SelectMultiple
                   items={this.state.badges}
                   selectedItems={this.state.selectedBadges}

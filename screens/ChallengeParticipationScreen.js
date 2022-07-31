@@ -144,6 +144,10 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     });
   };
 
+  const goToActivityFeed =() => {
+    navigation.navigate('Activity Feed');
+
+  }
   const goToWallofFame = () => {
     const auth = getAuth();
 
@@ -323,8 +327,9 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         <Card.Actions style={styles.cardActionText}>
           <Button onPress={addToInProgress}>Participate</Button>
           <Button onPress={goToWallofFame}>Complete</Button>
-          <Button onPress={pickImage}>Post </Button>
-          <Button onPress={pickImage}>Share </Button>
+          {/* <Button onPress={pickImage}>Post </Button>
+          <Button onPress={pickImage}>Share </Button> */}
+          <Button onPress={goToActivityFeed}>Feed</Button>
         </Card.Actions>
       </Card>
     );
@@ -380,6 +385,8 @@ const styles = StyleSheet.create({
   },
   cardActionText: {
     backgroundColor: "#FFFFFF",
+    flexDirection: 'row',
+    flexWrap: "wrap",
   },
   cardBorder: {
     flex: 1,

@@ -10,7 +10,14 @@ import {
   Checkbox,
   IconButton,
 } from "react-native-paper";
-import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { set, ref, getDatabase, push, get, remove } from "firebase/database";
@@ -322,7 +329,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   }
 
   return (
-    <ScrollView style={styles.cardContainer}>
+    <SafeAreaView style={styles.cardContainer}>
       <View style={styles.inputContainer}>
         <Header />
         <FlatList
@@ -333,7 +340,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           key={1}
         />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -58,18 +58,12 @@ const InProgressScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const refreshData = navigation.addListener('focus', () => {
+    const refreshData = navigation.addListener("focus", () => {
+      setChallenges([]);
       getInProgress();
-    })
+    });
     return refreshData;
-    // getData();
   }, [navigation]);
-
-
-  // useEffect(() => {
-  //   console.log("NEW");
-  //   getInProgress();
-  // }, []);
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

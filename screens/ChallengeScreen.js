@@ -26,6 +26,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import UpdateChallengeScreen from "./UpdateChallengeScreen.js";
 
+
 class ChallengeScreen extends Component {
 
   constructor(props) {
@@ -52,10 +53,13 @@ class ChallengeScreen extends Component {
       creator: null,
     }
   }
-
+ 
   componentDidMount() {
-    this.getChallenge();
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getChallenge();
+    });
   }
+
 
   getChallenge = async () => {
     
@@ -69,6 +73,7 @@ class ChallengeScreen extends Component {
     this.setState({goal3 : (snapshot.val().goal3)});
     this.setState({tags : (snapshot.val().tags)});
     this.setState({badgeFK : (snapshot.val().badge)});
+    this.setState({badges : ([])});
 
     // get image from storage using image path
     var storage = getStorage();
@@ -77,10 +82,12 @@ class ChallengeScreen extends Component {
       this.setState({image: x});
     });
 
+    console.log(this.state.badgeFK);
     for (const badge of this.state.badgeFK) {
       const badgeSnapshot = await get(ref(db, '/badges/' + badge.value))
       var image = badgeSnapshot.val().image;
       var name = badgeSnapshot.val().name;
+      console.log(name);
       const reference = sRef(storage, image);
       await getDownloadURL(reference).then((x) => {
         this.setState(prevState => ({
@@ -88,7 +95,6 @@ class ChallengeScreen extends Component {
         }));
       });
     }
-
 
 
     // get creator username using FK stored in challenge
@@ -148,9 +154,6 @@ class ChallengeScreen extends Component {
             >{this.challenge().name}
           </Text>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {addFavorite(this.challenge().id, this.challenge().type)}} style={styles.button}>
-            <Text style={styles.buttonText}>Favorite this Challenge</Text>
-          </TouchableOpacity>
         </View>
           <View style={styles.container}>
             <Image style={styles.image} source={{uri: this.challenge().image}} />

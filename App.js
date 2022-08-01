@@ -1,36 +1,44 @@
-import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { getAuth } from "firebase/auth";
+import 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { getAuth } from 'firebase/auth';
 
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import SplashScreen from "./screens/SplashScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
-import ChallengeScreen from "./screens/ChallengeScreen";
-import CreateChallengeScreen from "./screens/CreateChallengeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import BadgesScreen from "./screens/BadgesScreen";
-import StatsScreen from "./screens/StatsScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen";
-import UpdateChallengeScreen from "./screens/UpdateChallengeScreen";
-import CreatedChallengeScreen from "./screens/CreatedChallengeScreen";
-import CompletedChallengesScreen from "./screens/CompletedChallenges";
-import InProgressScreen from "./screens/InProgressScreen";
-import WallofFameScreen from "./screens/WallofFameScreen";
-import MilestoneScreen from "./screens/MilestoneScreen";
+import SplashScreen from './screens/SplashScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import FitopolisHomeScreen from './screens/FitopolisHomeScreen';
+import ChallengeScreen from './screens/ChallengeScreen';
+import CreateChallengeScreen from './screens/CreateChallengeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import BadgesScreen from './screens/BadgesScreen';
+import StatsScreen from './screens/StatsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import SearchScreen from './screens/SearchScreen';
+import ChallengeParticipationScreen from './screens/ChallengeParticipationScreen';
+import UpdateChallengeScreen from './screens/UpdateChallengeScreen';
+import CreatedChallengeScreen from './screens/CreatedChallengeScreen';
+import CompletedChallengesScreen from './screens/CompletedChallenges';
+import InProgressScreen from './screens/InProgressScreen';
+import WallofFameScreen from './screens/WallofFameScreen';
+import MilestoneScreen from './screens/MilestoneScreen';
+import ActivityFeed from './screens/ActivityFeed';
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -71,6 +79,7 @@ function HomeStackScreen({ navigation, route }) {
         component={ChallengeParticipationScreen}
       />
       <HomeStack.Screen name="Wall of Fame" component={WallofFameScreen} />
+      <HomeStack.Screen name="Activity Feed" component={ActivityFeed} />
     </HomeStack.Navigator>
   );
 }
@@ -100,13 +109,13 @@ function FavoritesStackScreen() {
   );
 }
 
-const StatsStack = createNativeStackNavigator();
+const FeedStack = createNativeStackNavigator();
 
-function StatsStackScreen() {
+function FeedStackScreen() {
   return (
-    <StatsStack.Navigator>
-      <StatsStack.Screen name="Stats" component={StatsScreen} />
-    </StatsStack.Navigator>
+    <FeedStack.Navigator>
+      <FeedStack.Screen name="Activity Feed" component={ActivityFeed} />
+    </FeedStack.Navigator>
   );
 }
 
@@ -129,23 +138,23 @@ function HomeTabs() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person-circle" : "person-circle-outline";
-          } else if (route.name === "Favorites") {
-            iconName = focused ? "star" : "star-outline";
-          } else if (route.name === "Stats") {
-            iconName = focused ? "stats-chart" : "stats-chart-outline";
-          } else if (route.name === "Milestones") {
-            iconName = focused ? "ribbon" : "ribbon-outline";
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person-circle' : 'person-circle-outline';
+          } else if (route.name === 'Favorites') {
+            iconName = focused ? 'star' : 'star-outline';
+          } else if (route.name === 'Milestones') {
+            iconName = focused ? 'ribbon' : 'ribbon-outline';
+          } else if (route.name === 'Feed') {
+            iconName = focused ? 'chatbox' : 'chatbox-outline';
           }
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#7f03fc",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: '#7f03fc',
+        tabBarInactiveTintColor: 'gray',
       })}
     >
       <Tab.Screen
@@ -167,54 +176,57 @@ function HomeTabs() {
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Stats"
-        component={StatsStackScreen}
+        name="Milestones"
+        component={MilestonesStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Milestones"
-        component={MilestonesStackScreen}
+        name="Feed"
+        component={FeedStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
     </Tab.Navigator>
   );
 }
 const Stack = createNativeStackNavigator();
+
 export default function App() {
   const auth = getAuth();
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {auth.currentUser == null ? (
-          <>
-            <Stack.Group initialRouteName={"Splash"}>
-              <Stack.Screen
-                name="Splash"
-                component={SplashScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-              <Stack.Screen
-                name="Fitopolis"
-                component={HomeTabs}
-                options={{ headerShown: false }}
-              />
-            </Stack.Group>
-          </>
-        ) : (
-          <>
-            <Stack.Group>
-              <Stack.Screen
-                name="Fitopolis"
-                component={HomeTabs}
-                options={{ headerShown: false }}
-              />
-            </Stack.Group>
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {auth.currentUser == null ? (
+            <>
+              <Stack.Group initialRouteName={'Splash'}>
+                <Stack.Screen
+                  name="Splash"
+                  component={SplashScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Register" component={RegisterScreen} />
+                <Stack.Screen
+                  name="Fitopolis"
+                  component={HomeTabs}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Group>
+            </>
+          ) : (
+            <>
+              <Stack.Group>
+                <Stack.Screen
+                  name="Fitopolis"
+                  component={HomeTabs}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Group>
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
@@ -225,13 +237,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#e6e4df",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#e6e4df',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    color: "black",
-    fontWeight: "bold",
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 50,
     marginBottom: 30,
   },
@@ -239,14 +251,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 10,
-    backgroundColor: "#3b3a39",
+    backgroundColor: '#3b3a39',
     borderRadius: 10,
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
 });

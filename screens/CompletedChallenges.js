@@ -41,6 +41,7 @@ const CompletedChallengesScreen = ({ navigation }) => {
       // These are stored in the challenges array
       if (snapshot.exists()) {
         snapshot.forEach((element) => {
+          console.log("ELEMENT: ", element.val());
           getChallengeInfo(element.val().challenge);
         });
       }
@@ -58,18 +59,13 @@ const CompletedChallengesScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const refreshData = navigation.addListener('focus', () => {
+    const refreshData = navigation.addListener("focus", () => {
+      setChallenges([]);
       getCompleted();
-    })
+    });
     return refreshData;
-    // getData();
   }, [navigation]);
 
-
-  // useEffect(() => {
-  //   console.log("NEW");
-  //   getCompleted();
-  // }, []);
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

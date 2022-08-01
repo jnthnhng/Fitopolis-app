@@ -58,13 +58,13 @@ const CreatedChallengeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const refreshData = navigation.addListener('focus', () => {
+    const refreshData = navigation.addListener("focus", () => {
+      setChallenges([]);
       getCreated();
-    })
+    });
     return refreshData;
     // getData();
   }, [navigation]);
-
 
   // useEffect(() => {
   //   console.log("NEW");
@@ -76,7 +76,12 @@ const CreatedChallengeScreen = ({ navigation }) => {
     <TouchableOpacity
       key={item.key}
       style={styles.item}
-      onPress={() => navigation.navigate("Challenge", {type : item.val().challengeType, challengeID : item.key})}
+      onPress={() =>
+        navigation.navigate("Challenge", {
+          type: item.val().challengeType,
+          challengeID: item.key,
+        })
+      }
     >
       <Text style={styles.itemHeader}>{item.val().challengeName}</Text>
       <Text style={styles.itemDescription}>{item.val().description}</Text>

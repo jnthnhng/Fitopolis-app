@@ -20,24 +20,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import SplashScreen from "./screens/SplashScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import FitopolisHomeScreen from "./screens/FitopolisHomeScreen";
-import ChallengeScreen from "./screens/ChallengeScreen";
-import CreateChallengeScreen from "./screens/CreateChallengeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import BadgesScreen from "./screens/BadgesScreen";
-import StatsScreen from "./screens/StatsScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ChallengeParticipationScreen from "./screens/ChallengeParticipationScreen";
-import UpdateChallengeScreen from "./screens/UpdateChallengeScreen";
-import CreatedChallengeScreen from "./screens/CreatedChallengeScreen";
-import CompletedChallengesScreen from "./screens/CompletedChallenges";
-import InProgressScreen from "./screens/InProgressScreen";
-import WallofFameScreen from "./screens/WallofFameScreen";
-import MilestoneScreen from "./screens/MilestoneScreen";
+import SplashScreen from './screens/SplashScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import FitopolisHomeScreen from './screens/FitopolisHomeScreen';
+import ChallengeScreen from './screens/ChallengeScreen';
+import CreateChallengeScreen from './screens/CreateChallengeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import BadgesScreen from './screens/BadgesScreen';
+import StatsScreen from './screens/StatsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import SearchScreen from './screens/SearchScreen';
+import ChallengeParticipationScreen from './screens/ChallengeParticipationScreen';
+import UpdateChallengeScreen from './screens/UpdateChallengeScreen';
+import CreatedChallengeScreen from './screens/CreatedChallengeScreen';
+import CompletedChallengesScreen from './screens/CompletedChallenges';
+import InProgressScreen from './screens/InProgressScreen';
+import WallofFameScreen from './screens/WallofFameScreen';
+import MilestoneScreen from './screens/MilestoneScreen';
 import ActivityFeed from './screens/ActivityFeed';
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
@@ -109,13 +109,13 @@ function FavoritesStackScreen() {
   );
 }
 
-const StatsStack = createNativeStackNavigator();
+const FeedStack = createNativeStackNavigator();
 
-function StatsStackScreen() {
+function FeedStackScreen() {
   return (
-    <StatsStack.Navigator>
-      <StatsStack.Screen name="Stats" component={StatsScreen} />
-    </StatsStack.Navigator>
+    <FeedStack.Navigator>
+      <FeedStack.Screen name="Activity Feed" component={ActivityFeed} />
+    </FeedStack.Navigator>
   );
 }
 
@@ -138,16 +138,16 @@ function HomeTabs() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person-circle" : "person-circle-outline";
-          } else if (route.name === "Favorites") {
-            iconName = focused ? "star" : "star-outline";
-          } else if (route.name === "Stats") {
-            iconName = focused ? "stats-chart" : "stats-chart-outline";
-          } else if (route.name === "Milestones") {
-            iconName = focused ? "ribbon" : "ribbon-outline";
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person-circle' : 'person-circle-outline';
+          } else if (route.name === 'Favorites') {
+            iconName = focused ? 'star' : 'star-outline';
+          } else if (route.name === 'Milestones') {
+            iconName = focused ? 'ribbon' : 'ribbon-outline';
+          } else if (route.name === 'Feed') {
+            iconName = focused ? 'chatbox' : 'chatbox-outline';
           }
 
           // You can return any component that you like here!
@@ -176,13 +176,13 @@ function HomeTabs() {
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Stats"
-        component={StatsStackScreen}
+        name="Milestones"
+        component={MilestonesStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Milestones"
-        component={MilestonesStackScreen}
+        name="Feed"
+        component={FeedStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
     </Tab.Navigator>

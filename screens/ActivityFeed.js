@@ -7,6 +7,10 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import { Divider } from 'react-native-paper';
+
+import { getAuth } from 'firebase/auth';
+
 import {
   StreamApp,
   FlatFeed,
@@ -40,61 +44,60 @@ export const navigationOptions = ({ navigation }) => ({
       />
     </TouchableOpacity>
   ),
-  headerRight: () => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('NewPost')}
-      style={{ paddingRight: 15 }}
-    >
-      {/* <Image source={''} style={{ width: 23, height: 23 }} /> */}
-    </TouchableOpacity>
-  ),
 });
 
+function getUsernameFromEmail(userEmail) {
+  return userEmail.split('@')[0];
+}
+
 const ActivityFeed = () => {
-  // Hooks
+  // Initializing state
   const [globalToken, setGlobalToken] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Function to call backend API endpoint to get user private token
+  // Get the current user and the user's email as the username for the activity feed
+  let currUser = getAuth().currentUser;
+  let username = getUsernameFromEmail(currUser.email);
+
+  // URL path with query for the API function to generate a token for the user
+  const getTokenURL =
+    'https://us-central1-fitopolis-app.cloudfunctions.net/getTokens?';
+  const query = `name=${username}`;
+
+  // API function for tokens
   const callApi = async () => {
-    const response = await fetch('http://192.168.0.18:3000');
-    // console.log(response)
+    const response = await fetch(getTokenURL + query);
     const userResponse = await response.json();
     return userResponse;
   };
 
-  // When our application starts, we will call the API endpoint
+  // Call the API function after the render of the screen
   useEffect(() => {
-    callApi().then((response) => {
-      // console.log(response);
-      setUserToken(response.userToken);
-      setGlobalToken(response.globalToken);
-      setLoading(false);
-    });
-  }, []);
+      callApi().then((response) => {
+        console.log(response);
+        setUserToken(response.userToken);
+        setGlobalToken(response.globalToken);
+        setLoading(false);
+      });
+    
+  });
 
-  // // GetStream API KEY and APP ID
-
-  // const STREAM_API_KEY = 'qkswp9afyz49';
-  // const STREAM_APP_ID = '1147074';
-
-  // Custom header for our Global feed posts
+  // The header for each post
   const renderHeader = (props) => {
     const { activity } = props;
     const { actor } = activity;
-    // console.log('actor');
-    // console.log(actor.data);
+    // console.log("activity")
+    // console.log(activity)
     return (
       <View style={{ marginLeft: 10 }}>
-        <UserBar username={actor.data.name} avatar={actor.data.profileImage} />
+        <UserBar username={actor.id} avatar={actor.data.profileImage} />
       </View>
     );
   };
 
-  // Each post/activity will contain the custom header and a like button
+  // The content (activity) render component
   const renderActivity = (props) => {
-    // console.log(props)
     return (
       <Activity
         Header={renderHeader(props)}
@@ -121,7 +124,7 @@ const ActivityFeed = () => {
     );
   };
 
-  // While our applications brings the secret user token, we will render a spinner
+  // Show a loading indicator while waiting for the stream to connect
   return loading ? (
     <ActivityIndicator />
   ) : (

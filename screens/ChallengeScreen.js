@@ -6,7 +6,8 @@ import {
   View,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 // database imports
@@ -23,7 +24,6 @@ import {
     push,
     set
 } from 'firebase/database';
-import { ScrollView } from "react-native-gesture-handler";
 import UpdateChallengeScreen from "./UpdateChallengeScreen.js";
 
 

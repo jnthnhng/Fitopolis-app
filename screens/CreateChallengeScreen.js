@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TextInput,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
@@ -24,7 +25,6 @@ import { db, storage, firebaseConfig} from "../database/firebase.js";
 import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
 import { ref, onValue, push, update, remove, set, get } from "firebase/database";
 import { ActivityIndicator } from "react-native-paper";
-import { ScrollView } from "react-native-gesture-handler";
 
 
 class CreateChallengeScreen extends Component {

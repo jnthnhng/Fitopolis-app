@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -9,7 +9,7 @@ import {
   List,
   Checkbox,
   IconButton,
-} from "react-native-paper";
+} from 'react-native-paper';
 import {
   StyleSheet,
   Text,
@@ -17,20 +17,20 @@ import {
   FlatList,
   Dimensions,
   SafeAreaView,
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+  ScrollView,
+} from 'react-native';
 
-import { getStorage, ref as sRef, getDownloadURL } from "firebase/storage";
-import { set, ref, getDatabase, push, get, remove } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
+import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
-import * as ImagePicker from "expo-image-picker";
-import { async } from "@firebase/util";
+import * as ImagePicker from 'expo-image-picker';
+import { async } from '@firebase/util';
 
 /**
  * Retrieve the screen size for a more responsive layout
  */
-const screenWidth = Dimensions.get("window").width;
+const screenWidth = Dimensions.get('window').width;
 const numColumns = 1;
 const tileSize = screenWidth / numColumns;
 
@@ -87,7 +87,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   const addFavorite = (type, key) => {
     // Create path to challenge with type and key
-    const challengeId = type + "/" + key;
+    const challengeId = type + '/' + key;
     console.log(challengeId);
     // Initiate database and get user ID of currently logged in user
     const db = getDatabase();
@@ -95,7 +95,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Create database reference
     const postListRef = ref(
       db,
-      "users/" + auth.currentUser.uid + "/favorites/"
+      'users/' + auth.currentUser.uid + '/favorites/'
     );
     const newPostRef = push(postListRef);
     // Set child as challenge ID
@@ -111,12 +111,12 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     const db = getDatabase();
     const challengeId =
       props.route.params.challenges.val().challengeType +
-      "/" +
+      '/' +
       props.route.params.challenges.key;
     let inProgress = false;
 
     const snapshot = get(
-      ref(db, "users/" + auth.currentUser.uid + "/progress")
+      ref(db, 'users/' + auth.currentUser.uid + '/progress')
     ).then((snapshot) => {
       snapshot.forEach((child) => {
         console.log(child.val().challenge);
@@ -130,31 +130,30 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         // Create database reference
         const postListRef = ref(
           db,
-          "users/" + auth.currentUser.uid + "/progress/"
+          'users/' + auth.currentUser.uid + '/progress/'
         );
         const newPostRef = push(postListRef);
         // Set child as challenge ID
         set(newPostRef, {
           challenge: challengeId,
         });
-        alert("Success!");
+        alert('Success!');
       } else {
-        alert("You are already participating in this challenge!");
+        alert('You are already participating in this challenge!');
       }
     });
   };
 
-  const goToActivityFeed =() => {
+  const goToActivityFeed = () => {
     navigation.navigate('Activity Feed');
-
-  }
+  };
   const goToWallofFame = () => {
     const auth = getAuth();
 
     // checks to see if user completed all three goals
     if (!checkedGoal1 || !checkedGoal2 || !checkedGoal3) {
       alert(
-        "You must complete all three goals before completing this challenge!"
+        'You must complete all three goals before completing this challenge!'
       );
       return;
     }
@@ -163,7 +162,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     const db = getDatabase();
 
     // Add badges to user profile
-    const reference = ref(db, "users/" + auth.currentUser.uid + "/badges/");
+    const reference = ref(db, 'users/' + auth.currentUser.uid + '/badges/');
     for (const badge of props.route.params.challenges.val().badge) {
       push(reference, {
         badge: badge.value,
@@ -173,12 +172,12 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Add challenge to completed section of user profile
     const referenceComplete = ref(
       db,
-      "users/" + auth.currentUser.uid + "/completed/"
+      'users/' + auth.currentUser.uid + '/completed/'
     );
     push(referenceComplete, {
       challenge:
         props.route.params.challenges.val().challengeType +
-        "/" +
+        '/' +
         props.route.params.challenges.key,
     });
 
@@ -186,11 +185,11 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // Create database reference
     const postListRef = ref(
       db,
-      "challenge/" +
+      'challenge/' +
         props.route.params.challenges.val().challengeType +
-        "/" +
+        '/' +
         props.route.params.challenges.key +
-        "/completedUsers/"
+        '/completedUsers/'
     );
     const newPostRef = push(postListRef);
 
@@ -202,9 +201,9 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     // If user has challenge in progress, remove from in progress
     const challengeURI =
       props.route.params.challenges.val().challengeType +
-      "/" +
+      '/' +
       props.route.params.challenges.key;
-    const referenceTwo = "users/" + auth.currentUser.uid + "/progress/";
+    const referenceTwo = 'users/' + auth.currentUser.uid + '/progress/';
 
     // Call database to get In progress items
     get(ref(db, referenceTwo)).then((snapshot) => {
@@ -215,7 +214,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           if (element.val().challenge == challengeURI) {
             const removeRef = ref(
               db,
-              "users/" + auth.currentUser.uid + "/progress/" + element.key
+              'users/' + auth.currentUser.uid + '/progress/' + element.key
             );
             remove(removeRef);
           }
@@ -224,7 +223,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     });
 
     // Navigate to Wall of Fame
-    navigation.navigate("Wall of Fame", {
+    navigation.navigate('Wall of Fame', {
       challengeID: props.route.params.challenges.key,
       challengeType: props.route.params.challenges.val().challengeType,
     });
@@ -239,9 +238,8 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   );
 
   const ChallengeCard = () => {
-
     return (
-      <Card mode={"outlined"} style={styles.cardBorder}>
+      <Card mode={'outlined'} style={styles.cardBorder}>
         <Card.Title
           title={props.route.params.challenges.val().challengeType}
           //   subtitle="Bench"
@@ -249,7 +247,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           right={() => (
             <IconButton
               icon="star"
-              color={"yellow"}
+              color={'yellow'}
               size={35}
               onPress={() =>
                 addFavorite(
@@ -280,7 +278,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
-                  status={checkedGoal1 ? "checked" : "unchecked"}
+                  status={checkedGoal1 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setCheckedGoal1(!checkedGoal1);
                   }}
@@ -292,7 +290,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
-                  status={checkedGoal2 ? "checked" : "unchecked"}
+                  status={checkedGoal2 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setCheckedGoal2(!checkedGoal2);
                   }}
@@ -305,7 +303,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
               // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
-                  status={checkedGoal3 ? "checked" : "unchecked"}
+                  status={checkedGoal3 ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setCheckedGoal3(!checkedGoal3);
                   }}
@@ -362,8 +360,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   header: {
     flex: 0.7,
@@ -384,13 +382,13 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   cardActionText: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
   },
   cardBorder: {
     flex: 1,
-    backgroundColor: "#96A6BC",
+    backgroundColor: '#96A6BC',
     borderWidth: 3,
     padding: 5,
     borderRadius: 10,

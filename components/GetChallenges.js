@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../database/firebase.js';
 import { ref, get, child } from 'firebase/database';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import ListResults from './ListResultsComponent.js';
-import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * A component that takes in a search word and retrieves the data.

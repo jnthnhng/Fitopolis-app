@@ -38,7 +38,7 @@ import CompletedChallengesScreen from './screens/CompletedChallenges';
 import InProgressScreen from './screens/InProgressScreen';
 import WallofFameScreen from './screens/WallofFameScreen';
 import MilestoneScreen from './screens/MilestoneScreen';
-import ActivityFeed from './screens/ActivityFeed';
+// import ActivityFeed from './screens/ActivityFeed';
 // Source: https://everyday.codes/react-native/iterate-faster-with-github-actions-for-react-native/
 // Used to help set up app with jest for CI
 
@@ -79,10 +79,11 @@ function HomeStackScreen({ navigation, route }) {
         component={ChallengeParticipationScreen}
       />
       <HomeStack.Screen name="Wall of Fame" component={WallofFameScreen} />
-      <HomeStack.Screen name="Activity Feed" component={ActivityFeed} />
+      
     </HomeStack.Navigator>
   );
 }
+//<HomeStack.Screen name="Activity Feed" component={ActivityFeed} />
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -108,7 +109,7 @@ function FavoritesStackScreen() {
     </FavoritesStack.Navigator>
   );
 }
-
+/*
 const FeedStack = createNativeStackNavigator();
 
 function FeedStackScreen() {
@@ -118,6 +119,7 @@ function FeedStackScreen() {
     </FeedStack.Navigator>
   );
 }
+*/
 
 const MilestonesStack = createNativeStackNavigator();
 
@@ -180,13 +182,16 @@ function HomeTabs() {
         component={MilestonesStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
-      <Tab.Screen
+      
+    </Tab.Navigator>
+  );
+/*
+  <Tab.Screen
         name="Feed"
         component={FeedStackScreen}
         options={{ headerShown: false, unmountOnBlur: true }}
       />
-    </Tab.Navigator>
-  );
+      */
 }
 const Stack = createNativeStackNavigator();
 

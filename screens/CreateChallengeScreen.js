@@ -117,6 +117,7 @@ class CreateChallengeScreen extends Component {
     () => {
       snapshot.snapshot.ref.getDownloadURL().then((url) => {
         this.setState({ uploading: false});
+        alert("Image Uploaded!")
         return url;
       })
     });
@@ -222,13 +223,13 @@ class CreateChallengeScreen extends Component {
               Fill out the information below to create a challenge the Fitopolis
               Community can participate in!
             </Text>
-            <View style={styles.inputContainer}>
               <TextInput 
                 placeholder="Challenge Name" 
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
               <Picker 
+                style={styles.input}
                 selectedValue={this.state.type}
                 onValueChange={(value) => {
                   this.setState({ type: value});
@@ -244,13 +245,15 @@ class CreateChallengeScreen extends Component {
                 <Picker.Item label="Swimming" value="Swimming" />
                 <Picker.Item label="Running" value="Running" />
               </Picker>
-              <ScrollView>
+              <View>
+              <ScrollView style={{height: 100}} >
                 <SelectMultiple
                   items={this.state.badges}
                   selectedItems={this.state.selectedBadges}
                   onSelectionsChange={this.onSelectionsChange}
                 />
               </ScrollView>
+              </View>
                 <TextInput placeholder="Description" 
                 style={styles.input} 
                 onChangeText={value => this.setState({ description: value})}
@@ -264,17 +267,15 @@ class CreateChallengeScreen extends Component {
                 onChangeText={value => this.setState({ goal2: value})}
                 />
                 <TextInput placeholder="Goal 3" 
-                style={styles.input} 
+                style={styles.input}
                 onChangeText={value => this.setState({ goal3: value})}
                 />
-                <TextInput placeholder="Tags" 
+                <TextInput placeholder="insert tags here: comma, separated" 
                 style={styles.input} 
                 onChangeText={value => this.setState({ tags: value})}
                 />
-              </View>
-              <View style={styles.inputContainer}>
-                  <Text style={styles.input}>Upload Challenge Image</Text>
-                  <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                  <Text style={styles.input}>Upload Challenge Image Below</Text>
+                  <Button style={styles.button} title="Pick an image from camera roll" onPress={this.pickImage} />
                   {this.state.image != null && 
                     (<Image 
                       source={{ uri: this.state.image }} 
@@ -282,7 +283,6 @@ class CreateChallengeScreen extends Component {
                       />
                   )}
                   {!this.state.uploading ? <Button title="upload" onPress={this.uploadImage} /> : <ActivityIndicator size="small" color="#000" />}
-              </View>    
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => {handleInput(this.state.selectedBadges, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputContainer: {
-    width: "80%",
+    width: "70%",
   },
   input: {
     backgroundColor: "white",

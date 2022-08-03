@@ -9,6 +9,7 @@ import {
   List,
   Checkbox,
   IconButton,
+  Divider,
 } from 'react-native-paper';
 import {
   StyleSheet,
@@ -50,14 +51,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   const handlePress = () => setExpanded(!expanded);
 
-  const Header = () => {
-    return (
-      <View style={styles.container}>
-        <Text style={{ color: colors.primary }}> Header</Text>
-      </View>
-    );
-  };
-
   /**
    * Allow the user to pick a photo from their library to upload.
    * Implementation is still in progress
@@ -71,8 +64,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -239,10 +230,9 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   const ChallengeCard = () => {
     return (
-      <Card mode={'outlined'} style={styles.cardBorder}>
+      <Card mode={'outlined'} style={styles.card}>
         <Card.Title
           title={props.route.params.challenges.val().challengeType}
-          //   subtitle="Bench"
           left={LeftContent}
           right={() => (
             <IconButton
@@ -260,19 +250,17 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
             />
           )}
         />
+        
         <Card.Content>
           <Title>{props.route.params.challenges.val().challengeName}</Title>
+
           <Paragraph>
             Description: {props.route.params.challenges.val().description}
           </Paragraph>
+          <Divider style={styles.divider} />
 
           <List.Section>
             <List.Subheader>Goals</List.Subheader>
-            {/* <List.Item
-            title="First Item"
-            left={() => <List.Icon icon="folder" />}
-          /> */}
-
             <List.Item
               title={props.route.params.challenges.val().goal1}
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
@@ -310,6 +298,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
                 />
               )}
             />
+            <Divider style={styles.divider} />
           </List.Section>
 
           <Paragraph>
@@ -325,9 +314,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
         <Card.Actions style={styles.cardActionText}>
           <Button onPress={addToInProgress}>Participate</Button>
           <Button onPress={goToWallofFame}>Complete</Button>
-          {/* <Button onPress={pickImage}>Post </Button>
-          <Button onPress={pickImage}>Share </Button> */}
-          <Button onPress={goToActivityFeed}>Feed</Button>
         </Card.Actions>
       </Card>
     );
@@ -343,7 +329,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   return (
     <SafeAreaView style={styles.cardContainer}>
       <View style={styles.inputContainer}>
-        <Header />
         <FlatList
           data={challenges}
           renderItem={renderChallenges}
@@ -372,11 +357,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   cardContainer: {
-    // flex: .05,
-    // alignItems: 'center',
+    flex: 1,
+    alignItems: 'center',
     // justifyContent: 'center',
     // padding: 50,
-    // flexDirection: 'row',
+    flexDirection: 'column',
   },
   inputContainer: {
     width: screenWidth,
@@ -386,15 +371,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  cardBorder: {
+  card: {
     flex: 1,
-    backgroundColor: '#96A6BC',
-    borderWidth: 3,
-    padding: 5,
-    borderRadius: 10,
-    marginBottom: 15,
-    // height: tileSize,
-    width: tileSize,
+    backgroundColor: '#D3D1D4',
+    // borderWidth: 3,
+    // padding: 5,
+    // borderRadius: 10,
+    // marginBottom: 15,
+    height: '50%',
+    width: '100%',
+  },
+  divider: {
+    backgroundColor: '#343434',
+    padding: 1,
   },
 });
 

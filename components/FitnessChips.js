@@ -1,8 +1,6 @@
-import React, { cloneElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
-import GetChallenges from './GetChallenges';
-import GetFonts from './getFonts.js';
 
 /**
  * A Chip component that renders challenge types as chips. This lets user quickly pull up results
@@ -12,15 +10,17 @@ import GetFonts from './getFonts.js';
  * @returns {View}                A view components with the fitness chips and the results
  */
 const SearchChips = ({ ...props }) => {
+  
   // Initialize a state for the key to be used to query
   const [query, setQuery] = useState('');
 
-  // A hook that is used to display results based on changes to the query state
+  // A hook that is used to display results based on changes to the query state.
   useEffect(() => {
     props.navigation.navigate('Search', { searchType: query });
     resetQuery();
   }, [query]);
 
+  // Set query to an empty string to reset the query.
   function resetQuery() {
     setQuery('');
   }
@@ -28,7 +28,6 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
-      {/* <Text style={styles.text}>Test Text</Text> */}
       <View style={styles.chipContainer}>
         <View style={styles.chipView}>
           <Chip
@@ -96,7 +95,7 @@ const SearchChips = ({ ...props }) => {
             icon="run-fast"
             mode="outlined"
             style={{ backgroundColor: '#6891C3' }}
-            onPress={() => chipQuery('Cardio')}
+            onPress={() => setQuery('Cardio')}
           >
             Cardio
           </Chip>

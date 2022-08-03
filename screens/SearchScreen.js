@@ -86,7 +86,7 @@ const SearchScreen = ({ navigation, ...props }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <SearchHeader />
+      {/* <SearchHeader /> */}
       <SearchBar />
       <Divider style={styles.divider} />
       <SearchChips navigation={navigation} />
@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   divider: {
     backgroundColor: '#E7E5E0',
     borderColor: '#E7E5E0',
-    borderWidth: .5,
+    borderWidth: 0.5,
   },
   header: {
     width: '100%',
-    height: '10%',
+    height: 40,
     // backgroundColor: '#e6e4df',
     alignItems: 'center',
     justifyContent: 'center',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'justify'
+    textAlign: 'justify',
   },
   searchBarContainer: {
     flex: 1,

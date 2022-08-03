@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Searchbar, Button } from 'react-native-paper';
+import { Searchbar, Button, Divider } from 'react-native-paper';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
 
@@ -13,6 +13,14 @@ import GetChallenges from '../components/GetChallenges';
  */
 const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
+
+  if (
+    props.route.params != null &&
+    props.route.params.searchType &&
+    props.route.params.searchType != queryKey
+  ) {
+    setQueryKey(props.route.params.searchType);
+  }
 
   /**
    * initialState, resetState function, and the useEffect is still a work in progress.
@@ -59,7 +67,9 @@ const SearchScreen = ({ navigation, ...props }) => {
           placeholder="Search"
           onChangeText={onChangeSearch}
           value={searchQuery}
-          onIconPress={() => setQueryKey(searchQuery)}
+          onIconPress={() => (
+            setQueryKey(searchQuery), (props.route.params.searchType = '')
+          )}
         />
         <View style={styles.buttonContainer}>
           <Button
@@ -78,10 +88,13 @@ const SearchScreen = ({ navigation, ...props }) => {
     <ScrollView style={styles.container}>
       <SearchHeader />
       <SearchBar />
+      <Divider style={styles.divider} />
       <SearchChips navigation={navigation} />
-      <View>
-        <Text>Search Screen Results</Text>
+      <Divider style={styles.divider} />
+      <View style={styles.resultsHeader}>
+        <Text style={styles.resultsHeader}>Results</Text>
       </View>
+      {/* <Divider style={styles.divider} /> */}
       <GetChallenges navigation={navigation} searchType={queryKey} />
       {/* {resetState} */}
     </ScrollView>
@@ -89,13 +102,31 @@ const SearchScreen = ({ navigation, ...props }) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    // alignContent: 'center',
+    // backgroundColor: '#DDDDDD',
+    // padding: 10,
+    width: '40%',
+    marginLeft: '35%',
+    marginRight: '35%',
+    marginTop: '1%',
+    marginBottom: '1%',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     paddingTop: 5,
     // paddingBottom: '50%',
     // alignItems: 'center',
-    // justifyContent: 'center',
+    // justifyContent: 'center',-
     // paddingHorizontal: 10,
+  },
+  divider: {
+    backgroundColor: '#E7E5E0',
+    borderColor: '#E7E5E0',
+    borderWidth: .5,
   },
   header: {
     width: '100%',
@@ -103,6 +134,12 @@ const styles = StyleSheet.create({
     // backgroundColor: '#e6e4df',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  resultsHeader: {
+    alignItems: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'justify'
   },
   searchBarContainer: {
     flex: 1,
@@ -114,23 +151,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // flexWrap: 'wrap',
   },
-
   text: {
     fontSize: 25,
     color: 'black',
-  },
-  buttonContainer: {
-    alignItems: 'center',
-  },
-  button: {
-    // alignContent: 'center',
-    // backgroundColor: '#DDDDDD',
-    // padding: 10,
-    width: '40%',
-    marginLeft: '35%',
-    marginRight: '35%',
-    marginTop: '1%',
-    marginBottom: '1%',
   },
 });
 

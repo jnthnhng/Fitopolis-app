@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { cloneElement, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
 import GetChallenges from './GetChallenges';
@@ -17,8 +17,9 @@ const SearchChips = ({ ...props }) => {
 
   // A hook that is used to display results based on changes to the query state
   useEffect(() => {
-    <DisplayResults />;
-    // <GetFonts />;
+    // <DisplayResults />;
+    props.navigation.navigate('Search', { searchType: query });
+    resetQuery();
   }, [query]);
 
   // A component that renders the results
@@ -107,24 +108,12 @@ const SearchChips = ({ ...props }) => {
             icon="run-fast"
             mode="outlined"
             style={{ backgroundColor: '#6891C3' }}
-            onPress={() => setQuery('Cardio')}
+            onPress={() => chipQuery('Cardio')}
           >
             Cardio
           </Chip>
         </View>
-        <View style={styles.chipView}>
-          <Chip
-            icon="delete"
-            mode="outlined"
-            style={{ backgroundColor: '#6200ee' }}
-            textStyle={{ color: 'white' }}
-            onPress={resetQuery}
-          >
-            Reset
-          </Chip>
-        </View>
       </View>
-      <DisplayResults />
     </>
   );
 };

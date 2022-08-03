@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 18,
     textAlign: 'justify',
-    fontFamily: 'Lato-BlackItalic',
+    fontFamily: 'Lato-Black',
   },
   searchBarContainer: {
     width: '95%',

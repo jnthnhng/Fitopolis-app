@@ -1,6 +1,6 @@
 import { loadAsync } from 'expo-font/build/Font';
 
-export default useFonts = async () => {
+export default async function useFonts() {
   await loadAsync({
     'Lato-Black': require('../assets/fonts/Lato-Black.ttf'),
     'Lato-BlackItalic': require('../assets/fonts/Lato-BlackItalic.ttf'),

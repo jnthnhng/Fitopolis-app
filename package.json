@@ -8,7 +8,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest -u --forceExit",
-    "test:update-snapshots": "jest -u --forceExit"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@expo-google-fonts/lato": "^0.2.2",
@@ -32,6 +32,7 @@
     "expo-updates": "~0.13.3",
     "firebase": "9.6.11",
     "getstream": "^8.0.1",
+    "patch-package": "^6.4.7",
     "picker": "^0.1.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",

@@ -14,6 +14,8 @@ import GetChallenges from '../components/GetChallenges';
 const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
 
+  // Check to see if there are parameters passed from other components,
+  // and the search query is not the same that is currently displayed
   if (
     props.route.params != null &&
     props.route.params.searchType &&
@@ -23,20 +25,14 @@ const SearchScreen = ({ navigation, ...props }) => {
   }
 
   /**
-   * initialState, resetState function, and the useEffect is still a work in progress.
-   * The plan is to reset the initial state so the intial search message is not retained
-   * with future renders.
+   * showAll object contains a queryKey that is an empty string to query All challenges.
    */
-  const initialState = {
+  const showAll = {
     queryKey: '',
   };
 
-  function resetQuery() {
-    setQueryKey(initialState.queryKey);
-  }
-
   /**
-   * A SearchBar components that allows users to enter a search word. Left Icon is used to
+   * A SearchBar components that allows users to enter a search for word. Left Icon is used to
    * submit the search, which then is saved to "query".
    * @returns {String} search value
    */
@@ -63,7 +59,7 @@ const SearchScreen = ({ navigation, ...props }) => {
           <Button
             style={styles.button}
             mode="contained"
-            onPress={() => setQueryKey(initialState.queryKey)}
+            onPress={() => setQueryKey(showAll.queryKey)}
           >
             Show All
           </Button>
@@ -90,7 +86,7 @@ const SearchScreen = ({ navigation, ...props }) => {
         <Text style={styles.resultsHeader}>Results</Text>
       </View>
       <View>
-      <GetChallenges navigation={navigation} searchType={queryKey} />
+        <GetChallenges navigation={navigation} searchType={queryKey} />
       </View>
     </ScrollView>
   );
@@ -98,9 +94,6 @@ const SearchScreen = ({ navigation, ...props }) => {
 
 const styles = StyleSheet.create({
   button: {
-    // alignContent: 'center',
-    // backgroundColor: '#DDDDDD',
-    // padding: 10,
     width: '40%',
     marginLeft: '35%',
     marginRight: '35%',
@@ -128,7 +121,6 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   searchBarContainer: {
-    // flex: 1,
     width: '95%',
     backgroundColor: '#e6e4df',
     padding: 10,

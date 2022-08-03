@@ -333,7 +333,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   return (
     <SafeAreaView style={styles.cardContainer}>
-      <View style={styles.inputContainer}>
+      <View style={styles.cardContainer}>
         <FlatList
           data={challenges}
           renderItem={renderChallenges}

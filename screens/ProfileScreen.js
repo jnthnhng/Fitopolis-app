@@ -127,6 +127,7 @@ const ProfileScreen = ({ navigation }) => {
       xhr.send(null);
     });
 
+    // Adds image to storage and realtime database
     const imageFile = newImage.substring(newImage.lastIndexOf('/') + 1);
     console.log('Full Image Name: ', newImage);
     console.log('Image File Name: ', imageFile);

@@ -57,19 +57,14 @@ const CreatedChallengeScreen = ({ navigation }) => {
     });
   };
 
+  // Retrieves new data upon going to screen
   useEffect(() => {
     const refreshData = navigation.addListener("focus", () => {
       setChallenges([]);
       getCreated();
     });
     return refreshData;
-    // getData();
   }, [navigation]);
-
-  // useEffect(() => {
-  //   console.log("NEW");
-  //   getCreated();
-  // }, []);
 
   // Renders flatlist item
   const renderItem = ({ item }) => (

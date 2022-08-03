@@ -38,26 +38,28 @@ const ListResults = ({ ...props }) => {
      * and then set the our badgeView state with the List.Item that includes the challenge information and badge URI.
      * */
     if (props.results != null) {
-      props.results.map((item) => {
-        if (item != null) {
+      props.results.map((challengeObject) => {
+        if (challengeObject != null) {
           // async function to get the badge URI
-          getBadge(item.val().badge).then((badgeUri) =>
-          (item['badgeURI'] = badgeUri,
-
-            // set state by adding to it all the challenges from the map
-            setBadgeView((badgeView) => [
-              badgeView,
-              <>
-                <List.Item
-                  title={item.val().challengeName}
-                  description={item.val().description}
-                  left={(props) => <List.Icon {...props} icon="run" />}
-                  right={(props) => <List.Icon icon={{ uri: badgeUri }} />}
-                  onPress={() => navigationToParticipate(item)}
-                />
-              </>,
-            ])
-          ));
+          getBadge(challengeObject.val().badge).then(
+            (badgeUri) => (
+              (challengeObject['badgeURI'] = badgeUri),
+              // set state by adding to it all the challenges from the map
+              setBadgeView((badgeView) => [
+                badgeView,
+                <>
+                  <List.Item
+                    key={challengeObject.key}
+                    title={challengeObject.val().challengeName}
+                    description={challengeObject.val().description}
+                    left={(props) => <List.Icon {...props} icon="run" />}
+                    right={(props) => <List.Icon icon={{ uri: badgeUri }} />}
+                    onPress={() => navigationToParticipate(challengeObject)}
+                  />
+                </>,
+              ])
+            )
+          );
         }
       });
     }

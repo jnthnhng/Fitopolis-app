@@ -17,21 +17,9 @@ const SearchChips = ({ ...props }) => {
 
   // A hook that is used to display results based on changes to the query state
   useEffect(() => {
-    // <DisplayResults />;
     props.navigation.navigate('Search', { searchType: query });
     resetQuery();
   }, [query]);
-
-  // A component that renders the results
-  const DisplayResults = () => {
-    return (
-      <View style={styles.results}>
-        {query == '' ? null : (
-          <GetChallenges navigation={props.navigation} searchType={query} />
-        )}
-      </View>
-    );
-  };
 
   function resetQuery() {
     setQuery('');
@@ -120,15 +108,11 @@ const SearchChips = ({ ...props }) => {
 
 const styles = StyleSheet.create({
   chipContainer: {
-    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
-  results: {
-    flex: 1,
-  },
+
   chipView: {
-    // width: 120,
     marginLeft: 20,
     marginTop: 5,
     marginBottom: 10,

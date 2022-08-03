@@ -36,18 +36,6 @@ const SearchScreen = ({ navigation, ...props }) => {
   }
 
   /**
-   * A component that returns a View of the Header
-   * @returns {View} Search   Header of the screen
-   */
-  const SearchHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.text}> Search </Text>
-      </View>
-    );
-  };
-
-  /**
    * A SearchBar components that allows users to enter a search word. Left Icon is used to
    * submit the search, which then is saved to "query".
    * @returns {String} search value
@@ -86,17 +74,24 @@ const SearchScreen = ({ navigation, ...props }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <SearchHeader /> */}
-      <SearchBar />
-      <Divider style={styles.divider} />
-      <SearchChips navigation={navigation} />
-      <Divider style={styles.divider} />
+      <View>
+        <SearchBar />
+      </View>
+      <View>
+        <Divider style={styles.divider} />
+      </View>
+      <View>
+        <SearchChips navigation={navigation} />
+      </View>
+      <View>
+        <Divider style={styles.divider} />
+      </View>
       <View style={styles.resultsHeader}>
         <Text style={styles.resultsHeader}>Results</Text>
       </View>
-      {/* <Divider style={styles.divider} /> */}
+      <View>
       <GetChallenges navigation={navigation} searchType={queryKey} />
-      {/* {resetState} */}
+      </View>
     </ScrollView>
   );
 };
@@ -111,6 +106,7 @@ const styles = StyleSheet.create({
     marginRight: '35%',
     marginTop: '1%',
     marginBottom: '1%',
+    marginBottom: 20,
   },
   buttonContainer: {
     alignItems: 'center',
@@ -118,22 +114,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 5,
-    // paddingBottom: '50%',
-    // alignItems: 'center',
-    // justifyContent: 'center',-
-    // paddingHorizontal: 10,
+    flexWrap: 'wrap',
   },
   divider: {
     backgroundColor: '#E7E5E0',
     borderColor: '#E7E5E0',
     borderWidth: 0.5,
-  },
-  header: {
-    width: '100%',
-    height: 40,
-    // backgroundColor: '#e6e4df',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   resultsHeader: {
     alignItems: 'center',
@@ -142,18 +128,12 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   searchBarContainer: {
-    flex: 1,
+    // flex: 1,
     width: '95%',
-    // height: '10%',
     backgroundColor: '#e6e4df',
     padding: 10,
     margin: 10,
     flexDirection: 'row',
-    // flexWrap: 'wrap',
-  },
-  text: {
-    fontSize: 25,
-    color: 'black',
   },
 });
 

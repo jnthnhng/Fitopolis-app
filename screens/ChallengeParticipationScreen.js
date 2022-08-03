@@ -25,9 +25,6 @@ import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 
-import * as ImagePicker from 'expo-image-picker';
-import { async } from '@firebase/util';
-
 /**
  * Retrieve the screen size for a more responsive layout
  */
@@ -40,7 +37,6 @@ const tileSize = screenWidth / numColumns;
  * users to Particpate, mark as Complete, Post, and or Share.
  */
 const ChallengeParticipationScreen = ({ navigation, ...props }) => {
-  // console.log(props);
   const { colors } = useTheme();
   const [expanded, setExpanded] = React.useState(true);
   const [checkedGoal1, setCheckedGoal1] = React.useState(false);
@@ -56,54 +52,49 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
    * Implementation is still in progress
    */
   const [image, setImage] = useState(null);
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
-
+  // Retrieve the image from Firebase Storage
   var storage = getStorage();
   const reference = sRef(storage, props.route.params.challenges.val().image);
   getDownloadURL(reference).then((x) => {
     setImage(x);
   });
 
+  // Star icon functionality where a user can favorite the challenge
   const addFavorite = (type, key) => {
     // Create path to challenge with type and key
     const challengeId = type + '/' + key;
-    console.log(challengeId);
+
     // Initiate database and get user ID of currently logged in user
     const db = getDatabase();
     const auth = getAuth();
+
     // Create database reference
     const postListRef = ref(
       db,
       'users/' + auth.currentUser.uid + '/favorites/'
     );
     const newPostRef = push(postListRef);
+
     // Set child as challenge ID
     set(newPostRef, {
       challenge: challengeId,
     });
   };
 
+  // Participate button functionality where a user can click to participate
+  // and it will add to their in-progress challenges.
   const addToInProgress = () => {
     // adds to in progress under user profile
-
     const auth = getAuth();
     const db = getDatabase();
+
+    // Get the challenge ID from the database
     const challengeId =
       props.route.params.challenges.val().challengeType +
       '/' +
       props.route.params.challenges.key;
+
     let inProgress = false;
 
     const snapshot = get(
@@ -135,9 +126,8 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     });
   };
 
-  const goToActivityFeed = () => {
-    navigation.navigate('Activity Feed');
-  };
+  // A function that checks if the user has checked and completed all three goals.
+  // It will then add them to the wall of fame.
   const goToWallofFame = () => {
     const auth = getAuth();
 
@@ -228,6 +218,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
     <Avatar.Icon {...props} icon="weight-lifter" />
   );
 
+  // A card component to display the challenges
   const ChallengeCard = () => {
     return (
       <Card mode={'outlined'} style={styles.card}>
@@ -245,22 +236,23 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
                   props.route.params.challenges.key
                 )
               }
-              // onPress={() => console.log('Pressed')}
               animated={true}
             />
           )}
         />
-        
+
         <Card.Content>
           <Title>{props.route.params.challenges.val().challengeName}</Title>
 
           <Paragraph>
             Description: {props.route.params.challenges.val().description}
           </Paragraph>
+
           <Divider style={styles.divider} />
 
           <List.Section>
             <List.Subheader>Goals</List.Subheader>
+
             <List.Item
               title={props.route.params.challenges.val().goal1}
               // left={() =>  <List.Icon color={'red'} icon="folder" />}
@@ -273,6 +265,7 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
                 />
               )}
             />
+
             <List.Item
               title={props.route.params.challenges.val().goal2}
               // left={() => <List.Icon color={'red'} icon="folder" />}
@@ -304,8 +297,8 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           <Paragraph>
             Tags: {props.route.params.challenges.val().tags}
           </Paragraph>
-          <Paragraph></Paragraph>
         </Card.Content>
+
         <Card.Cover
           source={{
             uri: image,
@@ -334,7 +327,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
           renderItem={renderChallenges}
           ItemsSeparatorComponent={() => <View style={{ height: 1 }} />}
           numColumns={1}
-          key={1}
         />
       </View>
     </SafeAreaView>
@@ -353,14 +345,12 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    // color: colors.primary,
     fontSize: 20,
   },
   cardContainer: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
-    // padding: 50,
+
     flexDirection: 'column',
   },
   inputContainer: {
@@ -374,10 +364,6 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     backgroundColor: '#D3D1D4',
-    // borderWidth: 3,
-    // padding: 5,
-    // borderRadius: 10,
-    // marginBottom: 15,
     height: '50%',
     width: '100%',
   },

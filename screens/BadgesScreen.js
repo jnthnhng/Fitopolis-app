@@ -53,6 +53,7 @@ const FavoritesScreen = ({ navigation }) => {
 
   // Retrieve badge image url
   const getDownload = async (image) => {
+    // Retrieves image from storage and stores in list
     const imageURL = "badgeImages/badge" + image + ".jpg";
     const storage = getStorage();
     const reference = sRef(storage, imageURL);
@@ -60,22 +61,13 @@ const FavoritesScreen = ({ navigation }) => {
       addURLToEnd(x);
     });
   };
-  // Retrieves challenge object from the path saved in user favorites
-  //   const getChallengeInfo = (challengePath) => {
-  //     get(ref(db, "challenge/" + challengePath)).then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         console.log("challenge snapshot: ", snapshot);
-  //         addChallengeToEnd(snapshot);
-  //       }
-  //     });
-  //   };
 
+  // Gets fresh data upon going to the screen
   useEffect(() => {
     const refreshData = navigation.addListener("focus", () => {
       getUserBadges();
     });
     return refreshData;
-    // getData();
   }, [navigation]);
 
   // Renders flatlist item

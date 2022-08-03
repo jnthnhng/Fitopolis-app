@@ -70,6 +70,7 @@ const RegisterScreen = ({ navigation }) => {
       xhr.send(null);
     });
 
+    // Stores image under user in realtime database
     const imageFile = image.substring(image.lastIndexOf("/") + 1);
     console.log("Image File Name: ", imageFile);
     setImageFileName(imageFile);

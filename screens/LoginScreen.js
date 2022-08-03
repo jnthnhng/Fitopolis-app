@@ -33,6 +33,7 @@ const LoginScreen = ({ navigation }) => {
   }, []);
 
   // Created test user username: Test@fitopolis.com password: Testpassword
+  // Logs user in by calling Firebase Auth
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {

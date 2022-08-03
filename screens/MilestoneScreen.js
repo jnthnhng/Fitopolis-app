@@ -46,16 +46,12 @@ const FavoritesScreen = ({ navigation }) => {
   const userID = auth.currentUser.uid;
   const db = getDatabase();
 
-  // This adds the favorite to the end of the challenges array
+  // This adds the badge to the end of the badge array
   const addURLToEnd = (newURL) => {
     setURLs((state) => [...state, newURL]);
   };
 
   const getMilestoneBadges = () => {
-    // Loop through badges in imageName array and get URL
-    // imageNames.forEach((element) => {
-    //   console.log("milestone", element);
-    //   getDownload(element);
     getBadge1();
     getBadge2();
     getBadge3();
@@ -80,6 +76,8 @@ const FavoritesScreen = ({ navigation }) => {
   };
 
   // Retrieve badge image url
+  // Must call each one separately because async call for them all
+  // stored them in different orders in the list
   const getBadge1 = async (image) => {
     const imageURL = "badgeImages/fitopolis-badges/first_challenge_completed.jpg";
     const storage = getStorage();
@@ -117,6 +115,7 @@ const FavoritesScreen = ({ navigation }) => {
   };
 
   const getBadge5 = async (image) => {
+    // Gets milestone badge images from database
     const imageURL = "badgeImages/fitopolis-badges/hundredth_challenge_completed.jpg";
     const storage = getStorage();
     const reference = sRef(storage, imageURL);
@@ -130,15 +129,7 @@ const FavoritesScreen = ({ navigation }) => {
       getMilestoneBadges();
     });
     return refreshData;
-    // getData();
   }, [navigation]);
-
-  //   // Renders flatlist item
-  //   const renderItem = ({ item }) => (
-  //     <TouchableOpacity key={item.key} style={styles.item}>
-  //       <Avatar.Image source={{ uri: item }} size={55} />
-  //     </TouchableOpacity>
-  //   );
 
   return (
     <>

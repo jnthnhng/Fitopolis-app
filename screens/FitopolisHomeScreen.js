@@ -66,6 +66,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
     });
   };
 
+  // Gets data from database to dyncamically show on home screen
   const getData = () => {
     get(ref(db, "users/" + userID))
       .then((snapshot) => {
@@ -96,7 +97,7 @@ const FitopolisHomeScreen = ({ navigation }) => {
       });
   };
 
-  // Get Image from storage
+  // Get Image from storage and save as url to display image
   const getImage = async (profilePhoto) => {
     const storage = getStorage();
     const reference = sRef(storage, profilePhoto);
@@ -115,11 +116,9 @@ const FitopolisHomeScreen = ({ navigation }) => {
       getData();
     });
     return refreshData;
-    // getData();
   }, [navigation]);
 
   // Navigate to Create screen
-
   function goToCreate() {
     navigation.navigate("Create", { id: false });
   }

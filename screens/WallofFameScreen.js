@@ -48,18 +48,13 @@ const WallofFameScreen = ({ route, navigation }) => {
     console.log(challengeURL);
 
     // Call database to get completed users
-    get(
-      ref(
-        db,
-        challengeURL
-      )
-    ).then((snapshot) => {
+    get(ref(db, challengeURL)).then((snapshot) => {
       // Loop through them and get the challenge information from each favorited item
       // These are stored in the challenges array
-      console.log("here", snapshot)
+      console.log("here", snapshot);
       if (snapshot.exists()) {
-        snapshot.forEach((element) => { 
-        console.log(element.val().user);
+        snapshot.forEach((element) => {
+          console.log(element.val().user);
           getUserInfo(element.val().user);
         });
       }
@@ -77,20 +72,15 @@ const WallofFameScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    const refreshData = navigation.addListener('focus', () => {
+    const refreshData = navigation.addListener("focus", () => {
       getCompleted();
-    })
+    });
     return refreshData;
-    // getData();
   }, [navigation]);
-
 
   // Renders flatlist item
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      key={item.key}
-      style={styles.item}
-    >
+    <TouchableOpacity key={item.key} style={styles.item}>
       <Text style={styles.itemHeader}>{item.val().name}</Text>
       <Text style={styles.itemDescription}>{item.val().username}</Text>
     </TouchableOpacity>
@@ -104,7 +94,7 @@ const WallofFameScreen = ({ route, navigation }) => {
           <Text style={styles.favorites}>WALL OF FAME</Text>
         </View>
         <SafeAreaView>
-          <FlatList data={challenges} renderItem={renderItem} numColumns={2}/>
+          <FlatList data={challenges} renderItem={renderItem} numColumns={2} />
         </SafeAreaView>
       </View>
     </>

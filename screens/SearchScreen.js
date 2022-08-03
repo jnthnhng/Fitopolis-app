@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Searchbar, Button, Divider } from 'react-native-paper';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
-
+import useFonts from '../components/useFonts';
+import AppLoading from 'expo-app-loading';
+// import { useFonts } from 'expo-font';
 /**
  * Search screen component that renders the Search screen.
  * The screen contains a header for the title of the screen,
@@ -13,6 +15,25 @@ import GetChallenges from '../components/GetChallenges';
  */
 const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
+
+  // Load fonts
+  const [IsReady, SetIsReady] = useState(false);
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {
+          console.log('Font Loading Error');
+        }}
+      />
+    );
+  }
 
   // Check to see if there are parameters passed from other components,
   // and the search query is not the same that is currently displayed
@@ -69,26 +90,29 @@ const SearchScreen = ({ navigation, ...props }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View>
-        <SearchBar />
-      </View>
-      <View>
-        <Divider style={styles.divider} />
-      </View>
-      <View>
-        <SearchChips navigation={navigation} />
-      </View>
-      <View>
-        <Divider style={styles.divider} />
-      </View>
-      <View style={styles.resultsHeader}>
-        <Text style={styles.resultsHeader}>Results</Text>
-      </View>
-      <View>
-        <GetChallenges navigation={navigation} searchType={queryKey} />
-      </View>
-    </ScrollView>
+    <>
+      <ScrollView style={styles.container}>
+        <View>
+          <SearchBar />
+        </View>
+        <View>
+          <Divider style={styles.divider} />
+        </View>
+        <View>
+          <SearchChips navigation={navigation} />
+        </View>
+
+        <View>
+          <Divider style={styles.divider} />
+        </View>
+        <View style={styles.resultsHeader}>
+          <Text style={styles.resultsHeader}>Results</Text>
+        </View>
+        <View>
+          <GetChallenges navigation={navigation} searchType={queryKey} />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
@@ -117,8 +141,8 @@ const styles = StyleSheet.create({
   resultsHeader: {
     alignItems: 'center',
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'justify',
+    fontFamily: 'Lato-BlackItalic',
   },
   searchBarContainer: {
     width: '95%',

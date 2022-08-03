@@ -25,6 +25,9 @@ import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 
+import useFonts from '../components/useFonts';
+import AppLoading from 'expo-app-loading';
+
 /**
  * Retrieve the screen size for a more responsive layout
  */
@@ -46,6 +49,15 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const [challengeID, setChallengeID] = React.useState(null);
 
   const handlePress = () => setExpanded(!expanded);
+
+  // // Load fonts
+  // const [IsReady, SetIsReady] = useState(false);
+
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+  LoadFonts();
 
   /**
    * Allow the user to pick a photo from their library to upload.
@@ -250,8 +262,8 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
           <Divider style={styles.divider} />
 
-          <List.Section>
-            <List.Subheader>Goals</List.Subheader>
+          <List.Section style={styles.text}>
+            <List.Subheader style={styles.text}>Goals</List.Subheader>
 
             <List.Item
               title={props.route.params.challenges.val().goal1}
@@ -346,6 +358,7 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     fontSize: 20,
+    fontFamily: 'Lato-BoldItalic'
   },
   cardContainer: {
     flex: 1,

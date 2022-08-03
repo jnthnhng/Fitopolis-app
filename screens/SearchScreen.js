@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Searchbar, Button, Divider } from 'react-native-paper';
 import SearchChips from '../components/FitnessChips';

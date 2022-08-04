@@ -1,10 +1,10 @@
 diff --git a/node_modules/react-native-web/dist/index.js b/node_modules/react-native-web/dist/index.js
-index 592354f..31c08a8 100644
+index 592354f..64c54fc 100644
 --- a/node_modules/react-native-web/dist/index.js
 +++ b/node_modules/react-native-web/dist/index.js
-@@ -72,3 +72,4 @@ export { default as DeviceEventEmitter } from './exports/DeviceEventEmitter'; //
+@@ -72,3 +72,5 @@ export { default as DeviceEventEmitter } from './exports/DeviceEventEmitter'; //
  
  export { default as useColorScheme } from './exports/useColorScheme';
  export { default as useWindowDimensions } from './exports/useWindowDimensions';
 +export const ViewPropTypes = { style: null };
-\ No newline at end of file
++

@@ -1,11 +1,12 @@
+import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Searchbar, Button, Divider } from 'react-native-paper';
-import SearchChips from '../components/FitnessChips';
+
 import GetChallenges from '../components/GetChallenges';
+import SearchChips from '../components/FitnessChips';
 import useFonts from '../components/useFonts';
-import AppLoading from 'expo-app-loading';
-// import { useFonts } from 'expo-font';
+
 /**
  * Search screen component that renders the Search screen.
  * The screen contains a header for the title of the screen,
@@ -101,7 +102,6 @@ const SearchScreen = ({ navigation, ...props }) => {
         <View>
           <SearchChips navigation={navigation} />
         </View>
-
         <View>
           <Divider style={styles.divider} />
         </View>

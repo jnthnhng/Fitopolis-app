@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { List } from 'react-native-paper';
-import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 import { db } from '../database/firebase.js';
 import { ref, get, child } from 'firebase/database';
+import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 
 /**
  * A component that takes in an array of objects, map through them and display them as List items.

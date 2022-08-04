@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ActivityIndicator,
   View,
-  Text,
   StyleSheet,
-} from "react-native";
-
-import { Divider } from "react-native-paper";
-
-import { getAuth } from "firebase/auth";
-
+} from 'react-native';
 import {
   StreamApp,
   FlatFeed,
@@ -19,24 +13,23 @@ import {
   LikeButton,
   UserBar,
   ReactionIcon,
-} from "expo-activity-feed";
+} from 'expo-activity-feed';
+import { getAuth } from 'firebase/auth';
 
-import { getStreamClient } from "getstream";
-
-const STREAM_API_KEY = "74be79rx6v5x";
-const STREAM_APP_ID = "1201907";
+const STREAM_API_KEY = '74be79rx6v5x';
+const STREAM_APP_ID = '1201907';
 
 // Adapted from: https://www.asapdevelopers.com/build-a-global-activity-feed-with-react-native-and-node-js/
 
 export const navigationOptions = ({ navigation }) => ({
-  title: "HOME",
+  title: 'HOME',
   headerTitleStyle: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 13,
   },
   headerLeft: () => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Profile")}
+      onPress={() => navigation.navigate('Profile')}
       style={{ paddingLeft: 15 }}
     >
       <Avatar
@@ -49,7 +42,7 @@ export const navigationOptions = ({ navigation }) => ({
 });
 
 function getUsernameFromEmail(userEmail) {
-  return userEmail.split("@")[0];
+  return userEmail.split('@')[0];
 }
 
 const ActivityFeed = () => {
@@ -64,7 +57,7 @@ const ActivityFeed = () => {
 
   // URL path with query for the API function to generate a token for the user
   const getTokenURL =
-    "https://us-central1-fitopolis-app.cloudfunctions.net/getTokens?";
+    'https://us-central1-fitopolis-app.cloudfunctions.net/getTokens?';
   const query = `name=${username}`;
 
   // API function for tokens
@@ -106,8 +99,8 @@ const ActivityFeed = () => {
         Footer={
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <LikeButton reactionKind="heart" {...props} />
@@ -129,7 +122,7 @@ const ActivityFeed = () => {
   return loading ? (
     <ActivityIndicator />
   ) : (
-    <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
       {/* <Text style={styles.title}>Global Feed</Text> */}
       <StreamApp
         apiKey={STREAM_API_KEY}
@@ -144,7 +137,7 @@ const ActivityFeed = () => {
         appId={STREAM_APP_ID}
         token={userToken}
       >
-        <StatusUpdateForm feedGroup={"user"} />
+        <StatusUpdateForm feedGroup={'user'} />
       </StreamApp>
     </SafeAreaView>
   );
@@ -153,13 +146,13 @@ const ActivityFeed = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightblue",
-    height: "100%",
+    backgroundColor: 'lightblue',
+    height: '100%',
   },
   title: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 25,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });
 

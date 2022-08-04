@@ -1,32 +1,32 @@
+import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {
   Avatar,
   Button,
   Card,
-  Title,
-  Paragraph,
-  useTheme,
-  List,
   Checkbox,
-  IconButton,
   Divider,
+  IconButton,
+  List,
+  Paragraph,
+  Title,
+  useTheme,
 } from 'react-native-paper';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Dimensions,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
 
-import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
-import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
+import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
 
 import useFonts from '../components/useFonts';
-import AppLoading from 'expo-app-loading';
 
 /**
  * Retrieve the screen size for a more responsive layout
@@ -52,7 +52,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
   // // Load fonts
   // const [IsReady, SetIsReady] = useState(false);
-
 
   const LoadFonts = async () => {
     await useFonts();
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     fontSize: 20,
-    fontFamily: 'Lato-BoldItalic'
+    fontFamily: 'Lato-BoldItalic',
   },
   cardContainer: {
     flex: 1,

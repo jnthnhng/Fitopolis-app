@@ -78,7 +78,7 @@ Start the application
   expo start --no-dev -minify
 ```
 After the project has started press ```"w"``` to start in Web, or
-press  ```"a"```  to start in an Android simulator.
+press  ```"a"```  to start in an Android emulator.
 
 
 

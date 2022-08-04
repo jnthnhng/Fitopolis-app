@@ -10,7 +10,6 @@ import { Chip } from 'react-native-paper';
  * @returns {View}                A view components with the fitness chips and the results
  */
 const SearchChips = ({ ...props }) => {
-  
   // Initialize a state for the key to be used to query
   const [query, setQuery] = useState('');
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+
 import { db } from '../database/firebase.js';
 import { ref, get, child } from 'firebase/database';
-
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import ListResults from './ListResultsComponent.js';
 
 /**
@@ -74,8 +74,7 @@ const GetChallenges = ({ ...props }) => {
           } else if (props.searchType == '') {
             child.forEach((challenge) => {
               data.push(challenge);
-            })
-            
+            });
           }
         });
         // Set data array to the challenges state

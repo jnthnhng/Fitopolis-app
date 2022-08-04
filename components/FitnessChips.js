@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
-import GetChallenges from './GetChallenges';
-import GetFonts from './getFonts.js';
 
 /**
  * A Chip component that renders challenge types as chips. This lets user quickly pull up results
@@ -12,26 +10,17 @@ import GetFonts from './getFonts.js';
  * @returns {View}                A view components with the fitness chips and the results
  */
 const SearchChips = ({ ...props }) => {
+  
   // Initialize a state for the key to be used to query
   const [query, setQuery] = useState('');
 
-  // A hook that is used to display results based on changes to the query state
+  // A hook that is used to display results based on changes to the query state.
   useEffect(() => {
-    <DisplayResults />;
-    // <GetFonts />;
+    props.navigation.navigate('Search', { searchType: query });
+    resetQuery();
   }, [query]);
 
-  // A component that renders the results
-  const DisplayResults = () => {
-    return (
-      <View style={styles.results}>
-        {query == '' ? null : (
-          <GetChallenges navigation={props.navigation} searchType={query} />
-        )}
-      </View>
-    );
-  };
-
+  // Set query to an empty string to reset the query.
   function resetQuery() {
     setQuery('');
   }
@@ -39,7 +28,6 @@ const SearchChips = ({ ...props }) => {
   // Renders all the available search chips , and display the results when a search chip is pressed on.
   return (
     <>
-      {/* <Text style={styles.text}>Test Text</Text> */}
       <View style={styles.chipContainer}>
         <View style={styles.chipView}>
           <Chip
@@ -112,34 +100,18 @@ const SearchChips = ({ ...props }) => {
             Cardio
           </Chip>
         </View>
-        <View style={styles.chipView}>
-          <Chip
-            icon="delete"
-            mode="outlined"
-            style={{ backgroundColor: '#6200ee' }}
-            textStyle={{ color: 'white' }}
-            onPress={resetQuery}
-          >
-            Reset
-          </Chip>
-        </View>
       </View>
-      <DisplayResults />
     </>
   );
 };
 
 const styles = StyleSheet.create({
   chipContainer: {
-    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
-  results: {
-    flex: 1,
-  },
+
   chipView: {
-    // width: 120,
     marginLeft: 20,
     marginTop: 5,
     marginBottom: 10,

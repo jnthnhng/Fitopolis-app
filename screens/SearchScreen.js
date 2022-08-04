@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Searchbar, Button } from 'react-native-paper';
+import { Searchbar, Button, Divider } from 'react-native-paper';
 import SearchChips from '../components/FitnessChips';
 import GetChallenges from '../components/GetChallenges';
-
+import useFonts from '../components/useFonts';
+import AppLoading from 'expo-app-loading';
+// import { useFonts } from 'expo-font';
 /**
  * Search screen component that renders the Search screen.
  * The screen contains a header for the title of the screen,
@@ -14,33 +16,44 @@ import GetChallenges from '../components/GetChallenges';
 const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
 
-  /**
-   * initialState, resetState function, and the useEffect is still a work in progress.
-   * The plan is to reset the initial state so the intial search message is not retained
-   * with future renders.
-   */
-  const initialState = {
-    queryKey: '',
+  // Load fonts
+  const [IsReady, SetIsReady] = useState(false);
+
+  const LoadFonts = async () => {
+    await useFonts();
   };
 
-  function resetQuery() {
-    setQueryKey(initialState.queryKey);
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {
+          console.log('Font Loading Error');
+        }}
+      />
+    );
+  }
+
+  // Check to see if there are parameters passed from other components,
+  // and the search query is not the same that is currently displayed
+  if (
+    props.route.params != null &&
+    props.route.params.searchType &&
+    props.route.params.searchType != queryKey
+  ) {
+    setQueryKey(props.route.params.searchType);
   }
 
   /**
-   * A component that returns a View of the Header
-   * @returns {View} Search   Header of the screen
+   * showAll object contains a queryKey that is an empty string to query All challenges.
    */
-  const SearchHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.text}> Search </Text>
-      </View>
-    );
+  const showAll = {
+    queryKey: '',
   };
 
   /**
-   * A SearchBar components that allows users to enter a search word. Left Icon is used to
+   * A SearchBar components that allows users to enter a search for word. Left Icon is used to
    * submit the search, which then is saved to "query".
    * @returns {String} search value
    */
@@ -59,13 +72,15 @@ const SearchScreen = ({ navigation, ...props }) => {
           placeholder="Search"
           onChangeText={onChangeSearch}
           value={searchQuery}
-          onIconPress={() => setQueryKey(searchQuery)}
+          onIconPress={() => (
+            setQueryKey(searchQuery), (props.route.params.searchType = '')
+          )}
         />
         <View style={styles.buttonContainer}>
           <Button
             style={styles.button}
             mode="contained"
-            onPress={() => setQueryKey(initialState.queryKey)}
+            onPress={() => setQueryKey(showAll.queryKey)}
           >
             Show All
           </Button>
@@ -75,62 +90,66 @@ const SearchScreen = ({ navigation, ...props }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <SearchHeader />
-      <SearchBar />
-      <SearchChips navigation={navigation} />
-      <View>
-        <Text>Search Screen Results</Text>
-      </View>
-      <GetChallenges navigation={navigation} searchType={queryKey} />
-      {/* {resetState} */}
-    </ScrollView>
+    <>
+      <ScrollView style={styles.container}>
+        <View>
+          <SearchBar />
+        </View>
+        <View>
+          <Divider style={styles.divider} />
+        </View>
+        <View>
+          <SearchChips navigation={navigation} />
+        </View>
+
+        <View>
+          <Divider style={styles.divider} />
+        </View>
+        <View style={styles.resultsHeader}>
+          <Text style={styles.resultsHeader}>Results</Text>
+        </View>
+        <View>
+          <GetChallenges navigation={navigation} searchType={queryKey} />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 5,
-    // paddingBottom: '50%',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // paddingHorizontal: 10,
-  },
-  header: {
-    width: '100%',
-    height: '10%',
-    // backgroundColor: '#e6e4df',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  searchBarContainer: {
-    flex: 1,
-    width: '95%',
-    // height: '10%',
-    backgroundColor: '#e6e4df',
-    padding: 10,
-    margin: 10,
-    flexDirection: 'row',
-    // flexWrap: 'wrap',
-  },
-
-  text: {
-    fontSize: 25,
-    color: 'black',
-  },
-  buttonContainer: {
-    alignItems: 'center',
-  },
   button: {
-    // alignContent: 'center',
-    // backgroundColor: '#DDDDDD',
-    // padding: 10,
     width: '40%',
     marginLeft: '35%',
     marginRight: '35%',
     marginTop: '1%',
     marginBottom: '1%',
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    paddingTop: 5,
+    flexWrap: 'wrap',
+  },
+  divider: {
+    backgroundColor: '#E7E5E0',
+    borderColor: '#E7E5E0',
+    borderWidth: 0.5,
+  },
+  resultsHeader: {
+    alignItems: 'center',
+    fontSize: 18,
+    textAlign: 'justify',
+    fontFamily: 'Lato-Black',
+  },
+  searchBarContainer: {
+    width: '95%',
+    backgroundColor: '#e6e4df',
+    padding: 10,
+    margin: 10,
+    flexDirection: 'row',
   },
 });
 

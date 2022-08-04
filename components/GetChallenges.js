@@ -71,9 +71,13 @@ const GetChallenges = ({ ...props }) => {
         snapshot.forEach((child) => {
           if (child.val().challengeType == props.searchType) {
             data.push(child);
+          } else if (props.searchType == '') {
+            child.forEach((challenge) => {
+              data.push(challenge);
+            })
+            
           }
         });
-
         // Set data array to the challenges state
         setChallenges(data);
       });

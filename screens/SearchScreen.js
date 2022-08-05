@@ -1,11 +1,9 @@
-import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Searchbar, Button, Divider } from 'react-native-paper';
 
 import GetChallenges from '../components/GetChallenges';
 import SearchChips from '../components/FitnessChips';
-import useFonts from '../components/useFonts';
 
 /**
  * Search screen component that renders the Search screen.
@@ -16,25 +14,6 @@ import useFonts from '../components/useFonts';
  */
 const SearchScreen = ({ navigation, ...props }) => {
   const [queryKey, setQueryKey] = useState('');
-
-  // Load fonts
-  const [IsReady, SetIsReady] = useState(false);
-
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-
-  if (!IsReady) {
-    return (
-      <AppLoading
-        startAsync={LoadFonts}
-        onFinish={() => SetIsReady(true)}
-        onError={() => {
-          console.log('Font Loading Error');
-        }}
-      />
-    );
-  }
 
   // Check to see if there are parameters passed from other components,
   // and the search query is not the same that is currently displayed
@@ -142,7 +121,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 18,
     textAlign: 'justify',
-    fontFamily: 'Lato-Black',
   },
   searchBarContainer: {
     width: '95%',

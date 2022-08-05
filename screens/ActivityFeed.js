@@ -12,7 +12,6 @@ import {
   StatusUpdateForm,
   LikeButton,
   UserBar,
-  ReactionIcon,
 } from 'expo-activity-feed';
 import { getAuth } from 'firebase/auth';
 
@@ -32,11 +31,6 @@ export const navigationOptions = ({ navigation }) => ({
       onPress={() => navigation.navigate('Profile')}
       style={{ paddingLeft: 15 }}
     >
-      <Avatar
-        source={(userData) => userData.data.profileImage}
-        size={23}
-        noShadow
-      />
     </TouchableOpacity>
   ),
 });
@@ -70,7 +64,6 @@ const ActivityFeed = () => {
   // Call the API function after the render of the screen
   useEffect(() => {
     callApi().then((response) => {
-      console.log(response);
       setUserToken(response.userToken);
       setGlobalToken(response.globalToken);
       setLoading(false);
@@ -81,8 +74,6 @@ const ActivityFeed = () => {
   const renderHeader = (props) => {
     const { activity } = props;
     const { actor } = activity;
-    // console.log("activity")
-    // console.log(activity)
     return (
       <View style={{ marginLeft: 10 }}>
         <UserBar username={actor.id} avatar={actor.data.profileImage} />
@@ -104,14 +95,6 @@ const ActivityFeed = () => {
             }}
           >
             <LikeButton reactionKind="heart" {...props} />
-
-            <ReactionIcon
-              icon="comment here"
-              labelSingle="comment"
-              labelPlural="comments"
-              counts={props.activity.reaction_counts}
-              kind="comment"
-            />
           </View>
         }
       />
@@ -123,14 +106,12 @@ const ActivityFeed = () => {
     <ActivityIndicator />
   ) : (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-      {/* <Text style={styles.title}>Global Feed</Text> */}
       <StreamApp
         apiKey={STREAM_API_KEY}
         appId={STREAM_APP_ID}
         token={globalToken}
       >
         <FlatFeed feedGroup="timeline" Activity={renderActivity} notify />
-        {/* <StatusUpdateForm feedGroup={'user'}/> */}
       </StreamApp>
       <StreamApp
         apiKey={STREAM_API_KEY}

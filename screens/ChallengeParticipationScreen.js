@@ -1,12 +1,9 @@
-import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import {
   Dimensions,
   FlatList,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import {
@@ -25,8 +22,6 @@ import {
 import { getAuth } from 'firebase/auth';
 import { set, ref, getDatabase, push, get, remove } from 'firebase/database';
 import { getStorage, ref as sRef, getDownloadURL } from 'firebase/storage';
-
-import useFonts from '../components/useFonts';
 
 /**
  * Retrieve the screen size for a more responsive layout
@@ -49,14 +44,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
   const [challengeID, setChallengeID] = React.useState(null);
 
   const handlePress = () => setExpanded(!expanded);
-
-  // // Load fonts
-  // const [IsReady, SetIsReady] = useState(false);
-
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-  LoadFonts();
 
   /**
    * Allow the user to pick a photo from their library to upload.
@@ -266,7 +253,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
             <List.Item
               title={props.route.params.challenges.val().goal1}
-              // left={() =>  <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
                   status={checkedGoal1 ? 'checked' : 'unchecked'}
@@ -279,7 +265,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
             <List.Item
               title={props.route.params.challenges.val().goal2}
-              // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
                   status={checkedGoal2 ? 'checked' : 'unchecked'}
@@ -292,7 +277,6 @@ const ChallengeParticipationScreen = ({ navigation, ...props }) => {
 
             <List.Item
               title={props.route.params.challenges.val().goal3}
-              // left={() => <List.Icon color={'red'} icon="folder" />}
               right={() => (
                 <Checkbox.Android
                   status={checkedGoal3 ? 'checked' : 'unchecked'}
@@ -357,7 +341,6 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     fontSize: 20,
-    fontFamily: 'Lato-BoldItalic',
   },
   cardContainer: {
     flex: 1,

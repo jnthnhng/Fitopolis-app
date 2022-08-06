@@ -33,20 +33,27 @@ Source: [Expo Doc: Android Emulator](https://docs.expo.dev/workflow/android-stud
 3. Inside Android Studio, go to Preferences > Appearance & Behavior > System Settings > Android SDK. Click on the "SDK Tools" tab and make sure you have at least one version of the "Android SDK Build-Tools" installed.
 4. Copy or remember the path listed in the box that says "Android SDK Location."
 5. If you are on macOS or Linux, add an environment variable pointing to the Android SDK location in ~/.bash_profile (or ~/.zshenv if you use Zsh) - eg. export ANDROID_HOME=/your/path/here. Copy and paste these two lines to do this automatically for Bash and Zsh:
+
 ```[ -d "$HOME/Library/Android/sdk" ] && ANDROID_HOME=$HOME/Library/Android/sdk || ANDROID_HOME=$HOME/Android/Sdk
 echo "export ANDROID_HOME=$ANDROID_HOME" >> ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 ```
+
 6. On macOS, you will also need to add platform-tools to your ~/.bash_profile (or ~/.zshenv if you use Zsh) - eg. export PATH=/your/path/here:$PATH. Copy and paste this line to do this automatically for Bash and Zsh:
+
 ```
 echo "export PATH=$ANDROID_HOME/platform-tools:\$PATH" >> ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 ```
+
 7. Reload the path environment variables by running:
+
 ```
 source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 ```
+
 8. Finally, make sure that you can run adb from your terminal.
 
 **Step 2: Set up a virtual device**
+
 1. On the Android Studio main screen, click "More Actions", then "Virtual Device Manager" in the dropdown.
 2. If you already have a project, then the menu will show up under the three dots menu in the top right corner of the window.
 3. Press the "Create device" button.
@@ -56,11 +63,10 @@ source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 
 **Step 3: Run the Fitopolis App**
 
-1. Download the ```Fitopolis-Android.apk``` file from the ```./project_build/android/``` folder.
+1. Download the `Fitopolis-Android.apk` file from the `./project_build/android/` folder.
 2. Press the "Play" button in the AVD Manager window to Open the Android Emulator.
-3. Drag and Drop the ```Fitopolis.apk``` file onto the device. This will install the APK file.
-4. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy! 
-
+3. Drag and Drop the `Fitopolis.apk` file onto the device. This will install the APK file.
+4. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy!
 
 ---
 
@@ -78,23 +84,24 @@ Source: [Expo Doc: iOS Simulator](https://docs.expo.dev/workflow/android-studio-
 
 **Step 3: Run the Fitopolis App**
 
-1. Download the ```Fitopolis-iOS.app``` file from the ```./project_build/ios/``` folder.
-2. Open up your simulator.
-3. Drag ```Fitopolis-iOS.app``` into the simulator.
-4. The app will be installed in a few seconds. When you see it appear on the simulator home screen, tap it to run it.
+1. Download the `...tar.gz` file from the `./project_build/ios/` folder.
+2. Extract the file by opening it. You will now have a Fitopolis-app.app file.
+3. Open up your simulator.
+4. Drag `Fitopolis-app.app` into the simulator.
+5. The app will be installed in a few seconds. When you see it appear on the simulator home screen, tap it to run it.
 
-
-## 
+##
 
 ---
+
 ## **Run Locally**
 
+## Prerequisites
 
-## Prerequisites 
-
-Install Node Version Manager 
+Install Node Version Manager
 
 (Mac/Linux)
+
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
@@ -104,11 +111,13 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
 (Windows)
+
 ```
 Install zip from: [https://github.com/coreybutler/nvm-windows/releases]
 ```
 
 ---
+
 Clone the project
 
 ```bash
@@ -135,21 +144,20 @@ Install dependencies and peer dependecies
 
 Start the application
 
-*--no-dev flag run the application in production mode*
+_--no-dev flag run the application in production mode_
 
-*--minify flag removes unecessary data (comments, formatting, unused code)*
-
-
+_--minify flag removes unecessary data (comments, formatting, unused code)_
 
 (Android/Web)
+
 ```bash
   expo start --no-dev -minify
 ```
-After the project has started press ```"w"``` to start in Web, or
-press  ```"a"```  to start in an Android emulator.
+
+After the project has started press `"w"` to start in Web, or
+press `"a"` to start in an Android emulator.
 
 ---
-
 
 ## Running Tests
 
@@ -160,6 +168,7 @@ To run tests, run the following command
 ```
 
 ---
+
 ## Screenshots
 
 ![App Screenshot](https://lh3.googleusercontent.com/pw/AL9nZEVOfXaAKGhiNnlzdhR9X-3zlicLX3iIA2lU9IdcYaIWMPQusjp2GPcl92yPBtZgV-lgIUKdl3gpR85rJvhIyKNTQ-A31c1I6g6oWRXq11-_GmS89irP7ACnA1IdxlfoaksTLYShacVuGLE1EYl4Jis=w917-h855-no)
@@ -172,11 +181,11 @@ To run tests, run the following command
 - [@Danielle Guedea](https://github.com/dguedea)
 - [@Jonathan Hang](https://github.com/jph-cs)
 
-
 ---
+
 ## 🔗 Links
 
-[Node Version Manange](https://github.com/nvm-sh/nvm)
+[Node Version Manager](https://github.com/nvm-sh/nvm)
 
 [Expo](https://docs.expo.dev/)
 
@@ -188,7 +197,6 @@ To run tests, run the following command
 
 ## Acknowledgements
 
-- The TAs and Profresor Bill Pfeil from CS 467 Capstone Class U2022
+- The TAs and Professor Bill Pfeil from CS 467 Capstone Class U2022
 
 - [Oregon State University: College of Engineering](https://engineering.oregonstate.edu/)
-

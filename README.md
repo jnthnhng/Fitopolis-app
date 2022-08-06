@@ -24,7 +24,7 @@ Fitopolis is a cross-platform application that allows users to create and partic
 
 ## Run on Android Studio Emulator
 
-Instructions are from: [Expo Doc: Android Emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+Source: [Expo Doc: Android Emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 
 **Step 1: Set up Android Studio's Tools**
 
@@ -56,34 +56,32 @@ source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 
 **Step 3: Run the Fitopolis App**
 
-1. Press the "Play" button in the AVD Manager window to Open the Android Emulator.
-2. Drag and Drop the ```apk``` file onto the device. This will install the APK file.
-3. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy! 
+1. Download the ```Fitopolis-Android.apk``` file from the ```./project_build/android/``` folder.
+2. Press the "Play" button in the AVD Manager window to Open the Android Emulator.
+3. Drag and Drop the ```Fitopolis.apk``` file onto the device. This will install the APK file.
+4. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy! 
 
 
 ---
 
 ## Run on iOS Simulator
 
-Instructions are from: [Expo Doc: iOS Simulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+Source: [Expo Doc: iOS Simulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 
 **Step 1: Install Xcode**
 
 - This step is very easy but it takes a while. Open up the Mac App Store, search for Xcode, and hit install (or update if you have it already). If you're not able to update because your operating system is out of date, we recommend updating your operating system to the latest version and then updating Xcode. You may run into issues further down the line if your Xcode version is out of date, for example you may not be able to submit your app to the App Store.
 
-**Step 2: Install Xcode Command Line Tools**
+**Step 2: Run Xcode & Simulator**
 
-- Open Xcode, then choose "Preferences..." from the Xcode menu (or press Cmd ⌘ + ,). Go to the Locations panel and install the tools by selecting the most recent version in the Command Line Tools dropdown.
+1. Open Xcode > Open Developer Tool > Simulator
 
-**Step 3:  Try it out**
+**Step 3: Run the Fitopolis App**
 
-- Run your app with expo-cli and press I from the command line. You may get a warning about needing to accept the Xcode license. Run the command that it suggests. Open your app again, success! Or no? If no, please seek help on StackOverflow, Google, or the Expo CLI section of the forums. The troubleshooting tips below may be helpful too.
-
-**Step 4: Run the Fitopolis App**
-
-1. Open up your simulator.
-2. Drag Fitopolis.app into the simulator.
-3. The app will be installed in a few seconds. When you see it appear on the simulator home screen, tap it to run it.
+1. Download the ```Fitopolis-iOS.app``` file from the ```./project_build/ios/``` folder.
+2. Open up your simulator.
+3. Drag ```Fitopolis-iOS.app``` into the simulator.
+4. The app will be installed in a few seconds. When you see it appear on the simulator home screen, tap it to run it.
 
 
 ## 

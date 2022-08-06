@@ -153,8 +153,6 @@ class ChallengeScreen extends Component {
             style={styles.logo}
             >{this.challenge().name}
           </Text>
-          <View style={styles.buttonContainer}>
-        </View>
           <View style={styles.container}>
             <Image style={styles.image} source={{uri: this.challenge().image}} />
           </View>
@@ -196,13 +194,11 @@ class ChallengeScreen extends Component {
           <View style={styles.displayContainer}>
             <Text style={styles.text}>Badges:</Text>
             {this.state.badges.map(badge =>
-              <View style={styles.displayContainer}>
                 <Text style={styles.text}>
                   <Image style={styles.badge} source={{uri: badge.image}} />
                   {'    '}
                   {badge.name}
                 </Text>
-              </View>
             )}
           </View>
           <View style={styles.displayContainer}>

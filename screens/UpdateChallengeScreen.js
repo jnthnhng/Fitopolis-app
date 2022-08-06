@@ -240,17 +240,20 @@ class UpdateChallengeScreen extends Component {
             <Text style={styles.instructions}>
               Edit your challenge!
             </Text>
-            <View style={styles.inputContainer}>
               <TextInput 
                 value={this.state.name} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ name: value})}
               />
+              <View>
+                <ScrollView style={{height:100}} >
               <SelectMultiple
                   items={this.state.badges}
                   selectedItems={this.state.selectedBadges}
                   onSelectionsChange={this.onSelectionsChange}
               />
+              </ScrollView>
+              </View>
                 <TextInput value={this.state.description} 
                 style={styles.input} 
                 onChangeText={value => this.setState({ description: value})}
@@ -282,8 +285,7 @@ class UpdateChallengeScreen extends Component {
                       />
                   )}
                   {!this.state.uploading ? <Button title="upload" onPress={this.uploadImage} /> : <ActivityIndicator size="small" color="#000" />}
-              </View>    
-            </View>
+              </View> 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => {handleInput(this.state.id, this.state.selectedBadges, this.state.name, this.state.type, this.state.description, this.state.goal1, this.state.goal2, this.state.goal3, this.state.tags, this.state.imageFileName)}} style={styles.button} >
                     <Text style={styles.buttonText}>Update Challenge</Text>

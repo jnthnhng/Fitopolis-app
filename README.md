@@ -63,7 +63,7 @@ source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 
 **Step 3: Run the Fitopolis App**
 
-1. Download the `Fitopolis-Android.apk` file from the `./project_build/android/` folder.
+1. Download the `Fitopolis-Android.apk` file from the `../project_build/android/` folder.
 2. Press the "Play" button in the AVD Manager window to Open the Android Emulator.
 3. Drag and Drop the `Fitopolis.apk` file onto the device. This will install the APK file.
 4. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy!
@@ -84,7 +84,7 @@ Source: [Expo Doc: iOS Simulator](https://docs.expo.dev/workflow/android-studio-
 
 **Step 3: Run the Fitopolis App**
 
-1. Download the `...tar.gz` file from the `./project_build/ios/` folder.
+1. Download the `...tar.gz` file from the `../project_build/ios/` folder.
 2. Extract the file by opening it. You will now have a Fitopolis-app.app file.
 3. Open up your simulator.
 4. Drag `Fitopolis-app.app` into the simulator.
@@ -136,7 +136,7 @@ Install Expo-CLI
   npm install -g expo-cli
 ```
 
-Install dependencies and peer dependecies
+Install dependencies and peer dependencies
 
 ```bash
   npm install --legacy-peer-deps
@@ -144,18 +144,21 @@ Install dependencies and peer dependecies
 
 Start the application
 
-_--no-dev flag run the application in production mode_
-
-_--minify flag removes unecessary data (comments, formatting, unused code)_
-
 (Android/Web)
 
 ```bash
-  expo start --no-dev -minify
+  expo start --no-dev --minify
 ```
 
 After the project has started press `"w"` to start in Web, or
 press `"a"` to start in an Android emulator.
+
+
+Notes:
+
+*--no-dev flag run the application in production mode*
+
+*--minify flag removes unecessary data (comments, formatting, unused code)*
 
 ---
 

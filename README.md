@@ -57,7 +57,8 @@ source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 **Step 3: Run the Fitopolis App**
 
 1. Press the "Play" button in the AVD Manager window to Open the Android Emulator.
-2. Drag and Drop the ```apk``` file onto the device. 
+2. Drag and Drop the ```apk``` file onto the device. This will install the APK file.
+3. Once installed, open the App menu and find the Fitopolis app. Open the App and enjoy! 
 
 
 ---

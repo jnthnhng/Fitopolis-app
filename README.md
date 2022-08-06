@@ -136,7 +136,7 @@ Install Expo-CLI
   npm install -g expo-cli
 ```
 
-Install dependencies and peer dependecies
+Install dependencies and peer dependencies
 
 ```bash
   npm install --legacy-peer-deps

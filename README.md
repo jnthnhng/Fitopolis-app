@@ -20,6 +20,15 @@ Fitopolis is a cross-platform application that allows users to create and partic
 
 **Activity Feed:** Stream Activity Feeds API
 
+**Hosting:** Firebase Hosting
+
+---
+
+<br/>
+
+## Live Link: [Fitopolis App](https://fitopolis-app.web.app/)
+<br/>
+
 ---
 
 ## Run on Android Studio Emulator
@@ -94,73 +103,6 @@ Source: [Expo Doc: iOS Simulator](https://docs.expo.dev/workflow/android-studio-
 
 ---
 
-## **Run Locally**
-
-## Prerequisites
-
-Install Node Version Manager
-
-(Mac/Linux)
-
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-```
-
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-```
-
-(Windows)
-
-```
-Install zip from: [https://github.com/coreybutler/nvm-windows/releases]
-```
-
----
-
-Clone the project
-
-```bash
-  git clone https://github.com/jph-cs/Fitopolis-app.git
-```
-
-Go to the project directory
-
-```bash
-  cd Fitopolis-app
-```
-
-Install Expo-CLI
-
-```bash
-  npm install -g expo-cli
-```
-
-Install dependencies and peer dependencies
-
-```bash
-  npm install --legacy-peer-deps
-```
-
-Start the application
-
-(Android/Web)
-
-```bash
-  expo start --no-dev --minify
-```
-
-After the project has started press `"w"` to start in Web, or
-press `"a"` to start in an Android emulator.
-
-
-Notes:
-
-*--no-dev flag run the application in production mode*
-
-*--minify flag removes unecessary data (comments, formatting, unused code)*
-
----
 
 ## Running Tests
 
